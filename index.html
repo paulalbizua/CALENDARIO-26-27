@@ -1,0 +1,1101 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Temporada</title>
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Temporada">
+<meta name="theme-color" content="#15432E">
+<link rel="apple-touch-icon" href="icon-180.png">
+<link rel="icon" type="image/png" href="icon-192.png">
+<link rel="manifest" href="manifest.json">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700&family=Barlow:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#EDF0EB; --surface:#FFFFFF; --surface-2:#F5F7F4; --ink:#12201A; --muted:#5B6961; --line:#D3DAD2;
+  --brand:#15432E; --brand-2:#1D5A3E; --on-brand:#F1F5F0; --on-brand-muted:#B4C8BA;
+  --c-gym:#2F7A55; --c-rugby:#1E4F7A; --c-speed:#C9621F; --c-z2:#23879B; --c-mob:#7A8270;
+  --c-match:#B8322A; --c-eng:#6E4FA6; --c-cera:#9A6810; --c-corr:#2A66C8; --c-check:#5E6A73; --c-trip:#2F8C86;
+  --warn-bg:#FBF1DC; --warn-ink:#6B4A06;
+  --display:'Barlow Condensed','Arial Narrow','Roboto Condensed',system-ui,sans-serif;
+  --body:'Barlow',system-ui,-apple-system,'Segoe UI',Roboto,sans-serif;
+  box-sizing:border-box;
+  padding-top:env(safe-area-inset-top,0px);
+  padding-bottom:env(safe-area-inset-bottom,0px);
+  color-scheme:light;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#0E1512; --surface:#16201B; --surface-2:#1B2721; --ink:#E4EBE6; --muted:#98A69E; --line:#27352D;
+    --brand:#123826; --brand-2:#1A4A33; --on-brand:#EAF1EC; --on-brand-muted:#97B2A1;
+    --c-gym:#52A67D; --c-rugby:#5E92C4; --c-speed:#E8864A; --c-z2:#4EB1C5; --c-mob:#A0A893;
+    --c-match:#E25A50; --c-eng:#A085D8; --c-cera:#D39E3E; --c-corr:#6497EC; --c-check:#8D99A2; --c-trip:#5FB6AF;
+    --warn-bg:#3A2F16; --warn-ink:#F0D9A4;
+    color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#0E1512; --surface:#16201B; --surface-2:#1B2721; --ink:#E4EBE6; --muted:#98A69E; --line:#27352D;
+  --brand:#123826; --brand-2:#1A4A33; --on-brand:#EAF1EC; --on-brand-muted:#97B2A1;
+  --c-gym:#52A67D; --c-rugby:#5E92C4; --c-speed:#E8864A; --c-z2:#4EB1C5; --c-mob:#A0A893;
+  --c-match:#E25A50; --c-eng:#A085D8; --c-cera:#D39E3E; --c-corr:#6497EC; --c-check:#8D99A2; --c-trip:#5FB6AF;
+  --warn-bg:#3A2F16; --warn-ink:#F0D9A4;
+  color-scheme:dark;
+}
+html{scroll-padding-top:env(safe-area-inset-top,0px);background:var(--brand);}
+html,body{min-height:100%;margin:0;}
+body{min-height:100vh;min-height:100dvh;}
+*,*::before,*::after{box-sizing:border-box;}
+body{background:var(--bg);color:var(--ink);font-family:var(--body);font-size:16px;line-height:1.45;-webkit-font-smoothing:antialiased;}
+button,input,select,textarea{font:inherit;color:inherit;}
+button{cursor:pointer;}
+:focus-visible{outline:2px solid var(--c-corr);outline-offset:2px;}
+#app{max-width:560px;margin:0 auto;min-height:100%;padding-bottom:84px;}
+
+/* ---------- Board (header de la semana) ---------- */
+.board{background:var(--brand);color:var(--on-brand);padding:18px 18px 16px;position:relative;overflow:hidden;}
+.board::after{content:"";position:absolute;left:0;right:0;bottom:0;height:3px;background:repeating-linear-gradient(90deg,var(--on-brand) 0 22px,transparent 22px 34px);opacity:.35;}
+.board-top{display:flex;justify-content:space-between;align-items:center;gap:12px;font-size:14px;color:var(--on-brand-muted);}
+.phase{font-family:var(--display);font-weight:600;font-size:17px;color:var(--on-brand);letter-spacing:.2px;}
+.sync{font-size:12.5px;display:flex;align-items:center;gap:6px;white-space:nowrap;}
+.sync i{width:7px;height:7px;border-radius:50%;background:var(--on-brand-muted);display:inline-block;}
+.sync.cloud i{background:#7FD3A5;}
+.next{margin-top:14px;}
+.next-l{font-size:14px;color:var(--on-brand-muted);}
+.next-teams{font-family:var(--display);font-weight:700;font-size:40px;line-height:1.02;margin:2px 0 6px;letter-spacing:-.2px;}
+.next-teams .vs{font-weight:500;color:var(--on-brand-muted);font-size:26px;padding:0 4px;}
+.next-meta{font-size:15px;}
+.next-meta b{font-weight:600;}
+.cera-line{margin-top:8px;font-size:14px;color:var(--on-brand-muted);}
+.prog{margin-top:16px;}
+.bar{height:8px;border-radius:4px;background:rgba(255,255,255,.16);overflow:hidden;}
+.bar i{display:block;height:100%;background:var(--on-brand);border-radius:4px;transition:width .35s ease;}
+.prog-l{display:flex;justify-content:space-between;margin-top:6px;font-size:14px;color:var(--on-brand-muted);}
+.prog-l b{color:var(--on-brand);font-weight:600;}
+
+/* ---------- Tira de la semana ---------- */
+.weeknav{display:flex;align-items:center;justify-content:space-between;padding:14px 12px 6px;}
+.weeknav h2{margin:0;font-family:var(--display);font-weight:600;font-size:20px;}
+.iconbtn{width:40px;height:40px;border-radius:10px;border:1px solid var(--line);background:var(--surface);display:grid;place-items:center;}
+.iconbtn:disabled{opacity:.35;cursor:default;}
+.strip{display:grid;grid-template-columns:repeat(7,1fr);gap:4px;padding:4px 10px 10px;}
+.day{border:0;background:transparent;border-radius:12px;padding:6px 0 8px;display:flex;flex-direction:column;align-items:center;gap:2px;}
+.day .dl{font-size:13px;color:var(--muted);}
+.day .ring{position:relative;width:40px;height:40px;}
+.day .ring svg{position:absolute;inset:0;transform:rotate(-90deg);}
+.day .ring span{position:absolute;inset:0;display:grid;place-items:center;font-family:var(--display);font-weight:600;font-size:18px;}
+.day.sel{background:var(--surface);box-shadow:0 0 0 1px var(--line);}
+.day.today .dl{color:var(--ink);font-weight:600;}
+.day .mk{height:5px;display:flex;gap:3px;}
+.day .mk b{width:5px;height:5px;border-radius:50%;}
+
+/* ---------- Día y tareas ---------- */
+.dayhead{padding:6px 16px 8px;display:flex;align-items:baseline;justify-content:space-between;gap:8px;}
+.dayhead h3{margin:0;font-family:var(--display);font-size:24px;font-weight:700;}
+.dayhead .cnt{font-size:14px;color:var(--muted);white-space:nowrap;}
+.banner{margin:0 12px 10px;padding:10px 12px;border-radius:12px;background:var(--surface-2);border-left:4px solid var(--c-trip);font-size:14.5px;}
+.banner b{font-weight:600;}
+.banner.warn{background:var(--warn-bg);color:var(--warn-ink);border-left-color:var(--c-cera);}
+.list{padding:0 12px;display:flex;flex-direction:column;gap:8px;}
+.task{background:var(--surface);border-radius:14px;box-shadow:0 0 0 1px var(--line);overflow:hidden;}
+.trow{display:flex;align-items:stretch;min-height:64px;}
+.trow::before{content:"";width:5px;background:var(--c);flex:none;}
+.chk{flex:none;width:58px;border:0;background:transparent;display:grid;place-items:center;}
+.chk span{width:28px;height:28px;border-radius:8px;border:2px solid var(--c);display:grid;place-items:center;transition:background .15s ease;}
+.chk svg{opacity:0;transition:opacity .15s ease;}
+.task.done .chk span{background:var(--c);}
+.task.done .chk svg{opacity:1;}
+.tbody{flex:1;min-width:0;border:0;background:transparent;text-align:left;padding:10px 4px 10px 0;display:flex;flex-direction:column;justify-content:center;}
+.tline{display:flex;align-items:baseline;gap:8px;}
+.ttime{font-family:var(--display);font-weight:600;font-size:17px;color:var(--c);min-width:42px;}
+.ttitle{font-weight:600;font-size:16.5px;}
+.task.done .ttitle{text-decoration:line-through;text-decoration-thickness:1.5px;color:var(--muted);}
+.tsub{font-size:14px;color:var(--muted);margin-top:1px;}
+.tsub em{font-style:normal;color:var(--c);font-weight:500;}
+.more{flex:none;width:42px;border:0;background:transparent;display:grid;place-items:center;color:var(--muted);}
+.more svg{transition:transform .2s ease;}
+.task.open .more svg{transform:rotate(180deg);}
+.tdetail{display:none;padding:2px 14px 14px 63px;font-size:14.5px;}
+.task.open .tdetail{display:block;}
+.tdetail p{margin:6px 0;}
+.tdetail .note{padding:8px 10px;border-radius:10px;background:var(--surface-2);margin:8px 0;}
+.clock{width:100%;border-collapse:collapse;margin:6px 0;}
+.clock td{padding:5px 6px 5px 0;vertical-align:top;border-bottom:1px solid var(--line);}
+.clock tr:last-child td{border-bottom:0;}
+.clock td:first-child{font-family:var(--display);font-weight:600;color:var(--c);width:48px;white-space:nowrap;}
+.clock td:last-child{color:var(--muted);font-size:13.5px;}
+.task.info .trow{min-height:52px;}
+.task.info .chk{visibility:hidden;}
+.inline-form{display:flex;gap:8px;margin-top:8px;}
+.inline-form input{flex:1;min-width:0;}
+textarea{width:100%;min-height:64px;resize:vertical;}
+
+/* ---------- Dieta ---------- */
+.diet{margin:14px 12px 0;background:var(--surface);border-radius:14px;box-shadow:0 0 0 1px var(--line);overflow:hidden;}
+.diet-head{width:100%;border:0;background:transparent;display:flex;align-items:center;gap:10px;padding:14px 14px 12px;text-align:left;}
+.diet-head .dh{flex:1;min-width:0;}
+.diet-head h4{margin:0;font-family:var(--display);font-size:20px;font-weight:600;}
+.diet-head .ds{font-size:14px;color:var(--muted);}
+.diet-head .kc{font-family:var(--display);font-weight:700;font-size:24px;white-space:nowrap;}
+.diet-head .kc small{font-size:14px;font-weight:500;color:var(--muted);}
+.diet-head svg{color:var(--muted);transition:transform .2s ease;flex:none;}
+.diet.open .diet-head svg{transform:rotate(180deg);}
+.diet-body{display:none;padding:0 14px 14px;}
+.diet.open .diet-body{display:block;}
+.macros{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:0 0 10px;}
+.macros div{background:var(--surface-2);border-radius:10px;padding:8px 10px;}
+.macros b{display:block;font-family:var(--display);font-size:20px;font-weight:700;}
+.macros span{font-size:13px;color:var(--muted);}
+.dnote{font-size:14px;padding:8px 10px;border-radius:10px;background:var(--surface-2);margin:0 0 8px;}
+.meal{display:flex;gap:10px;align-items:flex-start;padding:10px 0;border-top:1px solid var(--line);}
+.meal .mchk{flex:none;width:36px;height:36px;margin-top:-4px;border:0;background:transparent;display:grid;place-items:center;}
+.meal .mchk span{width:22px;height:22px;border-radius:6px;border:2px solid var(--c-gym);display:grid;place-items:center;}
+.meal .mchk svg{opacity:0;width:13px;height:13px;}
+.meal.done .mchk span{background:var(--c-gym);}
+.meal.done .mchk svg{opacity:1;}
+.meal .mt{font-family:var(--display);font-weight:600;font-size:16px;color:var(--c-gym);min-width:42px;}
+.meal .mb{flex:1;min-width:0;}
+.meal .mn{font-weight:600;font-size:15px;}
+.meal.done .mn{color:var(--muted);text-decoration:line-through;}
+.meal .mf{font-size:14.5px;}
+.meal .mm{font-size:13px;color:var(--muted);margin-top:2px;font-variant-numeric:tabular-nums;}
+
+/* ---------- Resumen semanal ---------- */
+.summary{margin:16px 12px 0;padding:14px;background:var(--surface);border-radius:14px;box-shadow:0 0 0 1px var(--line);}
+.summary h4{margin:0 0 10px;font-family:var(--display);font-size:18px;font-weight:600;}
+.srow{display:grid;grid-template-columns:92px 1fr 52px;gap:10px;align-items:center;margin:8px 0;font-size:14.5px;}
+.srow .sbar{height:8px;border-radius:4px;background:var(--surface-2);overflow:hidden;box-shadow:inset 0 0 0 1px var(--line);}
+.srow .sbar i{display:block;height:100%;background:var(--c);}
+.srow .sn{text-align:right;color:var(--muted);font-variant-numeric:tabular-nums;}
+
+/* ---------- Vistas secundarias ---------- */
+.pagehead{background:var(--brand);color:var(--on-brand);padding:18px 18px 16px;position:relative;}
+.pagehead::after{content:"";position:absolute;left:0;right:0;bottom:0;height:3px;background:repeating-linear-gradient(90deg,var(--on-brand) 0 22px,transparent 22px 34px);opacity:.35;}
+.pagehead h1{margin:0;font-family:var(--display);font-weight:700;font-size:32px;line-height:1.05;}
+.pagehead p{margin:6px 0 0;color:var(--on-brand-muted);font-size:14.5px;max-width:60ch;}
+.section{margin:14px 12px;padding:14px;background:var(--surface);border-radius:14px;box-shadow:0 0 0 1px var(--line);}
+.section h3{margin:0 0 10px;font-family:var(--display);font-weight:600;font-size:20px;}
+.section p{margin:6px 0;font-size:14.5px;color:var(--muted);}
+.field{display:flex;flex-direction:column;gap:4px;margin:10px 0;}
+.field label{font-size:14px;color:var(--muted);}
+.row2{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+input[type=text],input[type=date],input[type=time],input[type=number],select,textarea{border:1px solid var(--line);background:var(--surface-2);border-radius:10px;padding:10px 11px;min-height:44px;width:100%;}
+.btn{border:0;border-radius:12px;min-height:46px;padding:0 18px;background:var(--brand-2);color:var(--on-brand);font-weight:600;}
+.btn.ghost{background:transparent;color:var(--ink);box-shadow:inset 0 0 0 1px var(--line);}
+.btn.danger{background:transparent;color:var(--c-match);box-shadow:inset 0 0 0 1px var(--c-match);}
+.btn.small{min-height:38px;padding:0 12px;font-size:14px;}
+.btn.full{width:100%;margin-top:6px;}
+.err{color:var(--c-match);font-size:14px;margin-top:6px;}
+.tripitem{display:flex;gap:12px;align-items:flex-start;padding:12px 0;border-top:1px solid var(--line);}
+.tripitem:first-of-type{border-top:0;}
+.tripitem .tb{flex:1;min-width:0;}
+.tripitem .tt{font-weight:600;}
+.tripitem .td{font-size:14px;color:var(--muted);}
+.dot{width:12px;height:12px;border-radius:50%;background:var(--c-trip);margin-top:6px;flex:none;}
+.fix{display:grid;grid-template-columns:40px 1fr;gap:10px;padding:12px 0;border-top:1px solid var(--line);}
+.fix:first-of-type{border-top:0;}
+.fix .jn{font-family:var(--display);font-weight:700;font-size:22px;color:var(--muted);}
+.fix.next .jn{color:var(--c-match);}
+.fix .fr{font-weight:600;}
+.fix .fm{font-size:14px;color:var(--muted);margin-bottom:6px;}
+.fix.bye .fr{color:var(--muted);font-weight:500;}
+.fix.past{opacity:.6;}
+.chart{width:100%;height:auto;display:block;margin:6px 0 4px;}
+.wlist{font-variant-numeric:tabular-nums;}
+.wlist div{display:flex;justify-content:space-between;padding:8px 0;border-top:1px solid var(--line);font-size:15px;}
+.wlist div:first-child{border-top:0;}
+.good{color:var(--c-gym);} .bad{color:var(--c-match);}
+.hint{font-size:14px;color:var(--muted);}
+.empty{padding:24px 18px;text-align:center;color:var(--muted);}
+
+/* ---------- Pestañas ---------- */
+#tabs{position:fixed;left:0;right:0;bottom:0;background:var(--surface);border-top:1px solid var(--line);padding-bottom:env(safe-area-inset-bottom,0px);z-index:10;}
+#tabs .in{max-width:560px;margin:0 auto;display:grid;grid-template-columns:repeat(5,1fr);}
+.tab{border:0;background:transparent;min-height:62px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;font-size:12.5px;color:var(--muted);}
+.tab.on{color:var(--ink);font-weight:600;}
+.tab.on svg{color:var(--brand-2);}
+:root[data-theme="dark"] .tab.on svg{color:var(--c-gym);}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]) .tab.on svg{color:var(--c-gym);}}
+
+.toast{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(76px + env(safe-area-inset-bottom,0px));background:var(--ink);color:var(--bg);padding:10px 16px;border-radius:12px;font-size:14.5px;z-index:20;opacity:0;pointer-events:none;transition:opacity .2s ease;}
+.toast.show{opacity:1;}
+@media (prefers-reduced-motion: reduce){*{transition:none!important;}}
+</style>
+</head>
+<body>
+<div id="app">
+  <div id="view"></div>
+</div>
+<nav id="tabs" aria-label="Secciones"><div class="in" id="tabsin"></div></nav>
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+<script>
+/*LOGIC_START*/
+const START = '2026-09-28';
+const LAST_WEEK = '2027-06-28';
+const SEASON_END = '2027-03-21';
+const DELOAD_WEEKS = ['2026-11-09','2026-12-21','2027-02-08'];
+const DOW_L = ['Lunes','Martes','Miércoles','Jueves','Viernes','Sábado','Domingo'];
+const DOW_S = ['L','M','X','J','V','S','D'];
+const MON = ['enero','febrero','marzo','abril','mayo','junio','julio','agosto','septiembre','octubre','noviembre','diciembre'];
+const MON_S = ['ene','feb','mar','abr','may','jun','jul','ago','sep','oct','nov','dic'];
+
+const pad = n => String(n).padStart(2,'0');
+function ymd(d){ return d.getFullYear()+'-'+pad(d.getMonth()+1)+'-'+pad(d.getDate()); }
+function parse(s){ const p=s.split('-').map(Number); return new Date(p[0],p[1]-1,p[2]); }
+function addDays(s,n){ const d=parse(s); d.setDate(d.getDate()+n); return ymd(d); }
+function dow(s){ return (parse(s).getDay()+6)%7; }
+function mondayOf(s){ return addDays(s,-dow(s)); }
+function diffDays(a,b){ return Math.round((parse(b)-parse(a))/86400000); }
+function longDate(s){ const d=parse(s); return DOW_L[dow(s)]+' '+d.getDate()+' de '+MON[d.getMonth()]; }
+function shortDate(s){ const d=parse(s); return d.getDate()+' '+MON_S[d.getMonth()]; }
+function addMin(t,m){ const [h,mm]=t.split(':').map(Number); let x=h*60+mm+m; x=((x%1440)+1440)%1440; return pad(Math.floor(x/60))+':'+pad(x%60); }
+
+const FIXTURES = [
+  {j:1, d:'2026-10-17', rival:'La Unica', casa:true},
+  {j:2, d:'2026-10-24', rival:'Gaztedi', casa:false},
+  {j:3, d:'2026-11-07', rival:'Zaisa Txingudi', casa:true},
+  {j:4, d:'2026-11-14', bye:true},
+  {j:5, d:'2026-11-28', rival:'Iruña', casa:false},
+  {j:6, d:'2026-12-12', rival:'Durango Mutriku', casa:true},
+  {j:7, d:'2026-12-19', rival:'Zornotza Urgozo', casa:false},
+  {j:8, d:'2027-01-16', rival:'La Unica', casa:false},
+  {j:9, d:'2027-01-23', rival:'Gaztedi', casa:true},
+  {j:10,d:'2027-02-06', rival:'Zaisa Txingudi', casa:false},
+  {j:11,d:'2027-02-13', bye:true},
+  {j:12,d:'2027-02-27', rival:'Iruña', casa:true},
+  {j:13,d:'2027-03-13', rival:'Durango Mutriku', casa:false, dudosa:true},
+  {j:14,d:'2027-03-20', rival:'Zornotza Urgozo', casa:true}
+];
+
+function fixtureList(state){
+  return FIXTURES.map(f=>{ const ov=(state.fixtures||{})['J'+f.j]||{}; return Object.assign({},f,{d:ov.d||f.d, ko:ov.ko||''}); });
+}
+function fixtureMap(state){ const m={}; for(const f of fixtureList(state)) m[f.d]=f; return m; }
+
+function phaseOf(date){
+  const mon=mondayOf(date);
+  if(date<START) return 'antes';
+  if(mon==='2026-09-28') return 'vuelta';
+  if(mon==='2026-10-05') return 'pretemporada';
+  if(mon==='2026-10-12') return 'afinado';
+  if(DELOAD_WEEKS.includes(mon)) return 'descarga';
+  if(date>SEASON_END) return 'finliga';
+  return 'liga';
+}
+const PHASE_NAME = {
+  antes:'Antes de empezar', vuelta:'Semana de vuelta', pretemporada:'Pretemporada',
+  afinado:'Afinado para el debut', descarga:'Semana de descarga', liga:'Liga', finliga:'Fin de liga'
+};
+
+const TRIP_TYPES = {
+  trabajo:{name:'Viaje de trabajo', blocks:true, study:['eng','cera'],
+    desc:'El gimnasio pasa a circuito de hotel de 30 min y no hay rugby. Inglés y CERA se mantienen; la correduría se reparte en el resto de la semana.'},
+  esqui:{name:'Esquí', blocks:true, study:[],
+    desc:'Esquiar cuenta como Zona 2 y trabajo de piernas. Sin gimnasio ni estudio. Al volver, las dos primeras sesiones de gimnasio van con una serie menos.'},
+  vacaciones:{name:'Vacaciones', blocks:true, study:[],
+    desc:'Caminar o monte a diario, sin gimnasio ni estudio. Al volver, las dos primeras sesiones de gimnasio van con una serie menos.'},
+  paron:{name:'Parón del club', blocks:false, study:['eng','cera','corr'],
+    desc:'Sin entreno de campo. El gimnasio y el estudio siguen igual y cada entreno de rugby se sustituye por 30 min de Zona 2.'},
+  enfermo:{name:'Enfermo o lesionado', blocks:true, study:['eng'],
+    desc:'Solo movilidad suave e inglés. Al volver, las dos primeras sesiones de gimnasio al 60-70 %.'}
+};
+const TRIP_PRI = {enfermo:5, esqui:4, vacaciones:3, trabajo:2, paron:1};
+
+function tripOn(date,state){
+  let best=null;
+  for(const t of (state.trips||[])){
+    if(t.from<=date && date<=t.to){ if(!best || TRIP_PRI[t.type]>TRIP_PRI[best.type]) best=t; }
+  }
+  return best;
+}
+
+const SLOTS = [
+  {area:'eng', dow:0, t:'18:15', w:1,   cap:70},
+  {area:'eng', dow:3, t:'18:15', w:1,   cap:70},
+  {area:'eng', dow:6, t:'19:45', w:0.8, cap:60},
+  {area:'cera',dow:2, t:'20:30', w:1.2, cap:90},
+  {area:'cera',dow:4, t:'18:30', w:1,   cap:120, tPre:'20:00'},
+  {area:'cera',dow:6, t:'17:45', w:1.2, cap:105},
+  {area:'corr',dow:1, t:'18:15', w:1,   cap:70},
+  {area:'corr',dow:5, t:'11:30', w:1.5, cap:150, noMatch:true},
+  {area:'corr',dow:6, t:'15:30', w:1.2, cap:120}
+];
+const AREA = {
+  eng:{name:'Inglés', hint:'Un bloque de entrada (escuchar o leer) y uno de salida (escribir o hablar). Apunta qué vas a hacer antes de empezar.'},
+  cera:{name:'Estudio CERA', hint:'Un tema concreto del temario y sus ejercicios. Cierra el bloque anotando dónde lo dejas.'},
+  corr:{name:'Proyecto correduría', hint:'Una tarea concreta y terminable del proyecto. Si no sabes cuál, la primera tarea es decidirla.'}
+};
+
+function allocate(target, slots){
+  const out=slots.map(()=>0); let rem=target; let open=slots.map((_,i)=>i);
+  let guard=0;
+  while(rem>0.5 && open.length && guard++<20){
+    const W=open.reduce((a,i)=>a+slots[i].w,0);
+    const next=[]; let used=0; let capped=false;
+    for(const i of open){
+      const share=rem*slots[i].w/W;
+      if(out[i]+share>=slots[i].cap){ used+=slots[i].cap-out[i]; out[i]=slots[i].cap; capped=true; }
+      else next.push(i);
+    }
+    if(!capped){ for(const i of open) out[i]+=rem*slots[i].w/W; rem=0; break; }
+    rem-=used; open=next;
+  }
+  let left=Math.max(0,rem);
+  const mins=out.map(m=>{ const r=Math.round(m/5)*5; if(r<15){ left+=m; return 0; } return r; });
+  return {mins, left:Math.round(left/5)*5};
+}
+
+const GYM = {
+  A:{name:'Gimnasio A', what:'Fuerza tren inferior y potencia', end:'15:15', day:'lunes', rows:[
+    ['14:20','Calentamiento estándar','8 min'],
+    ['14:28','Salto con contramovimiento','4 × 3, 90 s'],
+    ['14:33','Sentadilla, series de aproximación','2 × 5'],
+    ['14:36','Sentadilla trasera','4 × 4 al 82-87 %, 3 min'],
+    ['14:47','Press banca + remo con mancuerna','4 × 5 al 80 % + 4 × 8 por lado, 90 s'],
+    ['14:59','Nordic curl + Pallof press','3 × 4 bajando en 4 s + 3 × 10 por lado, 60 s'],
+    ['15:07','Cuello isométrico, 4 direcciones','2 × 30 s cada una'],
+    ['15:12','Movilidad rápida y salida','3 min']]},
+  B:{name:'Gimnasio B', what:'Fuerza tren superior y hombro', end:'15:16', day:'martes', rows:[
+    ['14:20','Calentamiento + 20 rotaciones de hombro con banda','8 min'],
+    ['14:28','Lanzamiento de balón medicinal al pecho','4 × 4, 60 s'],
+    ['14:32','Push press, aproximación','2 × 5'],
+    ['14:35','Push press','4 × 5 al 75-80 %, 2 min 30 s'],
+    ['14:44','Dominadas lastradas + press inclinado con mancuernas','4 × 5 + 4 × 8, 90 s'],
+    ['14:56','Remo en T + rotación externa con banda','3 × 8 + 3 × 12 por lado, 75 s'],
+    ['15:05','Copenhagen + Y-T-W en prono','3 × 20-30 s por lado + 2 × 8, 45 s'],
+    ['15:12','Cuello isométrico','2 × 30 s']]},
+  C:{name:'Gimnasio C', what:'Cadena posterior y fuerza', end:'15:14', day:'miércoles', rows:[
+    ['14:20','Calentamiento estándar','8 min'],
+    ['14:28','Peso muerto hexagonal, aproximación','2 × 5'],
+    ['14:31','Peso muerto con barra hexagonal','4 × 5 al 78-82 %, 2 min 30 s'],
+    ['14:42','Búlgara + face pull','3 × 8 por pierna + 3 × 15, 75 s'],
+    ['14:53','Peso muerto rumano a una pierna + remo con mancuerna','3 × 8 por lado + 3 × 10, 75 s'],
+    ['15:03','Rueda abdominal','3 × 8, 60 s'],
+    ['15:08','Gemelo a una pierna','3 × 12, 45 s']],
+    foot:'Guarda piernas para la velocidad de las 18:30. Si el peso muerto te deja arrastrándote, baja al 75 %.'},
+  D:{name:'Gimnasio D', what:'Mantenimiento y prevención', end:'15:05', day:'jueves', rows:[
+    ['14:20','Calentamiento estándar','8 min'],
+    ['14:28','Press banca con mancuernas + remo en polea','3 × 10 + 3 × 10, 75 s'],
+    ['14:38','Nordic inverso + gemelo a una pierna','2 × 6 + 3 × 12, 60 s'],
+    ['14:47','Copenhagen + Turkish get-up ligero','3 × 25 s por lado + 2 × 3 por lado, 45 s'],
+    ['14:56','Cuello isométrico','2 × 30 s'],
+    ['15:00','Movilidad de cadera y tobillo','5 min']],
+    foot:'RPE 7 como techo. Si llegas fundido, es la primera sesión que se quita.'}
+};
+const WARMUP = 'Calentamiento estándar: bici o remo suave 3 min, 90/90 5 por lado, tobillo contra la pared 8 por lado, puente de glúteo con banda 15 y pogo jumps 2 × 15.';
+const GYM_MOD = {
+  vuelta:'Semana de vuelta: 2-3 series por ejercicio, cargas al 80 % y RPE 7 como máximo. Nordic 2 × 3.',
+  pretemporada:'',
+  afinado:'Afinado: mismas cargas, un 40 % menos de series. Sal con buenas sensaciones.',
+  descarga:'Descarga: mismas cargas, la mitad de series.',
+  liga:'Liga: 3 series en los ejercicios principales y el último bloque opcional. Terminas sobre las 15:05-15:10.',
+  finliga:'Liga: 3 series en los ejercicios principales y el último bloque opcional.'
+};
+const HOTEL = [
+  ['1','Sentadilla búlgara con peso corporal','3 × 12 por pierna'],
+  ['2','Flexiones','3 × 15'],
+  ['3','Puente de glúteo a una pierna','3 × 12 por lado'],
+  ['4','Remo invertido en mesa o con banda','3 × 12'],
+  ['5','Plancha frontal + lateral','3 × 40 s + 2 × 30 s por lado'],
+  ['6','Cuello isométrico con la mano','2 × 30 s por dirección']
+];
+const MOBILITY = 'Tobillo contra la pared 10 por lado, sentadilla profunda 60-90 s, 90/90 con rotación 8 por lado, estiramiento de sofá 60 s por lado, open book 8 por lado, círculos de hombro 5 por lado, colgarte de la barra 30-45 s y 5 respiraciones 90/90.';
+
+function speedPlan(phase,date){
+  if(phase==='vuelta') return '4 progresiones de 30 m al 75-85 %. Sin sprints máximos ni lanzados.';
+  if(phase==='pretemporada') return '6 × 20 m de aceleración desde salida a 3 apoyos, 2-3 min de descanso.';
+  if(phase==='afinado') return '4 × 20 m al máximo, sin lanzados. Sal con buenas sensaciones, no cansado.';
+  if(phase==='descarga') return '4 × 20 m al 90 %, sin lanzados.';
+  if(date<'2026-11-23') return '5 × 20 m de aceleración + 2 × 20 m lanzado (entrada de 15 m), 3-4 min de descanso.';
+  return '4 × 20 m + 3 × 20 m lanzado + 2 × 20 m en cuesta suave (sustituye al trineo), 3-4 min de descanso.';
+}
+
+/* Sesiones perdidas por viaje o enfermedad justo antes: modifica el gimnasio */
+function returnMod(date,state){
+  for(const t of (state.trips||[])){
+    if(!['esqui','vacaciones','enfermo'].includes(t.type)) continue;
+    if(diffDays(t.from,t.to)<2) continue;
+    if(!(t.to<date)) continue;
+    const gap=diffDays(t.to,date);
+    if(gap>10) continue;
+    let gymDays=0;
+    for(let d=addDays(t.to,1); d<date; d=addDays(d,1)){
+      if(dow(d)<=3){ const tr=tripOn(d,state); if(!(tr && TRIP_TYPES[tr.type].blocks)) gymDays++; }
+    }
+    if(gymDays<2) return t.type;
+  }
+  return null;
+}
+
+function buildWeek(mon,state){
+  const dates=[0,1,2,3,4,5,6].map(i=>addDays(mon,i));
+  const fx=fixtureMap(state);
+  const days={}; dates.forEach(d=>days[d]=[]);
+  const trip={}; dates.forEach(d=>trip[d]=tripOn(d,state));
+  const active=d=>d>=START;
+  const blocked=d=>!!(trip[d] && TRIP_TYPES[trip[d].type].blocks);
+  const push=(d,t)=>{ t.key=d+'|'+t.id; if(t.count===undefined) t.count=true; days[d].push(t); };
+  const sat=dates[5], satFx=fx[sat];
+  const satHasFixture=!!(satFx && !satFx.bye);
+  const satPlays=satHasFixture && !blocked(sat) && active(sat);
+
+  /* --- Gimnasio y replanificación --- */
+  const DEF={0:'A',1:'B',2:'C',3:'D'};
+  const gymPlan={}; const lost=[];
+  for(let i=0;i<4;i++){
+    const d=dates[i]; if(!active(d)) continue;
+    if(blocked(d)){ if(DEF[i]!=='D') lost.push(DEF[i]); }
+    else gymPlan[d]={k:DEF[i]};
+  }
+  const PRIO=['A','C','B'];
+  lost.sort((a,b)=>PRIO.indexOf(a)-PRIO.indexOf(b));
+  const thu=dates[3], fri=dates[4];
+  if(gymPlan[thu] && lost.length){
+    const allowed=satPlays?['B']:['A','C','B'];
+    const pick=lost.find(k=>allowed.includes(k));
+    if(pick){ gymPlan[thu]={k:pick, rec:'Recuperada del '+GYM[pick].day+'. Sustituye al gimnasio D.'}; lost.splice(lost.indexOf(pick),1); }
+  }
+  if(lost.length && active(fri) && !blocked(fri) && !satPlays && phaseOf(fri)!=='vuelta'){
+    const k=lost.shift(); gymPlan[fri]={k, rec:'Recuperada del '+GYM[k].day+': hoy no hay partido mañana.'};
+  }
+  const lostNote = lost.length ? 'Esta semana no se recupera: '+lost.map(k=>GYM[k].name).join(' y ')+'. No se amontonan sesiones.' : '';
+
+  for(const d of dates){
+    if(!gymPlan[d]) continue;
+    const g=GYM[gymPlan[d].k]; const ph=phaseOf(d);
+    const mods=[]; if(GYM_MOD[ph]) mods.push(GYM_MOD[ph]);
+    const rm=returnMod(d,state);
+    if(rm==='enfermo') mods.unshift('Vuelta tras estar enfermo: todo al 60-70 %.');
+    else if(rm) mods.unshift('Vuelta de viaje: una serie menos por ejercicio.');
+    if(gymPlan[d].rec) mods.unshift(gymPlan[d].rec);
+    push(d,{id:'gym', cat:'gym', t:'14:20', title:g.name, sub:g.what+'. Hasta las '+g.end+'.',
+      emph: rm ? (rm==='enfermo'?'Al 60-70 %':'Una serie menos') : (ph==='vuelta'?'Al 60-70 %':(ph==='descarga'?'Descarga':(ph==='afinado'?'40 % menos series':''))),
+      detail:{type:'gym', k:gymPlan[d].k, mods}});
+  }
+
+  /* --- Velocidad --- */
+  const wed=dates[2]; let speedLost=false;
+  if(active(wed)){
+    if(blocked(wed)) speedLost=true;
+    else push(wed,{id:'speed', cat:'speed', t:'18:30', title:'Velocidad', sub:'Al aire libre, 45 min. Hasta las 19:15.', detail:{type:'speed', plan:speedPlan(phaseOf(wed),wed)}});
+  }
+
+  /* --- Rugby de campo --- */
+  for(const i of [0,1,3]){
+    const d=dates[i]; if(!active(d)) continue;
+    const tr=trip[d];
+    if(tr && tr.type==='paron'){ push(d,{id:'z2', cat:'z2', t:'19:00', title:'Zona 2, 30 min', sub:'Sustituye al entreno de campo (parón del club).', detail:{type:'z2', extra:''}}); continue; }
+    if(tr) continue;
+    const extra = (i===3 && speedLost) ? 'La velocidad del miércoles se ha perdido: mete 4-6 progresiones de 30 m al 90 % al final del calentamiento.' : '';
+    push(d,{id:'rugby', cat:'rugby', t:'20:00', title:'Rugby, entreno de campo', sub:'Hasta las 21:30.', emph: extra?'Con progresiones':'', detail:{type:'rugby', extra}});
+  }
+
+  /* --- Viernes --- */
+  if(active(fri)){
+    const ph=phaseOf(fri); const tr=trip[fri];
+    if(!tr){
+      if(ph==='vuelta') push(fri,{id:'z2', cat:'z2', t:'18:30', title:'Zona 2, 30 min', sub:'Muy suave. Gimnasio, piscina o caminando en cuesta.', detail:{type:'z2', extra:''}});
+      else if(ph==='pretemporada') push(fri,{id:'z2', cat:'z2', t:'18:30', title:'Zona 2 + activación', sub:'40 min muy suave y 20 min de activación.', detail:{type:'z2', extra:'Activación después: 4 × 20 m al 85 % y 3 saltos suaves.'}});
+      else if(satPlays) push(fri,{id:'info-fri', cat:'check', t:'', title:'Descanso, víspera de partido', sub:'Carbohidrato alto, grasa baja, sal en la cena y a la cama antes de las 23:30.', count:false, detail:{type:'text', html:'<p>Menú del viernes del plan: unos 335 g de carbohidrato, fibra al mínimo y 500 ml de agua extra.</p>'}});
+      else if(!gymPlan[fri]) push(fri,{id:'info-fri', cat:'check', t:'', title:'Descanso', sub:'Mañana no hay partido.', count:false, detail:{type:'text', html:'<p>Día libre de entreno. Si te apetece, 30 min de piscina suave.</p>'}});
+    } else if(tr.type==='trabajo'){
+      push(fri,{id:'z2', cat:'z2', t:'', title:'Caminar 45 min a ritmo vivo', sub:'Sustituye a la Zona 2 durante el viaje.', detail:{type:'z2', extra:''}});
+    }
+  }
+
+  /* --- Sábado --- */
+  if(active(sat)){
+    const tr=trip[sat];
+    if(satHasFixture){
+      const f=satFx; const title='Partido, jornada '+f.j;
+      if(blocked(sat)){
+        push(sat,{id:'info-match', cat:'match', t:f.ko||'', title:title, sub:(f.casa?'Universitario contra ':f.rival+' contra ')+(f.casa?f.rival:'Universitario')+'. No juegas: '+TRIP_TYPES[tr.type].name.toLowerCase()+'.', count:false, detail:{type:'text', html:'<p>Sin partido para ti esta semana.</p>'}});
+      } else {
+        push(sat,{id:'match', cat:'match', t:f.ko||'', title:title, sub:(f.casa?'Universitario contra '+f.rival+', en casa.':f.rival+' contra Universitario, fuera.'), detail:{type:'match', ko:f.ko}});
+        push(sat,{id:'recov', cat:'match', t:f.ko?addMin(f.ko,100):'', title:'Recuperación post-partido', sub:'Comida en la primera hora, rehidratación y 9 h de sueño.', detail:{type:'recov'}});
+      }
+    } else if(!tr){
+      const bye=satFx && satFx.bye;
+      push(sat,{id:'z2', cat:'z2', t:'10:00', title:phaseOf(sat)==='vuelta'?'Zona 2 suave, 45 min':'Zona 2, 60 min o monte', sub: bye?'Jornada de descanso en la liga (jornada '+satFx.j+').':'Sin partido esta semana.', detail:{type:'z2', extra:''}});
+    }
+  }
+
+  /* --- Domingo --- */
+  const sun=dates[6];
+  if(active(sun)){
+    const tr=trip[sun]; const ph=phaseOf(sun);
+    if(!tr || tr.type==='paron') push(sun,{id:'z2', cat:'z2', t:'10:00', title:ph==='vuelta'?'Zona 2 larga, 45-60 min':'Zona 2 larga, 60-90 min', sub:'Senderismo, monte o piscina.', detail:{type:'z2', extra:'Si ayer jugaste, esto es recuperación: más suave todavía.'}});
+    else if(tr.type==='trabajo') push(sun,{id:'z2', cat:'z2', t:'', title:'Caminar 45 min a ritmo vivo', sub:'Sustituye a la Zona 2 durante el viaje.', detail:{type:'z2', extra:''}});
+  }
+
+  /* --- Tareas propias del viaje --- */
+  for(const d of dates){
+    if(!active(d)) continue; const tr=trip[d]; if(!tr) continue;
+    if(tr.type==='esqui') push(d,{id:'ski', cat:'trip', t:'', title:'Esquí', sub:'Cuenta como Zona 2 y piernas.', detail:{type:'text', html:'<p>Proteína igual que en casa y bebe más de lo que crees: en altura se deshidrata uno sin notarlo.</p>'}});
+    else if(tr.type==='vacaciones') push(d,{id:'activ', cat:'trip', t:'', title:'Caminar o monte, 45-60 min', sub:'Actividad suave diaria.', detail:{type:'text', html:'<p>Sin intensidad. Es para mantener el hábito y la Zona 2.</p>'}});
+    else if(tr.type==='trabajo' && dow(d)<=3) push(d,{id:'hotel', cat:'gym', t:'', title:'Circuito de hotel, 30 min', sub:'Sustituye al gimnasio durante el viaje.', detail:{type:'hotel'}});
+    else if(tr.type==='enfermo') push(d,{id:'info-sick', cat:'check', t:'', title:'Sin entrenamiento', sub:'Descansa. Si has tenido fiebre, espera a estar sin ella antes de volver.', count:false, detail:{type:'text', html:'<p>Al volver, el gimnasio marcará las dos primeras sesiones al 60-70 %.</p>'}});
+  }
+
+  /* --- Movilidad, pesaje, revisión --- */
+  const MOB_T=['22:15','22:15','22:00','22:15','21:30','21:30','12:00'];
+  for(const d of dates){
+    if(!active(d)) continue; const tr=trip[d]; const i=dow(d);
+    const sick=tr&&tr.type==='enfermo';
+    push(d,{id:'mob', cat:'mob', t:tr&&tr.type==='esqui'?'21:00':MOB_T[i], title: sick?'Movilidad suave, 10 min':(i===6?'Movilidad, 20 min':'Movilidad, 10 min'), sub:'Rutina diaria.', detail:{type:'mob'}});
+    const weighDays = phaseOf(d)==='vuelta' ? [0,1,2] : [1,3,4];
+    if(weighDays.includes(i) && (!tr || tr.type==='paron')) push(d,{id:'weigh', cat:'check', t:'07:00', title:'Pesaje en ayunas', sub:'Después de orinar y antes de beber.', detail:{type:'weigh', date:d}});
+    if(i===6 && (!tr || tr.type==='paron' || tr.type==='trabajo')) push(d,{id:'review', cat:'check', t:'21:00', title:'Revisión semanal, 15 min', sub:'Viajes de la semana que viene, peso medio y tareas de estudio.', detail:{type:'review'}});
+  }
+
+  /* --- Estudio con reparto automático --- */
+  const left={};
+  const set=state.settings||{};
+  for(const area of ['eng','cera','corr']){
+    const target=Math.max(0,Number(set[area])||0);
+    const sl=SLOTS.filter(s=>s.area===area).map(s=>Object.assign({},s,{date:dates[s.dow]})).filter(s=>{
+      if(!active(s.date)) return false;
+      const tr=trip[s.date];
+      if(tr && !TRIP_TYPES[tr.type].study.includes(area)) return false;
+      if(s.noMatch && satHasFixture && !blocked(sat)) return false;
+      return true;
+    });
+    if(!target) continue;
+    if(!sl.length){ left[area]=target; continue; }
+    const r=allocate(target,sl);
+    if(r.left>0) left[area]=r.left;
+    sl.forEach((s,i)=>{
+      const m=r.mins[i]; if(!m) return;
+      const ph=phaseOf(s.date);
+      const t=(s.tPre && (ph==='vuelta'||ph==='pretemporada')) ? s.tPre : s.t;
+      push(s.date,{id:area, cat:area, t, title:AREA[area].name, sub:m+' min, hasta las '+addMin(t,m)+'.', detail:{type:'study', area}});
+    });
+  }
+
+  const SORTK={match:'11:00', recov:'13:00', ski:'09:00', activ:'10:00', hotel:'07:30'};
+  const sk=t=> t.t || SORTK[t.id] || (t.count?'23:59':'00:00');
+  for(const d of dates) days[d].sort((a,b)=>{ const x=sk(a), y=sk(b); return x<y?-1:x>y?1:0; });
+  return {dates, days, trip, left, lostNote, fx};
+}
+
+/* ================= Dieta diaria ================= */
+function dietLevel(date){ return phaseOf(date)==='pretemporada' ? 'bajo' : 'alto'; }
+function dietRows(kind, level, ko){
+  const B=level==='bajo';
+  if(kind==='doble') return [
+    ['07:15','Desayuno','4 huevos, 250 g de queso batido 0 % y 1 pieza de fruta',50,25,25],
+    ['13:30','Pre-gimnasio','1 plátano maduro y café',2,28,0],
+    ['15:30','Comida','220 g de pollo, pavo, ternera magra o pescado (en crudo), '+(B?'110 g de arroz en crudo o 450 g de patata':'150 g de arroz en crudo o 600 g de patata')+', verdura cocida y 1,5 cucharadas de aceite de oliva',60,B?95:125,30],
+    ['18:00','Merienda','350 g de skyr o queso batido 0 %, 1 pieza de fruta y 25 g de nueces',40,25,18],
+    ['19:15','Pre-rugby','1 plátano o 2 tortitas de arroz con miel',3,35,0],
+    ['21:50','Cena post-rugby','200 g de pollo o pescado, '+(B?'80 g de arroz en crudo o 350 g de patata':'110 g de arroz en crudo o 450 g de patata')+' y verdura cocida',50,B?70:95,15],
+    ['22:45','Antes de dormir','300 g de queso batido 0 % con canela',32,5,3]];
+  if(kind==='miercoles') return [
+    ['07:15','Desayuno','4 huevos, medio aguacate y 250 g de queso batido 0 %',55,15,32],
+    ['13:30','Pre-gimnasio','1 plátano y café',2,28,0],
+    ['15:30','Comida','220 g de carne o pescado (en crudo), '+(B?'90 g de arroz en crudo o 400 g de patata':'120 g de arroz en crudo o 520 g de patata')+', verdura cocida y 1 cucharada de aceite de oliva',65,B?80:100,28],
+    ['17:45','Antes del entreno de la tarde','1 plátano o 2 tortitas de arroz con miel, y café',3,30,0],
+    ['19:45','Cena','220 g de pescado o carne, '+(B?'60 g de arroz en crudo o 250 g de patata':'80 g de arroz en crudo o 330 g de patata')+', verdura cocida y 1 cucharada de aceite',60,B?50:65,28],
+    ['22:30','Antes de dormir','300 g de queso batido 0 % o caseína',40,8,4]];
+  if(kind==='viernes') return [
+    ['07:15','Desayuno','60 g de avena, 250 g de queso batido 0 %, 1 plátano y 1 cucharadita de miel',50,85,12],
+    ['13:30','Comida','200 g de pollo o pavo, 100 g de arroz blanco en crudo, verdura cocida y poco aceite',55,100,15],
+    ['17:00','Merienda','200 g de skyr y 3 tortitas de arroz con mermelada',35,55,6],
+    ['21:00','Cena','220 g de pescado blanco, 400 g de patata cocida, verdura de poca fibra y 1 cucharada de aceite. Sal generosa y 500 ml de agua extra',55,75,18],
+    ['22:30','Antes de dormir','250 g de queso batido 0 % con una cucharadita de miel',32,15,3]];
+  if(kind==='domingo') return [
+    ['08:00','Desayuno','4 huevos, medio aguacate y 200 g de queso batido 0 %',50,12,32],
+    ['13:00','Comida','250 g de carne, verdura, '+(B?'200 g':'350 g')+' de patata y 1,5 cucharadas de aceite de oliva',65,B?55:85,30],
+    ['17:00','Merienda','300 g de queso batido 0 %, 25 g de nueces y 1 pieza de fruta',40,25,18],
+    ['21:00','Cena','200 g de pescado azul, verdura cocida y 1 cucharada de aceite'+(B?', sin arroz ni patata':' y 150 g de patata'),50,B?25:55,25],
+    ['22:30','Antes de dormir','300 g de queso batido 0 %',32,5,3]];
+  if(kind==='libre') return [
+    ['08:30','Desayuno','4 huevos, medio aguacate y 250 g de queso batido 0 %',55,15,32],
+    ['14:00','Comida','220 g de carne o pescado, '+(B?'90 g de arroz en crudo o 400 g de patata':'120 g de arroz en crudo o 520 g de patata')+', verdura cocida y 1 cucharada de aceite',65,B?80:100,28],
+    ['18:00','Merienda','350 g de skyr y 1 pieza de fruta',35,30,2],
+    ['21:00','Cena','220 g de pescado o carne, '+(B?'60 g de arroz en crudo o 250 g de patata':'80 g de arroz en crudo o 330 g de patata')+', verdura y 1 cucharada de aceite',60,B?50:65,28],
+    ['22:30','Antes de dormir','300 g de queso batido 0 %',27,8,3]];
+  if(kind==='partido'){
+    const k=ko||'16:00';
+    if(k<'14:00') return [
+      [addMin(k,-210),'Desayuno completo','100 g de avena, 1 plátano, miel, 3 huevos y 1 yogur',45,100,15],
+      [addMin(k,-75),'Snack','1 plátano y 1 barrita de cereales',3,40,4],
+      [addMin(k,-45),'Cafeína','Café (unos 300 mg de cafeína) con 300 ml de bebida isotónica',0,15,0],
+      [k,'Durante el partido','150-250 ml cada 15-20 min; en el descanso, 30-45 g de carbohidrato líquido',0,35,0],
+      [addMin(k,105),'Post-partido, primera hora','Batido con 40 g de proteína y 2 plátanos, o bocadillo de pavo y un zumo',40,110,5],
+      [addMin(k,210),'Comida','250 g de carne o pescado, arroz o pasta, verdura y aceite',55,80,25],
+      ['18:30','Merienda','300 g de skyr y 1 pieza de fruta',30,30,10],
+      ['21:00','Cena','Pescado o huevos, patata y verdura',50,50,20]];
+    return [
+      [addMin(k,-420),'Desayuno','80 g de avena, 1 plátano, miel, 3 huevos y 1 yogur',45,85,20],
+      [addMin(k,-210),'Comida pre-partido','110 g de arroz o pasta en crudo, 150 g de pollo o pescado blanco, poca verdura y poca grasa',45,90,8],
+      [addMin(k,-75),'Snack','1 plátano y 1 barrita de cereales',3,40,4],
+      [addMin(k,-45),'Cafeína','Café (unos 300 mg de cafeína) con 300 ml de bebida isotónica',0,15,0],
+      [k,'Durante el partido','150-250 ml cada 15-20 min; en el descanso, 30-45 g de carbohidrato líquido',0,35,0],
+      [addMin(k,105),'Post-partido, primera hora','Batido con 40 g de proteína y 2 plátanos, o bocadillo de pavo y un zumo',40,110,5],
+      [addMin(k,240),'Cena','Comida completa: 250 g de carne o pescado, arroz, pasta o patata, verdura y aceite',60,90,30],
+      ['23:00','Antes de dormir','250 g de queso batido 0 %',25,5,3]];
+  }
+  if(kind==='esqui') return [
+    ['08:00','Desayuno','4 huevos, pan con aceite, 1 pieza de fruta y 250 g de queso batido o yogur',50,70,30],
+    ['11:00','En pistas','1 plátano o 1 barrita y agua',3,35,4],
+    ['13:30','Comida en pistas','Plato con proteína y arroz o pasta, o bocadillo de pavo o atún',45,90,20],
+    ['17:30','Merienda','Yogur o skyr, fruta y frutos secos',30,35,15],
+    ['21:00','Cena','Carne o pescado con arroz, pasta o patata y verdura',55,90,25],
+    ['22:30','Antes de dormir','Queso batido o yogur proteico',25,8,3]];
+  return [];
+}
+function dietFor(date, W){
+  if(date<START) return null;
+  const tr=W.trip[date]; const i=dow(date); const lvl=dietLevel(date); const ph=phaseOf(date);
+  const sat=W.dates[5]; const satFx=W.fx[sat];
+  const satBlocked=!!(W.trip[sat] && TRIP_TYPES[W.trip[sat].type].blocks);
+  const satPlays=!!(satFx && !satFx.bye) && !satBlocked;
+  const notes=[];
+  let kind, name;
+  if(tr && tr.type==='enfermo') return {kind:'enfermo', name:'Día de recuperación', rows:[], notes:['Hoy no hay déficit ni se cuentan calorías. Come según el hambre, con proteína en cada comida (unos 200 g al día), mucho líquido, caldo, fruta, arroz o patata.']};
+  if(tr && tr.type==='esqui'){ kind='esqui'; name='Día de esquí'; notes.push('Mucho gasto: hoy se come como un día fuerte. Bebe más de lo que crees; en altura te deshidratas sin notarlo.'); }
+  else if(tr && tr.type==='vacaciones'){ kind='domingo'; name='Día de vacaciones'; notes.push('Fuera de casa: proteína en cada comida y guarnición de arroz o patata. Los horarios son orientativos.'); }
+  else if(tr && tr.type==='trabajo'){ kind='libre'; name='Día de viaje'; notes.push('En restaurante: proteína a la plancha, arroz o patata y verdura. Los lácteos de la noche, en el hotel si puedes.'); }
+  else if(i===0||i===1||i===3){ if(tr && tr.type==='paron'){ kind='miercoles'; name='Día de gimnasio sin campo'; } else { kind='doble'; name='Día doble'; } }
+  else if(i===2){ kind='miercoles'; name='Gimnasio y velocidad'; }
+  else if(i===4){ if(satPlays){ kind='viernes'; name='Víspera de partido'; notes.push('El viernes no es día bajo: rellenas el glucógeno para mañana. Fibra al mínimo, nada de legumbres ni crucíferas.'); } else { kind='domingo'; name='Descanso'; } }
+  else if(i===5){ if(satPlays){ kind='partido'; name='Día de partido'; if(!satFx.ko) notes.push('Horas calculadas para un saque a las 16:00. Pon la hora real en Liga y se ajustan solas.'); } else { kind='libre'; name='Sábado sin partido'; } }
+  else { kind='domingo'; name='Zona 2 y recuperación'; }
+  const PHN={vuelta:'Semana de vuelta: comes unas 300 kcal más que en pretemporada.', pretemporada:'Pretemporada: déficit alto, en torno a 850 kcal al día.', afinado:'Afinado: déficit reducido para llegar lleno al debut.', liga:'Liga: déficit moderado, en torno a 500 kcal al día.', finliga:'Déficit moderado, en torno a 500 kcal al día.', descarga:'Descarga: come a mantenimiento. Añade una ración extra de arroz, patata o pan en la comida y en la cena.'};
+  if(PHN[ph]) notes.unshift(PHN[ph]);
+  const rows=dietRows(kind, lvl, satFx && satFx.ko);
+  return {kind, name, rows, notes};
+}
+function dietTotals(rows){
+  let P=0,C=0,G=0; for(const r of rows){ P+=r[3]; C+=r[4]; G+=r[5]; }
+  return {P,C,G,kcal:Math.round((P*4+C*4+G*9)/10)*10};
+}
+/*LOGIC_END*/
+
+/* ================= Estado y guardado ================= */
+const KEY='ub-temporada-v1';
+function defaultState(){
+  return {v:1, done:{}, notes:{}, weights:{}, fixtures:{},
+    trips:[{id:'t-cervinia', type:'esqui', from:'2027-01-02', to:'2027-01-07', note:'Cervinia'}],
+    settings:{eng:150, cera:270, corr:180, ceraDate:''}};
+}
+function normalize(s){
+  const d=defaultState(); s=s&&typeof s==='object'?s:{};
+  return {v:1, done:s.done||{}, notes:s.notes||{}, weights:s.weights||{}, fixtures:s.fixtures||{},
+    trips:Array.isArray(s.trips)?s.trips:d.trips, settings:Object.assign({},d.settings,s.settings||{})};
+}
+let state=defaultState();
+try{ const raw=localStorage.getItem(KEY); if(raw) state=normalize(JSON.parse(raw)); }catch(e){}
+
+let docRef=null, writing=false, dirty=false, flushTimer=null, syncMode='local';
+function saveLocal(){ try{ localStorage.setItem(KEY, JSON.stringify(state)); }catch(e){} }
+function commit(){ saveLocal(); if(docRef){ dirty=true; clearTimeout(flushTimer); flushTimer=setTimeout(flush,600); } render(); }
+async function flush(){
+  if(!docRef || !dirty) return;
+  if(writing){ clearTimeout(flushTimer); flushTimer=setTimeout(flush,400); return; }
+  writing=true; dirty=false;
+  try{ await docRef.set(JSON.parse(JSON.stringify(state))); setSync('cloud'); }
+  catch(e){
+    dirty=true;
+    if(e && e.code==='unavailable'){ setTimeout(flush, 2500+Math.random()*1500); }
+    else setSync('local');
+  }
+  writing=false;
+  if(dirty){ clearTimeout(flushTimer); flushTimer=setTimeout(flush,400); }
+}
+function setSync(m){ if(syncMode!==m){ syncMode=m; const el=document.getElementById('syncflag'); if(el) el.outerHTML=syncHTML(); } }
+function syncHTML(){ return syncMode==='cloud' ? '<span class="sync cloud" id="syncflag"><i></i>Guardado en tu cuenta</span>' : '<span class="sync" id="syncflag"><i></i>Guardado en este móvil</span>'; }
+
+/* Versión independiente: los datos se guardan en este móvil. */
+
+/* ================= UI ================= */
+let TODAY=ymd(new Date());
+let ui={ tab:'semana', sel: TODAY<START ? START : (TODAY>addDays(LAST_WEEK,6)?START:TODAY), open:{}, confirmReset:false, tripErr:'', dietOpen:true };
+try{ const u=JSON.parse(localStorage.getItem(KEY+'-ui')||'{}'); if(u.tab) ui.tab=u.tab; if(u.dietOpen===false) ui.dietOpen=false; }catch(e){}
+function saveUI(){ try{ localStorage.setItem(KEY+'-ui', JSON.stringify({tab:ui.tab, dietOpen:ui.dietOpen})); }catch(e){} }
+
+const esc=s=>String(s==null?'':s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const fmtKg=n=>n.toFixed(1).replace('.',',');
+function toast(msg){ const t=document.getElementById('toast'); t.textContent=msg; t.classList.add('show'); clearTimeout(toast._t); toast._t=setTimeout(()=>t.classList.remove('show'),1800); }
+
+const ICONS={
+  check:'<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>',
+  chev:'<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg>',
+  left:'<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 6l-6 6 6 6"/></svg>',
+  right:'<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg>',
+  semana:'<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3.5" y="5" width="17" height="15" rx="2.5"/><path d="M3.5 10h17M8 3v4M16 3v4M8 14l2 2 4-4"/></svg>',
+  viajes:'<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 20l7-15 4 8 3-4 4 11z"/></svg>',
+  liga:'<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><ellipse cx="12" cy="12" rx="9" ry="5.5" transform="rotate(-35 12 12)"/><path d="M9 15l6-6M10.5 10.5l3 3"/></svg>',
+  peso:'<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 18l5-6 4 3 7-8"/><path d="M15 7h5v5"/></svg>',
+  ajustes:'<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 7h10M18 7h2M4 17h4M12 17h8"/><circle cx="16" cy="7" r="2"/><circle cx="10" cy="17" r="2"/></svg>'
+};
+const CATC={gym:'var(--c-gym)',rugby:'var(--c-rugby)',speed:'var(--c-speed)',z2:'var(--c-z2)',mob:'var(--c-mob)',match:'var(--c-match)',eng:'var(--c-eng)',cera:'var(--c-cera)',corr:'var(--c-corr)',check:'var(--c-check)',trip:'var(--c-trip)'};
+
+function nextMatch(){
+  const from = TODAY<START?START:TODAY;
+  return fixtureList(state).filter(f=>!f.bye && f.d>=from).sort((a,b)=>a.d<b.d?-1:1)[0]||null;
+}
+
+function detailHTML(t){
+  const d=t.detail||{};
+  if(d.type==='gym'){
+    const g=GYM[d.k];
+    let h=d.mods.map(m=>'<div class="note">'+esc(m)+'</div>').join('');
+    h+='<table class="clock">'+g.rows.map(r=>'<tr><td>'+r[0]+'</td><td>'+esc(r[1])+'</td><td>'+esc(r[2])+'</td></tr>').join('')+'</table>';
+    if(g.foot) h+='<p>'+esc(g.foot)+'</p>';
+    h+='<p class="hint">'+esc(WARMUP)+'</p>';
+    return h;
+  }
+  if(d.type==='speed'){
+    return '<table class="clock">'+
+      '<tr><td>18:30</td><td>Calentamiento general</td><td>Trote suave 5 min + movilidad</td></tr>'+
+      '<tr><td>18:38</td><td>Técnica</td><td>Talón alto, A-skip, wall drill, 3 progresiones de 30 m</td></tr>'+
+      '<tr><td>18:48</td><td>Serie principal</td><td>'+esc(d.plan)+'</td></tr>'+
+      '<tr><td>19:08</td><td>Vuelta a la calma</td><td>Trote 3 min + movilidad</td></tr></table>'+
+      '<p>Necesitas unos 50 m rectos y llanos. Descansos completos, andando de vuelta. Cualquier molestia en el isquio: paras.</p>'+
+      '<p class="hint">Plan B si llueve: en sala, trineo 8 × 10-15 m, assault bike 8 × 8-10 s o remo 8 × 10-12 paladas máximas, 2 min de descanso. Antes, a las 17:45: plátano o tortitas con miel.</p>';
+  }
+  if(d.type==='rugby'){
+    return (d.extra?'<div class="note">'+esc(d.extra)+'</div>':'')+'<p>19:15: plátano o dos tortitas de arroz con miel. Durante la sesión, 750 ml-1 L con electrolitos. 21:50: cena post-entreno con proteína y arroz o patata.</p>';
+  }
+  if(d.type==='z2'){
+    return (d.extra?'<div class="note">'+esc(d.extra)+'</div>':'')+'<p>Pulso entre 113 y 132 o test de conversación: podrías hablar, pero preferirías no hacerlo.</p><p class="hint">Sin bici: bici estática, remo o cinta en cuesta en el gimnasio, piscina (en el agua el pulso sale 10-15 más bajo, guíate por la sensación) o monte.</p>';
+  }
+  if(d.type==='mob') return '<p>'+esc(MOBILITY)+'</p>';
+  if(d.type==='hotel') return '<table class="clock">'+HOTEL.map(r=>'<tr><td>'+r[0]+'</td><td>'+esc(r[1])+'</td><td>'+esc(r[2])+'</td></tr>').join('')+'</table><p class="hint">Dos vueltas en formato circuito, 60 s entre ejercicios.</p>';
+  if(d.type==='match'){
+    if(!d.ko) return '<p>Añade la hora del partido en la pestaña Liga y aquí aparecerán las horas exactas de cada comida.</p><p>Ese día desayunas sí o sí. Cafeína 45 min antes, 150-250 ml de bebida cada 15-20 min y 30-45 g de carbohidrato líquido en el descanso.</p>';
+    const ko=d.ko; const early=ko<'14:00'; const rows=[];
+    if(early){ rows.push([addMin(ko,-210),'Desayuno completo','Avena, plátano, miel, huevos y yogur']); }
+    else { rows.push([addMin(ko,-420),'Desayuno','Avena, plátano, miel, 3 huevos y yogur']); rows.push([addMin(ko,-210),'Comida pre-partido','Arroz o pasta, pollo o pescado blanco, poca grasa']); }
+    rows.push([addMin(ko,-75),'Snack','Plátano o barrita']);
+    rows.push([addMin(ko,-45),'Cafeína','Unos 300 mg con bebida isotónica']);
+    rows.push([ko,'Saque inicial','150-250 ml cada 15-20 min; en el descanso, 30-45 g de carbohidrato líquido']);
+    return '<table class="clock">'+rows.map(r=>'<tr><td>'+r[0]+'</td><td>'+esc(r[1])+'</td><td>'+esc(r[2])+'</td></tr>').join('')+'</table>';
+  }
+  if(d.type==='recov') return '<p>En la primera hora: 110-130 g de carbohidrato y 40-50 g de proteína. Pésate antes y después: 1,5 L de líquido con sal por cada kilo perdido. Si hay tercer tiempo, primero el batido y la comida, y que las cervezas se queden en dos.</p>';
+  if(d.type==='review') return '<table class="clock"><tr><td>1</td><td>Añade viajes, esquí o parones de la semana que viene en Viajes.</td><td></td></tr><tr><td>2</td><td>Mira el peso medio de la semana en Peso.</td><td></td></tr><tr><td>3</td><td>Decide la tarea concreta de cada bloque de estudio.</td><td></td></tr></table>';
+  if(d.type==='study'){
+    const k=t.key; const v=state.notes[k]||'';
+    return '<p class="hint">'+esc(AREA[d.area].hint)+'</p><textarea data-note="'+esc(k)+'" placeholder="Qué vas a hacer en este bloque">'+esc(v)+'</textarea>';
+  }
+  if(d.type==='weigh'){
+    const w=state.weights[d.date];
+    return '<div class="inline-form"><input type="number" inputmode="decimal" step="0.1" min="60" max="160" placeholder="kg" value="'+(w!=null?w:'')+'" id="w-'+d.date+'"><button class="btn small" data-action="saveweigh" data-date="'+d.date+'" data-key="'+esc(t.key)+'">Guardar peso</button></div>';
+  }
+  if(d.type==='text') return d.html;
+  return '';
+}
+
+function taskHTML(t){
+  const done=!!state.done[t.key]; const open=!!ui.open[t.key];
+  const cls='task'+(done?' done':'')+(open?' open':'')+(t.count?'':' info');
+  const time=t.t?'<span class="ttime">'+t.t+'</span>':'';
+  const emph=t.emph?' <em>'+esc(t.emph)+'</em>':'';
+  return '<div class="'+cls+'" style="--c:'+CATC[t.cat]+'">'+
+    '<div class="trow">'+
+      '<button class="chk" data-action="toggle" data-key="'+esc(t.key)+'" aria-pressed="'+done+'" aria-label="Marcar '+esc(t.title)+'"><span>'+ICONS.check+'</span></button>'+
+      '<button class="tbody" data-action="expand" data-key="'+esc(t.key)+'" aria-expanded="'+open+'">'+
+        '<span class="tline">'+time+'<span class="ttitle">'+esc(t.title)+'</span></span>'+
+        '<span class="tsub">'+esc(t.sub)+emph+'</span>'+
+      '</button>'+
+      '<button class="more" data-action="expand" data-key="'+esc(t.key)+'" aria-label="Ver detalle">'+ICONS.chev+'</button>'+
+    '</div>'+
+    '<div class="tdetail">'+(open?detailHTML(t):'')+'</div>'+
+  '</div>';
+}
+
+function ring(p,color){
+  const r=17, c=2*Math.PI*r;
+  return '<svg viewBox="0 0 40 40" width="40" height="40" aria-hidden="true"><circle cx="20" cy="20" r="'+r+'" fill="none" stroke="var(--line)" stroke-width="3"/>'+
+    (p>0?'<circle cx="20" cy="20" r="'+r+'" fill="none" stroke="'+color+'" stroke-width="3" stroke-linecap="round" stroke-dasharray="'+(c*p).toFixed(1)+' '+c.toFixed(1)+'"/>':'')+'</svg>';
+}
+
+
+function dietHTML(date, W){
+  const D=dietFor(date, W); if(!D) return '';
+  const T=dietTotals(D.rows);
+  const eatable=D.rows.map((r,i)=>i);
+  const doneN=eatable.filter(i=>state.done[date+'|meal'+i]).length;
+  const fmt=n=>n.toLocaleString('es-ES');
+  let h='<section class="diet'+(ui.dietOpen?' open':'')+'">'+
+    '<button class="diet-head" data-action="diettoggle" aria-expanded="'+ui.dietOpen+'">'+
+      '<span class="dh"><h4>Comida de hoy</h4><span class="ds">'+esc(D.name)+(D.rows.length?', '+doneN+' de '+D.rows.length+' tomas':'')+'</span></span>'+
+      (D.rows.length?'<span class="kc">'+fmt(T.kcal)+' <small>kcal</small></span>':'')+ICONS.chev+
+    '</button><div class="diet-body">';
+  if(D.rows.length) h+='<div class="macros"><div><b>'+T.P+' g</b><span>Proteína</span></div><div><b>'+T.C+' g</b><span>Carbohidrato</span></div><div><b>'+T.G+' g</b><span>Grasa</span></div></div>';
+  D.notes.forEach(n=>{ h+='<div class="dnote">'+esc(n)+'</div>'; });
+  D.rows.forEach((r,i)=>{
+    const k=date+'|meal'+i; const dn=!!state.done[k];
+    h+='<div class="meal'+(dn?' done':'')+'"><button class="mchk" data-action="meal" data-key="'+esc(k)+'" aria-pressed="'+dn+'" aria-label="Marcar '+esc(r[1])+'"><span>'+ICONS.check+'</span></button>'+
+      '<span class="mt">'+r[0]+'</span><div class="mb"><div class="mn">'+esc(r[1])+'</div><div class="mf">'+esc(r[2])+'</div>'+
+      ((r[3]||r[4]||r[5])?'<div class="mm">'+r[3]+' g proteína, '+r[4]+' g carbohidrato, '+r[5]+' g grasa</div>':'')+'</div></div>';
+  });
+  h+='<p class="hint" style="margin:10px 0 0">Si algo te hincha: arroz blanco, patata y verdura cocida antes que legumbres, crucíferas, pan integral o dátiles. Pesos de carne y pescado en crudo.</p>';
+  h+='</div></section>';
+  return h;
+}
+
+function viewSemana(){
+  const mon=mondayOf(ui.sel);
+  const W=buildWeek(mon,state);
+  const countable=W.dates.flatMap(d=>W.days[d].filter(t=>t.count));
+  const doneN=countable.filter(t=>state.done[t.key]).length;
+  const pct=countable.length?doneN/countable.length:0;
+  const ph=phaseOf(ui.sel);
+  const nm=nextMatch();
+  let board='<header class="board"><div class="board-top"><span class="phase">'+esc(PHASE_NAME[ph])+'</span>'+syncHTML()+'</div>';
+  if(nm){
+    const days=diffDays(TODAY,nm.d);
+    const teams = nm.casa ? 'Universitario <span class="vs">vs</span> '+esc(nm.rival) : esc(nm.rival)+' <span class="vs">vs</span> Universitario';
+    const when = days===0?'Es hoy.':(days===1?'Es mañana.':'Faltan '+days+' días.');
+    board+='<div class="next"><div class="next-l">Próximo partido, jornada '+nm.j+'</div><div class="next-teams">'+teams+'</div>'+
+      '<div class="next-meta">'+esc(longDate(nm.d))+(nm.ko?' a las '+nm.ko:'')+', '+(nm.casa?'en casa':'fuera')+'. <b>'+when+'</b></div></div>';
+  } else board+='<div class="next"><div class="next-teams">Temporada terminada</div></div>';
+  if(state.settings.ceraDate && state.settings.ceraDate>=TODAY){ board+='<div class="cera-line">Examen CERA: '+esc(longDate(state.settings.ceraDate))+', faltan '+diffDays(TODAY,state.settings.ceraDate)+' días.</div>'; }
+  board+='<div class="prog"><div class="bar"><i style="width:'+(pct*100).toFixed(1)+'%"></i></div><div class="prog-l"><span><b>'+doneN+'</b> de '+countable.length+' tareas esta semana</span><span>'+Math.round(pct*100)+' %</span></div></div></header>';
+
+  const prevDis = mon<=mondayOf(START); const nextDis = mon>=LAST_WEEK;
+  let h=board+'<div class="weeknav"><button class="iconbtn" data-action="week" data-dir="-1" aria-label="Semana anterior"'+(prevDis?' disabled':'')+'>'+ICONS.left+'</button>'+
+    '<h2>Semana del '+shortDate(mon)+' al '+shortDate(addDays(mon,6))+'</h2>'+
+    '<button class="iconbtn" data-action="week" data-dir="1" aria-label="Semana siguiente"'+(nextDis?' disabled':'')+'>'+ICONS.right+'</button></div>';
+
+  h+='<div class="strip" role="tablist">';
+  W.dates.forEach((d,i)=>{
+    const ts=W.days[d].filter(t=>t.count); const dn=ts.filter(t=>state.done[t.key]).length;
+    const p=ts.length?dn/ts.length:0;
+    const hasMatch=W.days[d].some(t=>t.id==='match'); const hasTrip=!!W.trip[d];
+    h+='<button class="day'+(d===ui.sel?' sel':'')+(d===TODAY?' today':'')+'" role="tab" aria-selected="'+(d===ui.sel)+'" data-action="sel" data-date="'+d+'" aria-label="'+esc(longDate(d))+'">'+
+      '<span class="dl">'+DOW_S[i]+'</span><span class="ring">'+ring(p, p===1?'var(--c-gym)':'var(--brand-2)')+'<span>'+parse(d).getDate()+'</span></span>'+
+      '<span class="mk">'+(hasMatch?'<b style="background:var(--c-match)"></b>':'')+(hasTrip?'<b style="background:var(--c-trip)"></b>':'')+'</span></button>';
+  });
+  h+='</div>';
+
+  const tasks=W.days[ui.sel]||[];
+  const dc=tasks.filter(t=>t.count); const dd=dc.filter(t=>state.done[t.key]).length;
+  h+='<div class="dayhead"><h3>'+esc(longDate(ui.sel))+'</h3><span class="cnt">'+(dc.length?dd+' de '+dc.length:'')+'</span></div>';
+  const tr=W.trip[ui.sel];
+  if(tr) h+='<div class="banner"><b>'+esc(TRIP_TYPES[tr.type].name)+(tr.note?', '+esc(tr.note):'')+'.</b> '+esc(TRIP_TYPES[tr.type].desc)+'</div>';
+  if(ui.sel<START) h+='<div class="banner">El plan empieza el lunes 28 de septiembre.</div>';
+  if(W.lostNote && (tr || dow(ui.sel)===6)) h+='<div class="banner warn">'+esc(W.lostNote)+'</div>';
+  const lf=Object.keys(W.left);
+  if(dow(ui.sel)===6 && lf.length) h+='<div class="banner warn">Esta semana no caben '+lf.map(a=>W.left[a]+' min de '+AREA[a].name.toLowerCase()).join(', ')+'. No se arrastran a la siguiente.</div>';
+  h+='<div class="list">'+(tasks.length?tasks.map(taskHTML).join(''):'<div class="empty">Nada programado este día.</div>')+'</div>';
+  h+=dietHTML(ui.sel, W);
+
+  const groups=[['Entreno',['gym','rugby','speed','z2','match','trip'],'var(--c-gym)'],['Estudio',['eng','cera','corr'],'var(--c-corr)'],['Hábitos',['mob','check'],'var(--c-mob)']];
+  h+='<section class="summary"><h4>Cómo va la semana</h4>';
+  for(const g of groups){
+    const ts=countable.filter(t=>g[1].includes(t.cat)); if(!ts.length) continue;
+    const dn=ts.filter(t=>state.done[t.key]).length;
+    h+='<div class="srow" style="--c:'+g[2]+'"><span>'+g[0]+'</span><span class="sbar"><i style="width:'+(dn/ts.length*100).toFixed(1)+'%"></i></span><span class="sn">'+dn+'/'+ts.length+'</span></div>';
+  }
+  const stu=countable.filter(t=>['eng','cera','corr'].includes(t.cat));
+  const mins=stu.reduce((a,t)=>a+(parseInt(t.sub)||0),0), minsDone=stu.filter(t=>state.done[t.key]).reduce((a,t)=>a+(parseInt(t.sub)||0),0);
+  if(mins) h+='<p class="hint" style="margin:10px 0 0">Estudio: '+(minsDone/60).toFixed(1).replace('.',',')+' h de '+(mins/60).toFixed(1).replace('.',',')+' h hechas.</p>';
+  h+='</section>';
+  return h;
+}
+
+function pageHead(title,sub){ return '<header class="pagehead"><h1>'+title+'</h1>'+(sub?'<p>'+sub+'</p>':'')+'</header>'; }
+
+function viewViajes(){
+  let h=pageHead('Viajes y parones','Añade cualquier periodo que te saque de la rutina. La agenda se replanifica sola.');
+  h+='<section class="section"><h3>Añadir periodo</h3>'+
+    '<div class="field"><label for="tt">Tipo</label><select id="tt">'+Object.keys(TRIP_TYPES).map(k=>'<option value="'+k+'">'+TRIP_TYPES[k].name+'</option>').join('')+'</select></div>'+
+    '<p id="tdesc">'+esc(TRIP_TYPES.trabajo.desc)+'</p>'+
+    '<div class="row2"><div class="field"><label for="tf">Desde</label><input type="date" id="tf" min="'+START+'"></div><div class="field"><label for="tto">Hasta</label><input type="date" id="tto" min="'+START+'"></div></div>'+
+    '<div class="field"><label for="tn">Nota (opcional)</label><input type="text" id="tn" maxlength="60" placeholder="Por ejemplo: Madrid, Formigal"></div>'+
+    (ui.tripErr?'<div class="err">'+esc(ui.tripErr)+'</div>':'')+
+    '<button class="btn full" data-action="addtrip">Añadir periodo</button></section>';
+  const trips=[...state.trips].sort((a,b)=>a.from<b.from?-1:1);
+  h+='<section class="section"><h3>Tus periodos</h3>';
+  if(!trips.length) h+='<p>No hay ninguno. Añade el próximo viaje o salida a esquiar arriba.</p>';
+  for(const t of trips){
+    const n=diffDays(t.from,t.to)+1;
+    h+='<div class="tripitem"><span class="dot"></span><div class="tb"><div class="tt">'+esc(TRIP_TYPES[t.type].name)+(t.note?', '+esc(t.note):'')+'</div>'+
+      '<div class="td">Del '+esc(shortDate(t.from))+' al '+esc(shortDate(t.to))+', '+n+(n===1?' día':' días')+(t.to<TODAY?'. Ya pasó.':'')+'</div></div>'+
+      '<button class="btn danger small" data-action="deltrip" data-id="'+esc(t.id)+'">Quitar</button></div>';
+  }
+  h+='</section><section class="section"><h3>Cómo se replanifica</h3>'+
+    '<p>Si pierdes el gimnasio A, B o C, se recupera el jueves en lugar del D. Si esa semana no hay partido, también el viernes. En semana de partido, el jueves solo acepta el B: nada de piernas pesadas a 48 horas.</p>'+
+    '<p>Si pierdes la velocidad del miércoles, el rugby del jueves lleva progresiones en el calentamiento.</p>'+
+    '<p>Los bloques de estudio que caen en el viaje se reparten entre los días que quedan, sin pasar de lo que cabe en cada hueco. Lo que no cabe, se avisa y no se arrastra.</p></section>';
+  return h;
+}
+
+function viewLiga(){
+  const fl=fixtureList(state); const nm=nextMatch();
+  let h=pageHead('Liga Vasca, 2ª','Universitario Bilbao. Todos los partidos en sábado. Añade la hora cuando la sepas y las comidas del día se ajustan solas.');
+  h+='<section class="section">';
+  for(const f of fl){
+    const past=f.d<TODAY; const isNext=nm && nm.j===f.j;
+    h+='<div class="fix'+(f.bye?' bye':'')+(past?' past':'')+(isNext?' next':'')+'"><div class="jn">'+f.j+'</div><div>';
+    if(f.bye){ h+='<div class="fr">Jornada de descanso</div><div class="fm">'+esc(longDate(f.d))+'. Buen fin de semana para monte o esquí.</div>'; }
+    else {
+      h+='<div class="fr">'+(f.casa?'Universitario vs '+esc(f.rival):esc(f.rival)+' vs Universitario')+'</div>'+
+        '<div class="fm">'+(f.casa?'En casa':'Fuera')+(f.dudosa?'. El calendario pone 3 de marzo, que es miércoles: he puesto el sábado 13. Corrígelo si no es así.':'')+'</div>'+
+        '<div class="row2"><input type="date" aria-label="Fecha jornada '+f.j+'" data-fix="'+f.j+'" data-field="d" value="'+f.d+'"><input type="time" aria-label="Hora jornada '+f.j+'" data-fix="'+f.j+'" data-field="ko" value="'+esc(f.ko)+'"></div>';
+    }
+    h+='</div></div>';
+  }
+  h+='</section>';
+  return h;
+}
+
+function viewPeso(){
+  let h=pageHead('Peso','Lo que cuenta es la media semanal, no el dato de un día.');
+  h+='<section class="section"><h3>Anotar peso</h3><div class="row2"><div class="field"><label for="pd">Día</label><input type="date" id="pd" value="'+TODAY+'"></div><div class="field"><label for="pk">Kilos</label><input type="number" id="pk" inputmode="decimal" step="0.1" min="60" max="160" placeholder="108,4"></div></div><button class="btn full" data-action="addweight">Guardar peso</button></section>';
+  const entries=Object.keys(state.weights).sort().map(d=>[d,state.weights[d]]);
+  if(!entries.length){ return h+'<section class="section"><p>Todavía no hay pesos. Pésate lunes, martes y miércoles de la primera semana: la media será tu punto de partida real.</p></section>'; }
+  const byWeek={}; for(const [d,w] of entries){ const m=mondayOf(d); (byWeek[m]=byWeek[m]||[]).push(w); }
+  const weeks=Object.keys(byWeek).sort().map(m=>({m, avg:byWeek[m].reduce((a,b)=>a+b,0)/byWeek[m].length, n:byWeek[m].length}));
+  // gráfico
+  const W=320,H=140,P=16; const ws=entries.map(e=>e[1]); const mn=Math.min(...ws)-0.8, mx=Math.max(...ws)+0.8;
+  const t0=parse(entries[0][0]).getTime(), t1=Math.max(parse(entries[entries.length-1][0]).getTime(), t0+86400000*7);
+  const X=d=>P+(parse(d).getTime()-t0)/(t1-t0)*(W-2*P); const Y=w=>P+(mx-w)/(mx-mn)*(H-2*P);
+  const wline=weeks.map(w=>[X(addDays(w.m,3)),Y(w.avg)]);
+  h+='<section class="section"><h3>Tendencia</h3><svg class="chart" viewBox="0 0 '+W+' '+H+'" role="img" aria-label="Evolución del peso">'+
+    '<line x1="'+P+'" y1="'+(H-P)+'" x2="'+(W-P)+'" y2="'+(H-P)+'" stroke="var(--line)"/>'+
+    entries.map(e=>'<circle cx="'+X(e[0]).toFixed(1)+'" cy="'+Y(e[1]).toFixed(1)+'" r="3" fill="var(--muted)" opacity=".55"/>').join('')+
+    (wline.length>1?'<polyline fill="none" stroke="var(--c-gym)" stroke-width="2.5" stroke-linejoin="round" points="'+wline.map(p=>p[0].toFixed(1)+','+p[1].toFixed(1)).join(' ')+'"/>':'')+
+    wline.map(p=>'<circle cx="'+p[0].toFixed(1)+'" cy="'+p[1].toFixed(1)+'" r="4" fill="var(--c-gym)"/>').join('')+
+    '<text x="'+P+'" y="12" font-size="11" fill="var(--muted)">'+fmtKg(mx-0.8)+' kg</text><text x="'+P+'" y="'+(H-3)+'" font-size="11" fill="var(--muted)">'+fmtKg(mn+0.8)+' kg</text>'+
+    '</svg><p class="hint">Puntos grises: cada pesaje. Línea verde: media de cada semana.</p>';
+  // consejo
+  if(weeks.length>=2){
+    const a=weeks[weeks.length-1], b=weeks[weeks.length-2]; const dlt=a.avg-b.avg; const pre=a.m<'2026-10-12';
+    const lo=pre?0.7:0.4, hi=pre?1.0:0.8;
+    let msg;
+    if(-dlt>hi) msg='Has bajado '+fmtKg(-dlt)+' kg de media. Es más rápido de lo previsto: si se repite la semana que viene, suma 200-250 kcal al día.';
+    else if(-dlt<0.3) msg='Has bajado '+fmtKg(Math.max(0,-dlt))+' kg de media. Si la semana que viene vuelve a quedarse por debajo de 0,3 kg, resta 150-200 kcal a los días bajos (miércoles y domingo).';
+    else msg='Has bajado '+fmtKg(-dlt)+' kg de media. Dentro del ritmo del plan ('+String(lo).replace('.',',')+'-'+String(hi).replace('.',',')+' kg). No toques nada.';
+    h+='<div class="note" style="margin-top:8px;padding:10px 12px;border-radius:10px;background:var(--surface-2);font-size:14.5px">'+esc(msg)+'</div>';
+  }
+  h+='</section><section class="section"><h3>Medias semanales</h3><div class="wlist">';
+  weeks.slice().reverse().forEach((w,i,arr)=>{
+    const prev=arr[i+1]; const d=prev? w.avg-prev.avg : null;
+    h+='<div><span>Semana del '+esc(shortDate(w.m))+' <span class="hint">('+w.n+(w.n===1?' pesaje':' pesajes')+')</span></span><span>'+fmtKg(w.avg)+' kg'+(d!=null?' <span class="'+(d<=0?'good':'bad')+'">'+(d<=0?'−':'+')+fmtKg(Math.abs(d))+'</span>':'')+'</span></div>';
+  });
+  h+='</div></section><section class="section"><h3>Pesajes</h3><div class="wlist">';
+  entries.slice().reverse().slice(0,20).forEach(e=>{ h+='<div><span>'+esc(longDate(e[0]))+'</span><span>'+fmtKg(e[1])+' kg <button class="btn ghost small" data-action="delweight" data-date="'+e[0]+'" aria-label="Borrar pesaje">Borrar</button></span></div>'; });
+  h+='</div></section>';
+  return h;
+}
+
+function viewAjustes(){
+  const s=state.settings; const tot=(Number(s.eng)+Number(s.cera)+Number(s.corr))/60;
+  let h=pageHead('Ajustes','Horas de estudio por semana. La app las reparte en tus huecos libres, siempre antes de las 22:00.');
+  h+='<section class="section"><h3>Estudio semanal</h3>';
+  for(const a of ['eng','cera','corr']){
+    h+='<div class="field"><label for="s-'+a+'">'+AREA[a].name+', horas por semana</label><input type="number" id="s-'+a+'" data-setting="'+a+'" step="0.5" min="0" max="15" inputmode="decimal" value="'+String(Number(s[a])/60)+'"></div>';
+  }
+  h+='<p>Total: '+tot.toFixed(1).replace('.',',')+' h a la semana.</p>';
+  if(tot>15) h+='<div class="banner warn" style="margin:8px 0 0">Con 10 sesiones de entreno a la semana y en déficit, más de 15 h de estudio te va a quitar sueño. Y el sueño es lo que hace que pierdas grasa y no músculo.</div>';
+  h+='<p class="hint">Huecos: lunes y jueves a las 18:15 (inglés), martes a las 18:15 (correduría), miércoles a las 20:30 y viernes (CERA), sábados sin partido a las 11:30 y domingo desde las 15:30. El domingo es el gran día de estudio.</p></section>';
+  h+='<section class="section"><h3>Examen CERA</h3><div class="field"><label for="cd">Fecha del examen</label><input type="date" id="cd" data-setting="ceraDate" value="'+esc(s.ceraDate||'')+'"></div><p class="hint">Aparece la cuenta atrás en la pantalla de la semana.</p></section>';
+  h+='<section class="section"><h3>Copia de seguridad</h3><p>Tus marcas, pesos y viajes se guardan en este móvil. Descarga una copia de vez en cuando, y siempre antes de cambiar de teléfono.</p>'+
+    '<button class="btn full" data-action="export">Descargar copia</button>'+
+    '<label class="btn ghost full" style="display:grid;place-items:center;margin-top:8px">Recuperar una copia<input type="file" accept=".json,application/json" id="importfile" style="display:none"></label></section>';
+  h+='<section class="section"><h3>Empezar de cero</h3><p>Borra todas las tareas marcadas y las notas. Los viajes, pesos y ajustes se quedan.</p>'+
+    '<button class="btn danger full" data-action="reset">'+(ui.confirmReset?'Pulsa otra vez para borrar las marcas':'Borrar marcas y notas')+'</button></section>';
+  return h;
+}
+
+function render(){
+  const v=document.getElementById('view');
+  const map={semana:viewSemana, viajes:viewViajes, liga:viewLiga, peso:viewPeso, ajustes:viewAjustes};
+  v.innerHTML=(map[ui.tab]||viewSemana)();
+  const tabs=[['semana','Semana'],['viajes','Viajes'],['liga','Liga'],['peso','Peso'],['ajustes','Ajustes']];
+  document.getElementById('tabsin').innerHTML=tabs.map(t=>'<button class="tab'+(ui.tab===t[0]?' on':'')+'" data-action="tab" data-tab="'+t[0]+'" aria-current="'+(ui.tab===t[0]?'page':'false')+'">'+ICONS[t[0]]+'<span>'+t[1]+'</span></button>').join('');
+}
+
+/* ================= Eventos ================= */
+document.addEventListener('click',e=>{
+  const b=e.target.closest('[data-action]'); if(!b) return;
+  const a=b.dataset.action;
+  if(a==='tab'){ ui.tab=b.dataset.tab; ui.confirmReset=false; ui.tripErr=''; saveUI(); render(); window.scrollTo(0,0); return; }
+  if(a==='toggle'){ const k=b.dataset.key; if(state.done[k]) delete state.done[k]; else state.done[k]=1; commit(); return; }
+  if(a==='expand'){ const k=b.dataset.key; ui.open[k]=!ui.open[k]; render(); return; }
+  if(a==='sel'){ ui.sel=b.dataset.date; render(); return; }
+  if(a==='diettoggle'){ ui.dietOpen=!ui.dietOpen; saveUI(); render(); return; }
+  if(a==='meal'){ const k=b.dataset.key; if(state.done[k]) delete state.done[k]; else state.done[k]=1; commit(); return; }
+  if(a==='week'){ const dir=Number(b.dataset.dir); let n=addDays(mondayOf(ui.sel),7*dir); if(n<mondayOf(START)) n=mondayOf(START); if(n>LAST_WEEK) n=LAST_WEEK; ui.sel = (mondayOf(TODAY)===n && TODAY>=START)?TODAY:(n<START?START:n); render(); return; }
+  if(a==='saveweigh'){
+    const d=b.dataset.date; const el=document.getElementById('w-'+d); const v=parseFloat(String(el.value).replace(',','.'));
+    if(!(v>=60 && v<=160)){ toast('Escribe un peso entre 60 y 160 kg'); return; }
+    state.weights[d]=Math.round(v*10)/10; state.done[b.dataset.key]=1; commit(); toast('Peso guardado'); return;
+  }
+  if(a==='addweight'){
+    const d=document.getElementById('pd').value; const v=parseFloat(String(document.getElementById('pk').value).replace(',','.'));
+    if(!d){ toast('Elige el día'); return; }
+    if(!(v>=60 && v<=160)){ toast('Escribe un peso entre 60 y 160 kg'); return; }
+    state.weights[d]=Math.round(v*10)/10; commit(); toast('Peso guardado'); return;
+  }
+  if(a==='delweight'){ delete state.weights[b.dataset.date]; commit(); return; }
+  if(a==='addtrip'){
+    const type=document.getElementById('tt').value, from=document.getElementById('tf').value, to=document.getElementById('tto').value, note=document.getElementById('tn').value.trim();
+    if(!from||!to){ ui.tripErr='Elige las dos fechas.'; render(); return; }
+    if(to<from){ ui.tripErr='La fecha de vuelta es anterior a la de salida.'; render(); return; }
+    ui.tripErr='';
+    state.trips.push({id:'t'+Date.now().toString(36), type, from, to, note:note.slice(0,60)});
+    commit(); toast('Periodo añadido. Agenda replanificada.'); return;
+  }
+  if(a==='deltrip'){ state.trips=state.trips.filter(t=>t.id!==b.dataset.id); commit(); toast('Periodo quitado'); return; }
+  if(a==='export'){
+    const blob=new Blob([JSON.stringify(state,null,1)],{type:'application/json'});
+    const url=URL.createObjectURL(blob); const link=document.createElement('a');
+    link.href=url; link.download='temporada-copia-'+TODAY+'.json'; document.body.appendChild(link); link.click();
+    setTimeout(()=>{ URL.revokeObjectURL(url); link.remove(); },1000); toast('Copia descargada'); return;
+  }
+  if(a==='reset'){
+    if(!ui.confirmReset){ ui.confirmReset=true; render(); return; }
+    state.done={}; state.notes={}; ui.confirmReset=false; commit(); toast('Marcas y notas borradas'); return;
+  }
+});
+document.addEventListener('change',e=>{
+  const t=e.target;
+  if(t.id==='importfile' && t.files && t.files[0]){
+    const r=new FileReader();
+    r.onload=()=>{ try{ const data=JSON.parse(r.result); if(!data||typeof data!=='object'||!('done' in data)) throw 0; state=normalize(data); commit(); toast('Copia recuperada'); }catch(err){ toast('Ese archivo no es una copia de la agenda'); } };
+    r.readAsText(t.files[0]); return;
+  }
+  if(t.id==='tt'){ const p=document.getElementById('tdesc'); if(p) p.textContent=TRIP_TYPES[t.value].desc; return; }
+  if(t.dataset.fix){
+    const j='J'+t.dataset.fix; const cur=Object.assign({}, state.fixtures[j]||{});
+    if(t.dataset.field==='d'){ if(!t.value){ render(); return; } cur.d=t.value; } else cur.ko=t.value;
+    state.fixtures[j]=cur; commit(); toast('Jornada actualizada'); return;
+  }
+  if(t.dataset.setting){
+    const k=t.dataset.setting;
+    if(k==='ceraDate') state.settings.ceraDate=t.value;
+    else { let h=parseFloat(String(t.value).replace(',','.')); if(!(h>=0)) h=0; if(h>15) h=15; state.settings[k]=Math.round(h*60); }
+    commit(); return;
+  }
+});
+let noteTimer=null;
+document.addEventListener('input',e=>{
+  const t=e.target; if(!t.dataset || !t.dataset.note) return;
+  const k=t.dataset.note; const v=t.value.slice(0,500);
+  if(v) state.notes[k]=v; else delete state.notes[k];
+  saveLocal();
+  if(docRef){ dirty=true; clearTimeout(noteTimer); noteTimer=setTimeout(()=>{ clearTimeout(flushTimer); flush(); },1200); }
+});
+
+render();
+document.addEventListener('visibilitychange',()=>{
+  if(document.visibilityState!=='visible') return;
+  const now=ymd(new Date());
+  if(now!==TODAY){ const wasToday=ui.sel===TODAY; TODAY=now; if(wasToday && now>=START) ui.sel=now; render(); }
+});
+if('serviceWorker' in navigator){ window.addEventListener('load',()=>{ navigator.serviceWorker.register('sw.js').catch(()=>{}); }); }
+</script>
+</body>
+</html>
