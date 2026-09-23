@@ -98,6 +98,8 @@ button{cursor:pointer;}
 .dayhead{padding:6px 16px 8px;display:flex;align-items:baseline;justify-content:space-between;gap:8px;}
 .dayhead h3{margin:0;font-family:var(--display);font-size:24px;font-weight:700;}
 .dayhead .cnt{font-size:14px;color:var(--muted);white-space:nowrap;}
+.check{display:flex;align-items:center;gap:10px;font-size:15px;margin:2px 0 6px;}
+.check input{width:20px;height:20px;accent-color:var(--c-cera);}
 .banner{margin:0 12px 10px;padding:10px 12px;border-radius:12px;background:var(--surface-2);border-left:4px solid var(--c-trip);font-size:14.5px;}
 .banner b{font-weight:600;}
 .banner.warn{background:var(--warn-bg);color:var(--warn-ink);border-left-color:var(--c-cera);}
@@ -215,8 +217,8 @@ input[type=text],input[type=date],input[type=time],input[type=number],select,tex
 
 /* ---------- Pestañas ---------- */
 #tabs{position:fixed;left:0;right:0;bottom:0;background:var(--surface);border-top:1px solid var(--line);padding-bottom:env(safe-area-inset-bottom,0px);z-index:10;}
-#tabs .in{max-width:560px;margin:0 auto;display:grid;grid-template-columns:repeat(5,1fr);}
-.tab{border:0;background:transparent;min-height:62px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;font-size:12.5px;color:var(--muted);}
+#tabs .in{max-width:560px;margin:0 auto;display:grid;grid-template-columns:repeat(6,1fr);}
+.tab{border:0;background:transparent;min-height:62px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;font-size:11.5px;color:var(--muted);}
 .tab.on{color:var(--ink);font-weight:600;}
 .tab.on svg{color:var(--brand-2);}
 :root[data-theme="dark"] .tab.on svg{color:var(--c-gym);}
@@ -237,7 +239,8 @@ input[type=text],input[type=date],input[type=time],input[type=number],select,tex
 <script>
 /*LOGIC_START*/
 const START = '2026-09-28';
-const LAST_WEEK = '2027-06-28';
+const TRAIN_LAST = '2027-07-04';   /* último día con entreno: fin de la temporada */
+const LAST_WEEK = '2028-10-09';    /* última semana del plan CERA */
 const SEASON_END = '2027-03-21';
 const DELOAD_WEEKS = ['2026-11-09','2026-12-21','2027-02-08'];
 const DOW_L = ['Lunes','Martes','Miércoles','Jueves','Viernes','Sábado','Domingo'];
@@ -272,6 +275,30 @@ const FIXTURES = [
   {j:13,d:'2027-03-13', rival:'Durango Mutriku', casa:false, dudosa:true},
   {j:14,d:'2027-03-20', rival:'Zornotza Urgozo', casa:true}
 ];
+
+
+/* ================= Plan CERA ================= */
+const CERA_PH = {F0:{name:"Arranque", min:300}, A:{name:"Módulo A: métodos cuantitativos", min:480}, D:{name:"Módulo D: capital económico", min:480}, C:{name:"Módulo C: procesos ERM", min:480}, S:{name:"Sprint de mayo", min:780}, B:{name:"Módulo B: modelización y mitigación", min:480}};
+const CERA_WEEKS = {"2026-09-28": {"p": "F0", "t": "Cerrar la semana 1: agregación VaR/TVaR y ensayo VaR→TVaR", "h": "Entregar los dos ejercicios pendientes para corrección con rúbrica", "m": 300, "k": "study", "n": 1}, "2026-10-05": {"p": "F0", "t": "Concepto de ERM, motores, valor y vocabulario", "h": "Glosario EN–ES v1 con 40 términos (own funds → fondos propios, ORSA → EIRS…)", "m": 300, "k": "study", "n": 2}, "2026-10-12": {"p": "F0", "t": "Definiciones de riesgo y taxonomía", "h": "Taxonomía de riesgos de Surne en una página", "m": 300, "k": "study", "n": 3}, "2026-10-19": {"p": "F0", "t": "Repaso de probabilidad: distribuciones, momentos, colas", "h": "Notebook Python: ajuste de 3 distribuciones a datos de siniestros", "m": 300, "k": "study", "n": 4}, "2026-10-26": {"p": "F0", "t": "Principios regulatorios: Solvencia II, LOSSEAR/ROSSEAR, ICP del IAIS", "h": "Esquema de los tres pilares en castellano con referencias normativas", "m": 300, "k": "study", "n": 5}, "2026-11-02": {"p": "F0", "t": "Qué miran supervisor, agencias de rating, analistas y auditores", "h": "Ensayo 30′: cómo evalúa una agencia de rating el ERM de una mutua", "m": 300, "k": "study", "n": 6}, "2026-11-09": {"p": "F0", "t": "Descargar y catalogar exámenes pasados de la DAV (A, B, C, D)", "h": "Matriz pregunta → objetivo de aprendizaje", "m": 300, "k": "admin", "n": 7}, "2026-11-16": {"p": "F0", "t": "Estadística para cuantificar riesgo: MLE, bondad de ajuste, bootstrap", "h": "Ejercicio numérico MLE + intervalos bootstrap", "m": 300, "k": "study", "n": 8}, "2026-11-23": {"p": "F0", "t": "Correlación lineal frente a rango (Spearman, Kendall) y sus trampas", "h": "Notebook con tres ejemplos de correlación engañosa", "m": 300, "k": "study", "n": 9}, "2026-11-30": {"p": "F0", "t": "Simulación Monte Carlo y convergencia", "h": "Simulador de pérdida agregada frecuencia–severidad", "m": 300, "k": "study", "n": 10}, "2026-12-07": {"p": "F0", "t": "Repaso de la fase con recuperación activa", "h": "Simulacro 90′: una cuestión cuantitativa + un ensayo", "m": 300, "k": "mock", "n": 11}, "2026-12-14": {"p": "F0", "t": "Corrección del simulacro y mapa de lagunas", "h": "Lista priorizada de puntos débiles", "m": 300, "k": "study", "n": 12}, "2026-12-21": {"p": "F0", "t": "Navidad", "h": "Descanso", "m": 0, "k": "buffer", "n": 13}, "2026-12-28": {"p": "F0", "t": "Navidad", "h": "Descanso; opcional: repasar el glosario", "m": 0, "k": "buffer", "n": 14}, "2027-01-04": {"p": "A", "t": "VaR, TVaR y Expected Shortfall", "h": "Fichas de fórmulas (general y normal)", "m": 480, "k": "study", "n": 15}, "2027-01-11": {"p": "A", "t": "Coherencia, medidas espectrales y de distorsión", "h": "Demostrar subaditividad de TVaR + ensayo 30′", "m": 480, "k": "study", "n": 16}, "2027-01-18": {"p": "A", "t": "Estimación y backtesting de VaR/TVaR (histórica, paramétrica, MC)", "h": "Notebook comparando los tres métodos", "m": 480, "k": "study", "n": 17}, "2027-01-25": {"p": "A", "t": "Distribuciones de cola pesada", "h": "Cuantiles 99,5 % lognormal frente a Pareto", "m": 480, "k": "study", "n": 18}, "2027-02-01": {"p": "A", "t": "EVT I: máximos por bloques y GEV", "h": "Ajuste GEV en Python", "m": 480, "k": "study", "n": 19}, "2027-02-08": {"p": "A", "t": "EVT II: POT, GPD y elección de umbral", "h": "VaR/TVaR 99,5 % con GPD y mean excess plot", "m": 480, "k": "study", "n": 20}, "2027-02-15": {"p": "A", "t": "Repaso de medidas y colas", "h": "Simulacro quincenal 90′", "m": 480, "k": "mock", "n": 21}, "2027-02-22": {"p": "A", "t": "Cópulas I: Sklar, gaussiana y t", "h": "Simular ambas y comparar dependencia en colas", "m": 480, "k": "study", "n": 22}, "2027-03-01": {"p": "A", "t": "Cópulas II: arquimedianas (Clayton, Gumbel, Frank)", "h": "Tabla de propiedades + ensayo «qué cópula elegir y por qué»", "m": 480, "k": "study", "n": 23}, "2027-03-08": {"p": "A", "t": "Cópulas III: calibración y selección", "h": "Calibrar una cópula a dos líneas de negocio", "m": 480, "k": "study", "n": 24}, "2027-03-15": {"p": "A", "t": "Agregación: varianza-covarianza y diversificación", "h": "Agregación con matriz SII frente a cópula", "m": 480, "k": "study", "n": 25}, "2027-03-22": {"p": "A", "t": "Semana Santa", "h": "Semana ligera: solo recuperación activa", "m": 120, "k": "buffer", "n": 26}, "2027-03-29": {"p": "A", "t": "Agregación por simulación (Iman–Conover)", "h": "Simulacro quincenal 90′", "m": 480, "k": "mock", "n": 27}, "2027-04-05": {"p": "A", "t": "Asignación de capital: proporcional, marginal, Euler, Shapley", "h": "Euler con tres líneas de negocio", "m": 480, "k": "study", "n": 28}, "2027-04-12": {"p": "A", "t": "Escenarios, stress testing y reverse stress test", "h": "Tres escenarios para Surne + ensayo", "m": 480, "k": "study", "n": 29}, "2027-04-19": {"p": "A", "t": "Modelos estocásticos y generadores de escenarios económicos", "h": "ESG sencillo (Vasicek + GBM) en Python", "m": 480, "k": "study", "n": 30}, "2027-04-26": {"p": "A", "t": "Primer contacto con un examen real", "h": "Examen pasado A, primera mitad cronometrada", "m": 480, "k": "mock", "n": 31}, "2027-05-03": {"p": "A", "t": "Riesgo de modelo y de parámetro", "h": "Ensayo: incertidumbre de parámetros en el capital", "m": 480, "k": "study", "n": 32}, "2027-05-10": {"p": "A", "t": "Liquidez, operacional y medioambiental", "h": "Cuantificar riesgo operacional con escenarios", "m": 480, "k": "study", "n": 33}, "2027-05-17": {"p": "A", "t": "Cuantificación de riesgos no financieros", "h": "Modelo frecuencia–severidad para operacional", "m": 480, "k": "study", "n": 34}, "2027-05-24": {"p": "A", "t": "Selección y validación de modelos", "h": "Checklist propio de validación", "m": 480, "k": "study", "n": 35}, "2027-05-31": {"p": "A", "t": "Examen pasado A completo", "h": "180′ + corrección con rúbrica", "m": 480, "k": "mock", "n": 36}, "2027-06-07": {"p": "A", "t": "Atacar lagunas del Módulo A", "h": "Rehacer los ejercicios fallados", "m": 480, "k": "study", "n": 37}, "2027-06-14": {"p": "A", "t": "Síntesis del Módulo A", "h": "Resumen de A en 10 páginas", "m": 480, "k": "study", "n": 38}, "2027-06-21": {"p": "A", "t": "Segundo examen pasado A", "h": "180′; objetivo ≥ 60 %", "m": 480, "k": "mock", "n": 39}, "2027-06-28": {"p": "D", "t": "Medidas económicas de valor: EVA, embedded value, MCEV", "h": "Tabla: medidas contables, regulatorias y económicas", "m": 480, "k": "study", "n": 40}, "2027-07-05": {"p": "D", "t": "Capital económico frente a regulatorio y de rating", "h": "Ensayo 30′", "m": 480, "k": "study", "n": 41}, "2027-07-12": {"p": "D", "t": "Medidas de riesgo aplicadas a valor y capital", "h": "Capital económico con TVaR", "m": 480, "k": "study", "n": 42}, "2027-07-19": {"p": "D", "t": "RAROC, RORAC y coste de capital", "h": "RAROC por línea de negocio", "m": 480, "k": "study", "n": 43}, "2027-07-26": {"p": "D", "t": "Atribuir coste de riesgo, capital y coberturas", "h": "Ensayo: capital marginal frente a asignado", "m": 480, "k": "study", "n": 44}, "2027-08-02": {"p": "D", "t": "Agosto", "h": "Descanso", "m": 0, "k": "buffer", "n": 45}, "2027-08-09": {"p": "D", "t": "Agosto", "h": "Descanso", "m": 0, "k": "buffer", "n": 46}, "2027-08-16": {"p": "D", "t": "Agosto ligero", "h": "Recuperación activa del Módulo A", "m": 120, "k": "buffer", "n": 47}, "2027-08-23": {"p": "D", "t": "Agosto ligero", "h": "Recuperación activa del Módulo A", "m": 120, "k": "buffer", "n": 48}, "2027-08-30": {"p": "D", "t": "Optimización riesgo-rentabilidad", "h": "Optimización con restricción de capital", "m": 480, "k": "study", "n": 49}, "2027-09-06": {"p": "D", "t": "ALM y política de inversión", "h": "Ensayo: ALM para una mutua de no vida", "m": 480, "k": "study", "n": 50}, "2027-09-13": {"p": "D", "t": "Tarificación ajustada al riesgo y decisiones de negocio", "h": "Ejercicio de pricing con coste de capital", "m": 480, "k": "study", "n": 51}, "2027-09-20": {"p": "D", "t": "Modelo de capital I: especificación", "h": "Documento de especificación del modelo", "m": 480, "k": "study", "n": 52}, "2027-09-27": {"p": "D", "t": "Modelo de capital II: implementación", "h": "Modelo funcional en Python", "m": 480, "k": "study", "n": 53}, "2027-10-04": {"p": "D", "t": "Planificación de capital, dividendos y reaseguro", "h": "Ensayo con plantilla de 7 pasos", "m": 480, "k": "study", "n": 54}, "2027-10-11": {"p": "D", "t": "Examen pasado D completo", "h": "180′ + corrección con rúbrica", "m": 480, "k": "mock", "n": 55}, "2027-10-18": {"p": "C", "t": "Marcos ERM: COSO, ISO 31000, IAIS", "h": "Recomendar un marco para dos entidades distintas", "m": 480, "k": "study", "n": 56}, "2027-10-25": {"p": "C", "t": "Cultura de riesgos", "h": "Ensayo: diagnóstico de cultura", "m": 480, "k": "study", "n": 57}, "2027-11-01": {"p": "C", "t": "Gobierno, cumplimiento, riesgo legal y auditoría", "h": "Mapa de tres líneas de defensa en Surne", "m": 480, "k": "study", "n": 58}, "2027-11-08": {"p": "C", "t": "Apetito, perfil, tolerancias y límites", "h": "Redactar un RAF de una página", "m": 480, "k": "study", "n": 59}, "2027-11-15": {"p": "C", "t": "Función de gestión de riesgos: estructura y roles", "h": "Ensayo 30′", "m": 480, "k": "study", "n": 60}, "2027-11-22": {"p": "C", "t": "Riesgos emergentes y exposición global", "h": "Registro de riesgos emergentes (clima, ciber)", "m": 480, "k": "study", "n": 61}, "2027-11-29": {"p": "C", "t": "Contagio y stakeholders", "h": "Ensayo 30′", "m": 480, "k": "study", "n": 62}, "2027-12-06": {"p": "C", "t": "ERM y estrategia", "h": "Resolver un caso de decisión estratégica", "m": 480, "k": "study", "n": 63}, "2027-12-13": {"p": "C", "t": "Ciclo de control de riesgos y ORSA/EIRS", "h": "Esquema del ORSA en castellano", "m": 480, "k": "study", "n": 64}, "2027-12-20": {"p": "C", "t": "Navidad", "h": "Descanso", "m": 0, "k": "buffer", "n": 65}, "2027-12-27": {"p": "C", "t": "Navidad", "h": "Descanso", "m": 0, "k": "buffer", "n": 66}, "2028-01-03": {"p": "C", "t": "Casos de estudio y procesos que crean valor", "h": "Resolver un caso completo", "m": 480, "k": "study", "n": 67}, "2028-01-10": {"p": "C", "t": "Riesgos no financieros y controles", "h": "Ensayo con plantilla de 7 pasos", "m": 480, "k": "study", "n": 68}, "2028-01-17": {"p": "C", "t": "Examen pasado C completo", "h": "180′ + corrección con rúbrica", "m": 480, "k": "mock", "n": 69}, "2028-01-24": {"p": "S", "t": "Inscribir seminarios A, C y D (EAA); repaso de medidas y colas", "h": "Inscripciones hechas", "m": 780, "k": "admin", "n": 70}, "2028-01-31": {"p": "S", "t": "Repaso: cópulas y agregación", "h": "Rehacer dos ejercicios de cada", "m": 780, "k": "study", "n": 71}, "2028-02-07": {"p": "S", "t": "Examen pasado A", "h": "180′ cronometrados", "m": 780, "k": "mock", "n": 72}, "2028-02-14": {"p": "S", "t": "Seminario A (fecha aproximada)", "h": "Notas del seminario integradas en fichas", "m": 780, "k": "admin", "n": 73}, "2028-02-21": {"p": "S", "t": "Seminario C (fecha aproximada)", "h": "Notas integradas", "m": 780, "k": "admin", "n": 74}, "2028-02-28": {"p": "S", "t": "Seminario D (fecha aproximada)", "h": "Notas integradas", "m": 780, "k": "admin", "n": 75}, "2028-03-06": {"p": "S", "t": "Consolidar material de los seminarios", "h": "Fichas actualizadas", "m": 780, "k": "study", "n": 76}, "2028-03-13": {"p": "S", "t": "Examen pasado C", "h": "180′", "m": 780, "k": "mock", "n": 77}, "2028-03-20": {"p": "S", "t": "Examen pasado D", "h": "180′", "m": 780, "k": "mock", "n": 78}, "2028-03-27": {"p": "S", "t": "Lagunas del Módulo A", "h": "Rehacer lo fallado", "m": 780, "k": "study", "n": 79}, "2028-04-03": {"p": "S", "t": "Examen pasado A (otro año)", "h": "180′", "m": 780, "k": "mock", "n": 80}, "2028-04-10": {"p": "S", "t": "Semana Santa", "h": "Semana ligera: glosario y fichas", "m": 240, "k": "buffer", "n": 81}, "2028-04-17": {"p": "S", "t": "Simulacro general", "h": "Tres exámenes en dos días, como el real", "m": 780, "k": "mock", "n": 82}, "2028-04-24": {"p": "S", "t": "Inscripción en los exámenes vía IAE (plazo ≈ finales de abril)", "h": "Inscripción hecha; corregir el simulacro", "m": 780, "k": "admin", "n": 83}, "2028-05-01": {"p": "S", "t": "Lagunas C y D: pasos 6 y 7 del ensayo", "h": "Cuatro ensayos cortos", "m": 780, "k": "study", "n": 84}, "2028-05-08": {"p": "S", "t": "Últimos exámenes pasados C y D", "h": "180′ + 180′", "m": 780, "k": "mock", "n": 85}, "2028-05-15": {"p": "S", "t": "Repaso final sin material nuevo", "h": "Solo fichas y glosario", "m": 780, "k": "study", "n": 86}, "2028-05-22": {"p": "S", "t": "Exámenes A, C y D (≈ vie 26 y sáb 27 de mayo)", "h": "Examen", "m": 0, "k": "exam", "n": 87}, "2028-05-29": {"p": "S", "t": "Descanso", "h": "Descanso", "m": 0, "k": "buffer", "n": 88}, "2028-06-05": {"p": "S", "t": "Descanso", "h": "Descanso", "m": 0, "k": "buffer", "n": 89}, "2028-06-12": {"p": "B", "t": "Balance económico y valoración de mercado", "h": "Balance económico de Surne en una página", "m": 480, "k": "study", "n": 90}, "2028-06-19": {"p": "B", "t": "Valoración estocástica de vida, LSMC, carteras replicantes", "h": "Ejemplo LSMC sencillo en Python", "m": 480, "k": "study", "n": 91}, "2028-06-26": {"p": "B", "t": "Fórmula estándar frente a modelo interno parcial y completo", "h": "Ensayo: cuándo compensa un modelo interno", "m": 480, "k": "study", "n": 92}, "2028-07-03": {"p": "B", "t": "Riesgo de mercado; inscribir seminario B (EAA)", "h": "Inscripción hecha + ejercicio de mercado", "m": 480, "k": "admin", "n": 93}, "2028-07-10": {"p": "B", "t": "Riesgo de crédito y contraparte", "h": "Ejercicio de pérdida esperada e inesperada", "m": 480, "k": "study", "n": 94}, "2028-07-17": {"p": "B", "t": "Suscripción vida y no vida", "h": "Modelizar prima y reserva", "m": 480, "k": "study", "n": 95}, "2028-07-24": {"p": "B", "t": "Riesgo operacional", "h": "Ensayo con plantilla de 7 pasos", "m": 480, "k": "study", "n": 96}, "2028-07-31": {"p": "B", "t": "Agosto", "h": "Descanso", "m": 0, "k": "buffer", "n": 97}, "2028-08-07": {"p": "B", "t": "Agosto", "h": "Descanso", "m": 0, "k": "buffer", "n": 98}, "2028-08-14": {"p": "B", "t": "Agosto ligero", "h": "Ver las pregrabaciones obligatorias del seminario", "m": 180, "k": "buffer", "n": 99}, "2028-08-21": {"p": "B", "t": "Agosto ligero", "h": "Terminar las pregrabaciones", "m": 180, "k": "buffer", "n": 100}, "2028-08-28": {"p": "B", "t": "Respuestas al riesgo y controles", "h": "Tabla coste/beneficio por respuesta", "m": 600, "k": "study", "n": 101}, "2028-09-04": {"p": "B", "t": "Seminario B (fecha aproximada)", "h": "Notas integradas", "m": 600, "k": "admin", "n": 102}, "2028-09-11": {"p": "B", "t": "Derivados y coberturas; inscripción en examen B (plazo ≈ mitad de septiembre)", "h": "Inscripción hecha + ejercicio de cobertura", "m": 600, "k": "admin", "n": 103}, "2028-09-18": {"p": "B", "t": "Elegir mitigación: reaseguro, ART, riesgo moral y de base", "h": "Examen pasado B 180′", "m": 600, "k": "mock", "n": 104}, "2028-09-25": {"p": "B", "t": "Calibración, validación y limitaciones", "h": "Segundo examen pasado B", "m": 600, "k": "mock", "n": 105}, "2028-10-02": {"p": "B", "t": "Repaso final", "h": "Solo fichas", "m": 600, "k": "study", "n": 106}, "2028-10-09": {"p": "B", "t": "Examen B (≈ sáb 14 de octubre)", "h": "Examen", "m": 0, "k": "exam", "n": 107}};
+const CERA_MILES = [{"id": "m01", "d": "2026-11-02", "t": "Pedir al IAE el certificado de miembro", "s": "Hace falta para la primera inscripción a examen. Pídelo con dos meses de margen.", "k": "admin", "w": 7}, {"id": "m02", "d": "2026-12-07", "t": "Escribir al Comité CERA del IAE", "s": "Plazo seminario-examen, coste real del examen, sede y mantenimiento de la credencial.", "k": "admin", "w": 7}, {"id": "m03", "d": "2027-01-11", "t": "Revisar tarifas anticipadas de los seminarios 2027", "s": "En actuarial-academy.com. El early bird ahorra 125-150 € por módulo.", "k": "insc", "w": 7}, {"id": "m04", "d": "2027-02-15", "t": "Seminario Módulo A, del 15 al 18 (online)", "s": "Fecha confirmada por la EAA. Cuatro días.", "k": "sem", "w": 14}, {"id": "m05", "d": "2027-02-25", "t": "Seminario Módulo C, 25 y 26 (virtual)", "s": "Fecha confirmada por la EAA.", "k": "sem", "w": 14}, {"id": "m06", "d": "2027-03-01", "t": "Seminario Módulo D, 1 y 2", "s": "Fecha confirmada por la EAA.", "k": "sem", "w": 14}, {"id": "m07", "d": "2027-06-07", "t": "Comprobar fechas del seminario B de septiembre", "s": "Aún sin publicar. Mira la agenda de ceraglobal.org.", "k": "insc", "w": 7}, {"id": "m08", "d": "2027-09-06", "t": "Ruta alternativa: inscribirte al examen B de octubre", "s": "Solo si decides adelantar el Módulo B. Cierre: jueves cuatro semanas antes.", "k": "insc", "w": 14}, {"id": "m09", "d": "2027-11-01", "t": "Comprobar si están publicadas las fechas de 2028", "s": "Seminarios y exámenes. Fuente: EAA y DAV.", "k": "insc", "w": 7}, {"id": "m10", "d": "2028-01-10", "t": "Inscribirte a los seminarios A, C y D", "s": "En tarifa anticipada. Adjunta la factura a nombre de Surne si la financian.", "k": "insc", "w": 14}, {"id": "m11", "d": "2028-03-06", "t": "Inscribirte a los exámenes de mayo", "s": "En cuanto abra el plazo, sin esperar al cierre.", "k": "insc", "w": 7}, {"id": "m12", "d": "2028-04-20", "t": "Aviso: se acerca el cierre de inscripción de mayo", "s": "Cierre estimado el jueves cuatro semanas antes del examen. Hay que adjuntar el justificante del seminario.", "k": "insc", "w": 7}, {"id": "m13", "d": "2028-05-26", "t": "Exámenes A, C y D (fecha estimada)", "s": "Dos días seguidos, 180 minutos cada examen. Confirmar la fecha con la DAV y el IAE.", "k": "exam", "w": 30}, {"id": "m14", "d": "2028-07-03", "t": "Inscribirte al seminario B", "s": "Tarifa anticipada. Cierra uno o dos meses antes del curso.", "k": "insc", "w": 14}, {"id": "m15", "d": "2028-08-07", "t": "Ver las pregrabaciones obligatorias del Módulo B", "s": "Se liberan después del plazo de cancelación.", "k": "sem", "w": 7}, {"id": "m16", "d": "2028-08-28", "t": "Inscribirte al examen B de octubre", "s": "Cierre estimado a mediados de septiembre.", "k": "insc", "w": 7}, {"id": "m17", "d": "2028-09-04", "t": "Seminario Módulo B (fecha estimada)", "s": "Cinco días. Estimado: primera quincena de septiembre.", "k": "sem", "w": 21}, {"id": "m18", "d": "2028-10-14", "t": "Examen Módulo B (fecha estimada)", "s": "Estimado: sábado de mediados de octubre.", "k": "exam", "w": 30}, {"id": "m19", "d": "2028-11-06", "t": "Solicitar la credencial al IAE", "s": "Cuatro módulos aprobados y cinco años de experiencia acreditados.", "k": "admin", "w": 7}];
+const CERA_KIND = {study:'', mock:'Simulacro', admin:'Gestión', buffer:'Semana ligera', exam:'Examen'};
+const MILE_K = {insc:'Inscripción', sem:'Seminario', exam:'Examen', admin:'Gestión'};
+
+function ceraWeek(date){ return CERA_WEEKS[mondayOf(date)] || null; }
+function ceraPhase(date){ const w=ceraWeek(date); return w ? CERA_PH[w.p] : null; }
+function ceraMinutes(mon, state){
+  const s=state.settings||{};
+  if(s.ceraAuto===false) return Math.max(0, Number(s.cera)||0);
+  const w=CERA_WEEKS[mon]; return w ? w.m : 0;
+}
+function nextMile(){
+  const from = TODAY<START?START:TODAY;
+  return CERA_MILES.filter(m=>m.d>=from).sort((a,b)=>a.d<b.d?-1:1)[0]||null;
+}
+function milesOn(date){ return CERA_MILES.filter(m=>m.d===date); }
+function mileWarn(date){
+  return CERA_MILES.filter(m=>m.k==='insc' && m.d>date && diffDays(date,m.d)<=m.w).sort((a,b)=>a.d<b.d?-1:1)[0]||null;
+}
 
 function fixtureList(state){
   return FIXTURES.map(f=>{ const ov=(state.fixtures||{})['J'+f.j]||{}; return Object.assign({},f,{d:ov.d||f.d, ko:ov.ko||''}); });
@@ -319,9 +346,11 @@ const SLOTS = [
   {area:'eng', dow:0, t:'18:15', w:1,   cap:70},
   {area:'eng', dow:3, t:'18:15', w:1,   cap:70},
   {area:'eng', dow:6, t:'19:45', w:0.8, cap:60},
-  {area:'cera',dow:2, t:'20:30', w:1.2, cap:90},
-  {area:'cera',dow:4, t:'18:30', w:1,   cap:120, tPre:'20:00'},
-  {area:'cera',dow:6, t:'17:45', w:1.2, cap:105},
+  {area:'cera',dow:0, t:'19:00', w:1,   cap:0,   capPost:120},
+  {area:'cera',dow:2, t:'20:30', tPost:'19:00', w:1.2, cap:90,  capPost:120},
+  {area:'cera',dow:4, t:'18:30', tPre:'20:00', w:0.8, cap:90,  capPost:120},
+  {area:'cera',dow:5, t:'09:30', w:1.4, cap:150, capPost:180, noMatch:true},
+  {area:'cera',dow:6, t:'17:45', tPost:'10:00', w:1.4, cap:150, capPost:240},
   {area:'corr',dow:1, t:'18:15', w:1,   cap:70},
   {area:'corr',dow:5, t:'11:30', w:1.5, cap:150, noMatch:true},
   {area:'corr',dow:6, t:'15:30', w:1.2, cap:120}
@@ -439,17 +468,18 @@ function buildWeek(mon,state){
   const days={}; dates.forEach(d=>days[d]=[]);
   const trip={}; dates.forEach(d=>trip[d]=tripOn(d,state));
   const active=d=>d>=START;
+  const train=d=>d>=START && d<=TRAIN_LAST;
   const blocked=d=>!!(trip[d] && TRIP_TYPES[trip[d].type].blocks);
   const push=(d,t)=>{ t.key=d+'|'+t.id; if(t.count===undefined) t.count=true; days[d].push(t); };
   const sat=dates[5], satFx=fx[sat];
   const satHasFixture=!!(satFx && !satFx.bye);
-  const satPlays=satHasFixture && !blocked(sat) && active(sat);
+  const satPlays=satHasFixture && !blocked(sat) && train(sat);
 
   /* --- Gimnasio y replanificación --- */
   const DEF={0:'A',1:'B',2:'C',3:'D'};
   const gymPlan={}; const lost=[];
   for(let i=0;i<4;i++){
-    const d=dates[i]; if(!active(d)) continue;
+    const d=dates[i]; if(!train(d)) continue;
     if(blocked(d)){ if(DEF[i]!=='D') lost.push(DEF[i]); }
     else gymPlan[d]={k:DEF[i]};
   }
@@ -461,7 +491,7 @@ function buildWeek(mon,state){
     const pick=lost.find(k=>allowed.includes(k));
     if(pick){ gymPlan[thu]={k:pick, rec:'Recuperada del '+GYM[pick].day+'. Sustituye al gimnasio D.'}; lost.splice(lost.indexOf(pick),1); }
   }
-  if(lost.length && active(fri) && !blocked(fri) && !satPlays && phaseOf(fri)!=='vuelta'){
+  if(lost.length && train(fri) && !blocked(fri) && !satPlays && phaseOf(fri)!=='vuelta'){
     const k=lost.shift(); gymPlan[fri]={k, rec:'Recuperada del '+GYM[k].day+': hoy no hay partido mañana.'};
   }
   const lostNote = lost.length ? 'Esta semana no se recupera: '+lost.map(k=>GYM[k].name).join(' y ')+'. No se amontonan sesiones.' : '';
@@ -481,14 +511,14 @@ function buildWeek(mon,state){
 
   /* --- Velocidad --- */
   const wed=dates[2]; let speedLost=false;
-  if(active(wed)){
+  if(train(wed)){
     if(blocked(wed)) speedLost=true;
     else push(wed,{id:'speed', cat:'speed', t:'18:30', title:'Velocidad', sub:'Al aire libre, 45 min. Hasta las 19:15.', detail:{type:'speed', plan:speedPlan(phaseOf(wed),wed)}});
   }
 
   /* --- Rugby de campo --- */
   for(const i of [0,1,3]){
-    const d=dates[i]; if(!active(d)) continue;
+    const d=dates[i]; if(!train(d)) continue;
     const tr=trip[d];
     if(tr && tr.type==='paron'){ push(d,{id:'z2', cat:'z2', t:'19:00', title:'Zona 2, 30 min', sub:'Sustituye al entreno de campo (parón del club).', detail:{type:'z2', extra:''}}); continue; }
     if(tr) continue;
@@ -497,7 +527,7 @@ function buildWeek(mon,state){
   }
 
   /* --- Viernes --- */
-  if(active(fri)){
+  if(train(fri)){
     const ph=phaseOf(fri); const tr=trip[fri];
     if(!tr){
       if(ph==='vuelta') push(fri,{id:'z2', cat:'z2', t:'18:30', title:'Zona 2, 30 min', sub:'Muy suave. Gimnasio, piscina o caminando en cuesta.', detail:{type:'z2', extra:''}});
@@ -510,7 +540,7 @@ function buildWeek(mon,state){
   }
 
   /* --- Sábado --- */
-  if(active(sat)){
+  if(train(sat)){
     const tr=trip[sat];
     if(satHasFixture){
       const f=satFx; const title='Partido, jornada '+f.j;
@@ -528,7 +558,7 @@ function buildWeek(mon,state){
 
   /* --- Domingo --- */
   const sun=dates[6];
-  if(active(sun)){
+  if(train(sun)){
     const tr=trip[sun]; const ph=phaseOf(sun);
     if(!tr || tr.type==='paron') push(sun,{id:'z2', cat:'z2', t:'10:00', title:ph==='vuelta'?'Zona 2 larga, 45-60 min':'Zona 2 larga, 60-90 min', sub:'Senderismo, monte o piscina.', detail:{type:'z2', extra:'Si ayer jugaste, esto es recuperación: más suave todavía.'}});
     else if(tr.type==='trabajo') push(sun,{id:'z2', cat:'z2', t:'', title:'Caminar 45 min a ritmo vivo', sub:'Sustituye a la Zona 2 durante el viaje.', detail:{type:'z2', extra:''}});
@@ -548,9 +578,9 @@ function buildWeek(mon,state){
   for(const d of dates){
     if(!active(d)) continue; const tr=trip[d]; const i=dow(d);
     const sick=tr&&tr.type==='enfermo';
-    push(d,{id:'mob', cat:'mob', t:tr&&tr.type==='esqui'?'21:00':MOB_T[i], title: sick?'Movilidad suave, 10 min':(i===6?'Movilidad, 20 min':'Movilidad, 10 min'), sub:'Rutina diaria.', detail:{type:'mob'}});
+    if(train(d) || dow(d)===6) push(d,{id:'mob', cat:'mob', t:tr&&tr.type==='esqui'?'21:00':MOB_T[i], title: sick?'Movilidad suave, 10 min':(i===6?'Movilidad, 20 min':'Movilidad, 10 min'), sub:'Rutina diaria.', detail:{type:'mob'}});
     const weighDays = phaseOf(d)==='vuelta' ? [0,1,2] : [1,3,4];
-    if(weighDays.includes(i) && (!tr || tr.type==='paron')) push(d,{id:'weigh', cat:'check', t:'07:00', title:'Pesaje en ayunas', sub:'Después de orinar y antes de beber.', detail:{type:'weigh', date:d}});
+    if(train(d) && weighDays.includes(i) && (!tr || tr.type==='paron')) push(d,{id:'weigh', cat:'check', t:'07:00', title:'Pesaje en ayunas', sub:'Después de orinar y antes de beber.', detail:{type:'weigh', date:d}});
     if(i===6 && (!tr || tr.type==='paron' || tr.type==='trabajo')) push(d,{id:'review', cat:'check', t:'21:00', title:'Revisión semanal, 15 min', sub:'Viajes de la semana que viene, peso medio y tareas de estudio.', detail:{type:'review'}});
   }
 
@@ -558,9 +588,12 @@ function buildWeek(mon,state){
   const left={};
   const set=state.settings||{};
   for(const area of ['eng','cera','corr']){
-    const target=Math.max(0,Number(set[area])||0);
-    const sl=SLOTS.filter(s=>s.area===area).map(s=>Object.assign({},s,{date:dates[s.dow]})).filter(s=>{
-      if(!active(s.date)) return false;
+    const target = area==='cera' ? ceraMinutes(mon,state) : Math.max(0,Number(set[area])||0);
+    const sl=SLOTS.filter(s=>s.area===area).map(s=>{
+      const date=dates[s.dow];
+      return Object.assign({},s,{date, cap:(date>TRAIN_LAST && s.capPost!=null) ? s.capPost : s.cap});
+    }).filter(s=>{
+      if(!active(s.date) || !s.cap) return false;
       const tr=trip[s.date];
       if(tr && !TRIP_TYPES[tr.type].study.includes(area)) return false;
       if(s.noMatch && satHasFixture && !blocked(sat)) return false;
@@ -573,9 +606,22 @@ function buildWeek(mon,state){
     sl.forEach((s,i)=>{
       const m=r.mins[i]; if(!m) return;
       const ph=phaseOf(s.date);
-      const t=(s.tPre && (ph==='vuelta'||ph==='pretemporada')) ? s.tPre : s.t;
-      push(s.date,{id:area, cat:area, t, title:AREA[area].name, sub:m+' min, hasta las '+addMin(t,m)+'.', detail:{type:'study', area}});
+      let t=s.t;
+      if(s.tPost && s.date>TRAIN_LAST) t=s.tPost;
+      else if(s.tPre && (ph==='vuelta'||ph==='pretemporada')) t=s.tPre;
+      const cw = area==='cera' ? ceraWeek(s.date) : null;
+      push(s.date,{id:area, cat:area, t, title:cw?('CERA · '+CERA_PH[cw.p].name.split(':')[0]):AREA[area].name,
+        sub:m+' min, hasta las '+addMin(t,m)+'.'+(cw?' '+cw.t+'.':''), detail:{type:'study', area, mon:mondayOf(s.date)}});
     });
+  }
+
+  /* --- Hitos del plan CERA --- */
+  for(const d of dates){
+    if(d<START) continue;
+    for(const m of milesOn(d)){
+      push(d,{id:m.id, cat:'cera', t:'', title:m.t, sub:MILE_K[m.k]+'. '+m.s, count:m.k!=='exam',
+        detail:{type:'text', html:'<p>'+esc(m.s)+'</p>'+(m.k==='insc'?'<p class="hint">El plazo de inscripción a examen cierra el jueves cuatro semanas antes, y hay que adjuntar el justificante del seminario.</p>':'')}});
+    }
   }
 
   const SORTK={match:'11:00', recov:'13:00', ski:'09:00', activ:'10:00', hotel:'07:30'};
@@ -652,7 +698,7 @@ function dietRows(kind, level, ko){
   return [];
 }
 function dietFor(date, W){
-  if(date<START) return null;
+  if(date<START || date>TRAIN_LAST) return null;
   const tr=W.trip[date]; const i=dow(date); const lvl=dietLevel(date); const ph=phaseOf(date);
   const sat=W.dates[5]; const satFx=W.fx[sat];
   const satBlocked=!!(W.trip[sat] && TRIP_TYPES[W.trip[sat].type].blocks);
@@ -684,7 +730,7 @@ const KEY='ub-temporada-v1';
 function defaultState(){
   return {v:1, done:{}, notes:{}, weights:{}, fixtures:{},
     trips:[{id:'t-cervinia', type:'esqui', from:'2027-01-02', to:'2027-01-07', note:'Cervinia'}],
-    settings:{eng:150, cera:270, corr:180, ceraDate:''}};
+    settings:{eng:150, cera:270, corr:180, ceraDate:'', ceraAuto:true}};
 }
 function normalize(s){
   const d=defaultState(); s=s&&typeof s==='object'?s:{};
@@ -734,6 +780,7 @@ const ICONS={
   viajes:'<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 20l7-15 4 8 3-4 4 11z"/></svg>',
   liga:'<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><ellipse cx="12" cy="12" rx="9" ry="5.5" transform="rotate(-35 12 12)"/><path d="M9 15l6-6M10.5 10.5l3 3"/></svg>',
   peso:'<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 18l5-6 4 3 7-8"/><path d="M15 7h5v5"/></svg>',
+  cera:'<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6.5 3.5h8l4 4v13h-12z"/><path d="M14 3.5v4h4"/><path d="M9 12h6M9 16h4"/></svg>',
   ajustes:'<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 7h10M18 7h2M4 17h4M12 17h8"/><circle cx="16" cy="7" r="2"/><circle cx="10" cy="17" r="2"/></svg>'
 };
 const CATC={gym:'var(--c-gym)',rugby:'var(--c-rugby)',speed:'var(--c-speed)',z2:'var(--c-z2)',mob:'var(--c-mob)',match:'var(--c-match)',eng:'var(--c-eng)',cera:'var(--c-cera)',corr:'var(--c-corr)',check:'var(--c-check)',trip:'var(--c-trip)'};
@@ -784,7 +831,14 @@ function detailHTML(t){
   if(d.type==='review') return '<table class="clock"><tr><td>1</td><td>Añade viajes, esquí o parones de la semana que viene en Viajes.</td><td></td></tr><tr><td>2</td><td>Mira el peso medio de la semana en Peso.</td><td></td></tr><tr><td>3</td><td>Decide la tarea concreta de cada bloque de estudio.</td><td></td></tr></table>';
   if(d.type==='study'){
     const k=t.key; const v=state.notes[k]||'';
-    return '<p class="hint">'+esc(AREA[d.area].hint)+'</p><textarea data-note="'+esc(k)+'" placeholder="Qué vas a hacer en este bloque">'+esc(v)+'</textarea>';
+    let pre='';
+    if(d.area==='cera' && d.mon && CERA_WEEKS[d.mon]){
+      const w=CERA_WEEKS[d.mon];
+      pre='<table class="clock"><tr><td>Tema</td><td>'+esc(w.t)+'</td><td>'+esc(CERA_KIND[w.k]||'')+'</td></tr>'+
+          '<tr><td>Hito</td><td colspan="2">'+esc(w.h)+'</td></tr>'+
+          '<tr><td>Fase</td><td colspan="2">'+esc(CERA_PH[w.p].name)+', '+(w.m/60).toFixed(1).replace('.',',')+' h esta semana</td></tr></table>';
+    }
+    return pre+'<p class="hint">'+esc(AREA[d.area].hint)+'</p><textarea data-note="'+esc(k)+'" placeholder="Qué vas a hacer en este bloque">'+esc(v)+'</textarea>';
   }
   if(d.type==='weigh'){
     const w=state.weights[d.date];
@@ -851,15 +905,27 @@ function viewSemana(){
   const pct=countable.length?doneN/countable.length:0;
   const ph=phaseOf(ui.sel);
   const nm=nextMatch();
-  let board='<header class="board"><div class="board-top"><span class="phase">'+esc(PHASE_NAME[ph])+'</span>'+syncHTML()+'</div>';
+  const cph=ceraPhase(ui.sel);
+  const postSeason = ui.sel>TRAIN_LAST;
+  const phaseLabel = postSeason ? (cph?cph.name.split(':')[0]:'Plan CERA') : PHASE_NAME[ph];
+  let board='<header class="board"><div class="board-top"><span class="phase">'+esc(phaseLabel)+'</span>'+syncHTML()+'</div>';
   if(nm){
     const days=diffDays(TODAY,nm.d);
     const teams = nm.casa ? 'Universitario <span class="vs">vs</span> '+esc(nm.rival) : esc(nm.rival)+' <span class="vs">vs</span> Universitario';
     const when = days===0?'Es hoy.':(days===1?'Es mañana.':'Faltan '+days+' días.');
     board+='<div class="next"><div class="next-l">Próximo partido, jornada '+nm.j+'</div><div class="next-teams">'+teams+'</div>'+
       '<div class="next-meta">'+esc(longDate(nm.d))+(nm.ko?' a las '+nm.ko:'')+', '+(nm.casa?'en casa':'fuera')+'. <b>'+when+'</b></div></div>';
-  } else board+='<div class="next"><div class="next-teams">Temporada terminada</div></div>';
+  } else {
+    const ex=CERA_MILES.filter(m=>m.k==='exam' && m.d>=TODAY)[0];
+    if(ex){
+      const dx=diffDays(TODAY,ex.d);
+      board+='<div class="next"><div class="next-l">Próximo examen CERA</div><div class="next-teams">'+esc(ex.t.split(' (')[0])+'</div>'+
+        '<div class="next-meta">'+esc(longDate(ex.d))+'. <b>'+(dx===0?'Es hoy.':(dx===1?'Es mañana.':'Faltan '+dx+' días.'))+'</b></div></div>';
+    } else board+='<div class="next"><div class="next-teams">Plan terminado</div></div>';
+  }
+  const mil=nextMile();
   if(state.settings.ceraDate && state.settings.ceraDate>=TODAY){ board+='<div class="cera-line">Examen CERA: '+esc(longDate(state.settings.ceraDate))+', faltan '+diffDays(TODAY,state.settings.ceraDate)+' días.</div>'; }
+  else if(mil){ board+='<div class="cera-line">'+esc(MILE_K[mil.k])+': '+esc(mil.t)+' &middot; '+esc(shortDate(mil.d))+(diffDays(TODAY,mil.d)>0?', faltan '+diffDays(TODAY,mil.d)+' días':'')+'.</div>'; }
   board+='<div class="prog"><div class="bar"><i style="width:'+(pct*100).toFixed(1)+'%"></i></div><div class="prog-l"><span><b>'+doneN+'</b> de '+countable.length+' tareas esta semana</span><span>'+Math.round(pct*100)+' %</span></div></div></header>';
 
   const prevDis = mon<=mondayOf(START); const nextDis = mon>=LAST_WEEK;
@@ -885,6 +951,10 @@ function viewSemana(){
   if(tr) h+='<div class="banner"><b>'+esc(TRIP_TYPES[tr.type].name)+(tr.note?', '+esc(tr.note):'')+'.</b> '+esc(TRIP_TYPES[tr.type].desc)+'</div>';
   if(ui.sel<START) h+='<div class="banner">El plan empieza el lunes 28 de septiembre.</div>';
   if(W.lostNote && (tr || dow(ui.sel)===6)) h+='<div class="banner warn">'+esc(W.lostNote)+'</div>';
+  const cwk=ceraWeek(ui.sel);
+  if(cwk && dow(ui.sel)===0 && cwk.m) h+='<div class="banner"><b>Semana '+cwk.n+' del plan CERA: '+esc(cwk.t)+'.</b> Hito: '+esc(cwk.h)+'</div>';
+  const mw=mileWarn(ui.sel);
+  if(mw && dow(ui.sel)===0) h+='<div class="banner warn"><b>'+esc(mw.t)+'</b>, el '+esc(longDate(mw.d))+'. Faltan '+diffDays(ui.sel,mw.d)+' días.</div>';
   const lf=Object.keys(W.left);
   if(dow(ui.sel)===6 && lf.length) h+='<div class="banner warn">Esta semana no caben '+lf.map(a=>W.left[a]+' min de '+AREA[a].name.toLowerCase()).join(', ')+'. No se arrastran a la siguiente.</div>';
   h+='<div class="list">'+(tasks.length?tasks.map(taskHTML).join(''):'<div class="empty">Nada programado este día.</div>')+'</div>';
@@ -901,6 +971,44 @@ function viewSemana(){
   const mins=stu.reduce((a,t)=>a+(parseInt(t.sub)||0),0), minsDone=stu.filter(t=>state.done[t.key]).reduce((a,t)=>a+(parseInt(t.sub)||0),0);
   if(mins) h+='<p class="hint" style="margin:10px 0 0">Estudio: '+(minsDone/60).toFixed(1).replace('.',',')+' h de '+(mins/60).toFixed(1).replace('.',',')+' h hechas.</p>';
   h+='</section>';
+  return h;
+}
+
+function viewCera(){
+  let h=pageHead('Plan CERA','Del 28 de septiembre de 2026 al examen del Módulo B, en octubre de 2028.');
+  const cw=ceraWeek(ui.sel) || ceraWeek(TODAY<START?START:TODAY);
+  if(cw){
+    h+='<section class="section"><h3>Esta semana</h3>'+
+      '<p><b>Semana '+cw.n+' &middot; '+esc(CERA_PH[cw.p].name)+'</b></p>'+
+      '<p>'+esc(cw.t)+'</p>'+
+      '<p class="hint">Hito: '+esc(cw.h)+'</p>'+
+      '<p class="hint">Objetivo: '+(cw.m/60).toFixed(1).replace('.',',')+' h'+(CERA_KIND[cw.k]?' &middot; '+esc(CERA_KIND[cw.k]):'')+'</p></section>';
+  }
+  const from = TODAY<START?START:TODAY;
+  const next = CERA_MILES.filter(m=>m.d>=from).slice(0,6);
+  h+='<section class="section"><h3>Próximos hitos</h3><div class="wlist">';
+  if(!next.length) h+='<div><span>No queda ninguno.</span><span></span></div>';
+  next.forEach(m=>{
+    const dn=!!state.done['mile|'+m.id];
+    h+='<div><span>'+esc(m.t)+'<span class="hint"> &middot; '+esc(MILE_K[m.k])+'</span></span>'+
+       '<span>'+esc(shortDate(m.d))+' <button class="btn ghost small" data-action="mile" data-id="'+m.id+'">'+(dn?'Hecho':'Marcar')+'</button></span></div>';
+  });
+  h+='</div><p class="hint">El plazo de inscripción a los exámenes cierra el jueves cuatro semanas antes, y hay que adjuntar el justificante del seminario obligatorio.</p></section>';
+  h+='<section class="section"><h3>Fases</h3><div class="wlist">';
+  const ord=['F0','A','D','C','S','B'];
+  ord.forEach(k=>{
+    const ws=Object.keys(CERA_WEEKS).filter(d=>CERA_WEEKS[d].p===k).sort();
+    if(!ws.length) return;
+    const done=ws.filter(d=>{ const w=CERA_WEEKS[d]; return w.m>0 && d<mondayOf(TODAY); }).length;
+    h+='<div><span>'+esc(CERA_PH[k].name)+'</span><span>'+esc(shortDate(ws[0]))+' &rarr; '+esc(shortDate(ws[ws.length-1]))+', '+(CERA_PH[k].min/60)+' h/sem</span></div>';
+  });
+  h+='</div></section>';
+  h+='<section class="section"><h3>Dónde mirar</h3><div class="wlist">'+
+    '<div><span>Seminarios y tarifas</span><span>actuarial-academy.com</span></div>'+
+    '<div><span>Agenda de eventos CERA</span><span>ceraglobal.org</span></div>'+
+    '<div><span>Exámenes, plazos y exámenes pasados</span><span>aktuar.de</span></div>'+
+    '<div><span>Vía española y examen en castellano</span><span>cera.actuarios.org</span></div>'+
+    '</div><p class="hint">Las fechas de 2028 aún no están publicadas: las de este plan son estimadas por el patrón de años anteriores.</p></section>';
   return h;
 }
 
@@ -999,8 +1107,12 @@ function viewAjustes(){
   }
   h+='<p>Total: '+tot.toFixed(1).replace('.',',')+' h a la semana.</p>';
   if(tot>15) h+='<div class="banner warn" style="margin:8px 0 0">Con 10 sesiones de entreno a la semana y en déficit, más de 15 h de estudio te va a quitar sueño. Y el sueño es lo que hace que pierdas grasa y no músculo.</div>';
-  h+='<p class="hint">Huecos: lunes y jueves a las 18:15 (inglés), martes a las 18:15 (correduría), miércoles a las 20:30 y viernes (CERA), sábados sin partido a las 11:30 y domingo desde las 15:30. El domingo es el gran día de estudio.</p></section>';
-  h+='<section class="section"><h3>Examen CERA</h3><div class="field"><label for="cd">Fecha del examen</label><input type="date" id="cd" data-setting="ceraDate" value="'+esc(s.ceraDate||'')+'"></div><p class="hint">Aparece la cuenta atrás en la pantalla de la semana.</p></section>';
+  h+='<p class="hint">Huecos: lunes y jueves a las 18:15 (inglés), martes a las 18:15 (correduría), miércoles a las 20:30 (a las 19:00 cuando acabe la temporada), viernes a las 18:30, sábados sin partido a las 9:30 y domingo por la tarde (por la mañana cuando acabe la temporada) para el CERA, y sábados a las 11:30 y domingo a las 15:30 para la correduría.</p></section>';
+  h+='<section class="section"><h3>Plan CERA</h3>'+
+    '<label class="check"><input type="checkbox" data-setting="ceraAuto"'+(s.ceraAuto!==false?' checked':'')+'> Horas de CERA automáticas según la fase</label>'+
+    '<p class="hint">Con esto activado, las horas de CERA las marca el plan: 5 h en el arranque, 8 h durante los módulos, 12-15 h en el sprint de mayo de 2028 y 0 h en las semanas de descanso. Desactívalo para usar el número de arriba.</p>'+
+    '<div class="field"><label for="cd">Fecha del examen (opcional)</label><input type="date" id="cd" data-setting="ceraDate" value="'+esc(s.ceraDate||'')+'"></div>'+
+    '<p class="hint">Si la dejas vacía, la cuenta atrás de la portada usa el próximo hito del plan.</p></section>';
   h+='<section class="section"><h3>Copia de seguridad</h3><p>Tus marcas, pesos y viajes se guardan en este móvil. Descarga una copia de vez en cuando, y siempre antes de cambiar de teléfono.</p>'+
     '<button class="btn full" data-action="export">Descargar copia</button>'+
     '<label class="btn ghost full" style="display:grid;place-items:center;margin-top:8px">Recuperar una copia<input type="file" accept=".json,application/json" id="importfile" style="display:none"></label></section>';
@@ -1011,9 +1123,9 @@ function viewAjustes(){
 
 function render(){
   const v=document.getElementById('view');
-  const map={semana:viewSemana, viajes:viewViajes, liga:viewLiga, peso:viewPeso, ajustes:viewAjustes};
+  const map={semana:viewSemana, cera:viewCera, viajes:viewViajes, liga:viewLiga, peso:viewPeso, ajustes:viewAjustes};
   v.innerHTML=(map[ui.tab]||viewSemana)();
-  const tabs=[['semana','Semana'],['viajes','Viajes'],['liga','Liga'],['peso','Peso'],['ajustes','Ajustes']];
+  const tabs=[['semana','Semana'],['cera','CERA'],['viajes','Viajes'],['liga','Liga'],['peso','Peso'],['ajustes','Ajustes']];
   document.getElementById('tabsin').innerHTML=tabs.map(t=>'<button class="tab'+(ui.tab===t[0]?' on':'')+'" data-action="tab" data-tab="'+t[0]+'" aria-current="'+(ui.tab===t[0]?'page':'false')+'">'+ICONS[t[0]]+'<span>'+t[1]+'</span></button>').join('');
 }
 
@@ -1025,6 +1137,7 @@ document.addEventListener('click',e=>{
   if(a==='toggle'){ const k=b.dataset.key; if(state.done[k]) delete state.done[k]; else state.done[k]=1; commit(); return; }
   if(a==='expand'){ const k=b.dataset.key; ui.open[k]=!ui.open[k]; render(); return; }
   if(a==='sel'){ ui.sel=b.dataset.date; render(); return; }
+  if(a==='mile'){ const k='mile|'+b.dataset.id; if(state.done[k]) delete state.done[k]; else state.done[k]=1; commit(); return; }
   if(a==='diettoggle'){ ui.dietOpen=!ui.dietOpen; saveUI(); render(); return; }
   if(a==='meal'){ const k=b.dataset.key; if(state.done[k]) delete state.done[k]; else state.done[k]=1; commit(); return; }
   if(a==='week'){ const dir=Number(b.dataset.dir); let n=addDays(mondayOf(ui.sel),7*dir); if(n<mondayOf(START)) n=mondayOf(START); if(n>LAST_WEEK) n=LAST_WEEK; ui.sel = (mondayOf(TODAY)===n && TODAY>=START)?TODAY:(n<START?START:n); render(); return; }
@@ -1076,6 +1189,7 @@ document.addEventListener('change',e=>{
   if(t.dataset.setting){
     const k=t.dataset.setting;
     if(k==='ceraDate') state.settings.ceraDate=t.value;
+    else if(k==='ceraAuto') state.settings.ceraAuto=t.checked;
     else { let h=parseFloat(String(t.value).replace(',','.')); if(!(h>=0)) h=0; if(h>15) h=15; state.settings[k]=Math.round(h*60); }
     commit(); return;
   }
