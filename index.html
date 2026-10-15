@@ -591,69 +591,94 @@ function buildWeek(mon,state){
 
 /* ================= Dieta diaria ================= */
 function dietLevel(date){ return phaseOf(date)==='descarga' ? 'alto' : 'bajo'; }
-function dietRows(kind, level, ko){
-  const B=level==='bajo';
-  if(kind==='doble') return [
-    ['07:15','Desayuno','4 huevos, 250 g de queso batido 0 % y 1 pieza de fruta',50,25,25],
-    ['13:30','Pre-gimnasio','1 plátano maduro y café',2,28,0],
-    ['15:30','Comida','220 g de pollo, pavo, ternera magra o pescado (en crudo), '+(B?'95 g de arroz en crudo o 390 g de patata':'150 g de arroz en crudo o 600 g de patata')+', verdura cocida y 1,5 cucharadas de aceite de oliva',60,B?80:125,30],
-    ['18:00','Merienda','300 g de skyr o queso batido 0 %, 1 pieza de fruta y 15 g de nueces',36,24,12],
-    ['19:15','Pre-rugby','1 plátano o 2 tortitas de arroz con miel',3,35,0],
-    ['21:50','Cena post-rugby','200 g de pollo o pescado, '+(B?'65 g de arroz en crudo o 280 g de patata':'110 g de arroz en crudo o 450 g de patata')+' y verdura cocida',50,B?55:95,15],
-    ['22:45','Antes de dormir','300 g de queso batido 0 % con canela',32,5,3]];
+function dietRows(kind, level, ko, dw){
+  if(kind==='doble'){
+    if(dw===0) return [
+    ["07:15","Desayuno","Café con leche semidesnatada, tortilla de 3 huevos, 40 g de pan integral, 1 vaso de queso fresco batido 0 % (250 g) con canela y 10 g de nueces",58,38,26],
+    ["13:30","Pre-gimnasio","1 plátano y café. Sin shaker en la oficina",1,27,0],
+    ["15:30","Comida","Pechuga de pollo a la plancha (220 g) con ajo y pimentón, 100 g de arroz en crudo o 420 g de patata al microondas, guarnición de verduras (150 g), 1,5 cucharadas de AOVE y 1 pieza de fruta",61,106,22],
+    ["18:00","Merienda","1 vaso de queso fresco batido 0 % (250 g) con canela, 1 pieza de fruta y 15 g de nueces",31,31,11],
+    ["19:15","Pre-rugby","1 pieza de fruta o 2 tortitas de arroz",2,26,0],
+    ["21:50","Cena post-rugby","Merluza al horno (220 g), 200 g de patata al microondas, verduras (150 g) y 1 cucharada de AOVE",44,42,13],
+    ["22:45","Antes de dormir","1 vaso de queso fresco batido 0 % (250 g) con canela",28,10,0]];
+    if(dw===1) return [
+    ["07:15","Desayuno","Café con leche semidesnatada, tortilla de 3 huevos, 40 g de pan integral, 1 vaso de queso fresco batido 0 % (250 g) con canela y 10 g de nueces",58,38,26],
+    ["13:30","Pre-gimnasio","1 plátano y café. Sin shaker en la oficina",1,27,0],
+    ["15:30","Comida","Salmón o atún a la plancha (170 g), 100 g de arroz en crudo o 420 g de patata al microondas, guarnición de verduras (150 g), 1,5 cucharadas de AOVE y 1 pieza de fruta",43,86,37],
+    ["18:00","Merienda","1 vaso de queso fresco batido 0 % (250 g) con canela, 1 pieza de fruta y 15 g de nueces",31,31,11],
+    ["19:15","Pre-rugby","1 pieza de fruta o 2 tortitas de arroz",2,26,0],
+    ["21:50","Cena post-rugby","Pechuga de pavo a la plancha (200 g), 200 g de patata al microondas, verduras (150 g) y 1 cucharada de AOVE",50,42,15],
+    ["22:45","Antes de dormir","1 vaso de queso fresco batido 0 % (250 g) con canela",28,10,0]];
+    if(dw===3) return [
+    ["07:15","Desayuno","Café con leche semidesnatada, tortilla de 3 huevos, 40 g de pan integral, 1 vaso de queso fresco batido 0 % (250 g) con canela y 10 g de nueces",58,38,26],
+    ["13:30","Pre-gimnasio","1 plátano y café. Sin shaker en la oficina",1,27,0],
+    ["15:30","Comida","Filete de ternera o lomo de cerdo (200 g) a la plancha, 100 g de arroz en crudo o 420 g de patata al microondas, guarnición de verduras (150 g), 1,5 cucharadas de AOVE y 1 pieza de fruta",51,86,26],
+    ["18:00","Merienda","1 vaso de queso fresco batido 0 % (250 g) con canela, 1 pieza de fruta y 15 g de nueces",31,31,11],
+    ["19:15","Pre-rugby","1 pieza de fruta o 2 tortitas de arroz",2,26,0],
+    ["21:50","Cena post-rugby","Tortilla de 4 huevos con champiñones y jamón york extra (80 g), 200 g de patata al microondas, verduras (150 g) y 1 cucharada de AOVE",47,44,33],
+    ["22:45","Antes de dormir","1 vaso de queso fresco batido 0 % (250 g) con canela",28,10,0]];
+    return [
+    ["07:15","Desayuno","Café con leche semidesnatada, tortilla de 3 huevos, 40 g de pan integral, 1 vaso de queso fresco batido 0 % (250 g) con canela y 10 g de nueces",58,38,26],
+    ["13:30","Pre-gimnasio","1 plátano y café. Sin shaker en la oficina",1,27,0],
+    ["15:30","Comida","Pechuga de pollo a la plancha (220 g) con ajo y pimentón, 100 g de arroz en crudo o 420 g de patata al microondas, guarnición de verduras (150 g), 1,5 cucharadas de AOVE y 1 pieza de fruta",61,106,22],
+    ["18:00","Merienda","1 vaso de queso fresco batido 0 % (250 g) con canela, 1 pieza de fruta y 15 g de nueces",31,31,11],
+    ["19:15","Pre-rugby","1 pieza de fruta o 2 tortitas de arroz",2,26,0],
+    ["21:50","Cena post-rugby","Merluza al horno (220 g), 200 g de patata al microondas, verduras (150 g) y 1 cucharada de AOVE",44,42,13],
+    ["22:45","Antes de dormir","1 vaso de queso fresco batido 0 % (250 g) con canela",28,10,0]];
+  }
   if(kind==='miercoles') return [
-    ['07:15','Desayuno','4 huevos, medio aguacate y 250 g de queso batido 0 %',55,15,32],
-    ['13:30','Pre-gimnasio','1 plátano y café',2,28,0],
-    ['15:30','Comida','220 g de carne o pescado (en crudo), '+(B?'80 g de arroz en crudo o 350 g de patata':'120 g de arroz en crudo o 520 g de patata')+', verdura cocida y 1 cucharada de aceite de oliva',65,B?70:100,28],
-    ['17:45','Antes del entreno de la tarde','1 plátano o 2 tortitas de arroz con miel, y café',3,30,0],
-    ['19:45','Cena','220 g de pescado o carne, '+(B?'50 g de arroz en crudo o 210 g de patata':'80 g de arroz en crudo o 330 g de patata')+', verdura cocida y 1 cucharada de aceite',60,B?40:65,28],
-    ['22:30','Antes de dormir','300 g de queso batido 0 % o caseína',40,8,4]];
+    ["07:15","Desayuno","Café con leche semidesnatada, tortilla de 4 huevos y 1 vaso de queso fresco batido 0 % (250 g) con canela",59,21,24],
+    ["13:30","Pre-gimnasio","1 plátano y café",1,27,0],
+    ["15:30","Comida","Día de legumbre: 1 plato hondo de alubias (300 g, de conserva) con tomate, pimiento y cebolla, 200 g de pollo a la plancha, 1 cucharada de AOVE y 1 pieza de fruta",72,76,17],
+    ["17:45","Antes de la velocidad","1 plátano y café. No es opcional",1,27,0],
+    ["19:45","Cena","Salmón a la plancha (200 g), ensalada grande con canónigos, cebolla y tomate, 200 g de patata y 1 cucharada de AOVE",47,44,35],
+    ["22:30","Antes de dormir","1 vaso y medio de queso fresco batido 0 % (375 g) con canela y 1 pieza de fruta",42,35,1]];
   if(kind==='viernes') return [
-    ['07:15','Desayuno','60 g de avena, 250 g de queso batido 0 %, 1 plátano y 1 cucharadita de miel',50,85,12],
-    ['13:30','Comida','200 g de pollo o pavo, 100 g de arroz blanco en crudo, verdura cocida y poco aceite',55,100,15],
-    ['17:00','Merienda','200 g de skyr y 3 tortitas de arroz con mermelada',35,55,6],
-    ['21:00','Cena','220 g de pescado blanco, 400 g de patata cocida, verdura de poca fibra y 1 cucharada de aceite. Sal generosa y 500 ml de agua extra',55,75,18],
-    ['22:30','Antes de dormir','250 g de queso batido 0 % con una cucharadita de miel',32,15,3]];
+    ["07:15","Desayuno","Café con leche semidesnatada, 80 g de pan integral con aceite y pavo, y 1 vaso de queso fresco batido 0 % (250 g) con canela",54,52,12],
+    ["13:30","Comida","Pescado blanco: merluza a la plancha (220 g), 140 g de arroz blanco en crudo, verduras cocidas (150 g), 1 cucharada de AOVE y 1 pieza de fruta",50,137,14],
+    ["17:00","Merienda","1 vaso de queso fresco batido 0 % (250 g), 5 tortitas de arroz y 1 pieza de fruta",32,60,1],
+    ["21:00","Cena","Pechuga de pollo (200 g), 450 g de patata cocida, verdura de poca fibra (judía verde o calabacín) y 1 cucharada de AOVE. Sal generosa y 500 ml de agua extra",57,84,16],
+    ["22:30","Antes de dormir","1 vaso de queso fresco batido 0 % (250 g) con canela y 1 pieza de fruta",28,30,1]];
   if(kind==='domingo') return [
-    ['08:00','Desayuno','4 huevos, medio aguacate y 200 g de queso batido 0 %',50,12,32],
-    ['13:00','Comida','250 g de carne, verdura, '+(B?'200 g':'350 g')+' de patata y 1,5 cucharadas de aceite de oliva',65,B?55:85,30],
-    ['17:00','Merienda','300 g de queso batido 0 %, 25 g de nueces y 1 pieza de fruta',40,25,18],
-    ['21:00','Cena','200 g de pescado azul, verdura cocida y 1 cucharada de aceite'+(B?' y 100 g de patata':' y 150 g de patata'),50,B?30:55,25],
-    ['22:30','Antes de dormir','300 g de queso batido 0 %',32,5,3]];
+    ["08:30","Desayuno","Café con leche semidesnatada, tortilla de 4 huevos con champiñones y 1 vaso de queso fresco batido 0 % (250 g) con canela",60,25,24],
+    ["13:30","Comida","Día de moluscos: pulpo a la gallega (300 g) con 150 g de patata, ensalada de canónigos, cebolla y queso fresco de cabra, 1,5 cucharadas de AOVE y 1 pieza de fruta",69,60,28],
+    ["17:00","Merienda","1 vaso de queso fresco batido 0 % (250 g) con canela, 1 pieza de fruta y 20 g de nueces",32,32,17],
+    ["21:00","Cena","Día de verdura: berenjenas rellenas de atún (2 latas al natural) con media bola de mozzarella y 1 cucharada de AOVE. Sin arroz ni patata",61,16,28],
+    ["22:30","Antes de dormir","1 vaso de queso fresco batido 0 % (250 g) con canela",28,10,0]];
   if(kind==='libre') return [
-    ['08:30','Desayuno','4 huevos, medio aguacate y 250 g de queso batido 0 %',55,15,32],
-    ['14:00','Comida','220 g de carne o pescado, '+(B?'80 g de arroz en crudo o 350 g de patata':'120 g de arroz en crudo o 520 g de patata')+', verdura cocida y 1 cucharada de aceite',65,B?70:100,28],
-    ['18:00','Merienda','350 g de skyr y 1 pieza de fruta',35,30,2],
-    ['21:00','Cena','220 g de pescado o carne, '+(B?'50 g de arroz en crudo o 210 g de patata':'80 g de arroz en crudo o 330 g de patata')+', verdura y 1 cucharada de aceite',60,B?40:65,28],
-    ['22:30','Antes de dormir','300 g de queso batido 0 %',27,8,3]];
+    ["08:30","Desayuno","Café con leche semidesnatada, tortilla de 4 huevos y 1 vaso de queso fresco batido 0 % (250 g) con canela",59,21,24],
+    ["14:00","Comida","Carne blanca: pechuga de pollo (220 g), 100 g de arroz en crudo o 420 g de patata, verduras (150 g), 1,5 cucharadas de AOVE y 1 pieza de fruta",61,106,22],
+    ["18:00","Merienda","1 vaso de queso fresco batido 0 % (250 g) con canela y 1 pieza de fruta",28,30,1],
+    ["21:00","Cena","Pescado azul: salmón (200 g) con ensalada grande, 200 g de patata y 1 cucharada de AOVE",47,44,35],
+    ["22:30","Antes de dormir","1 vaso de queso fresco batido 0 % (250 g) con canela",28,10,0]];
+  if(kind==='esqui') return [
+    ["08:00","Desayuno","Café con leche, 80 g de pan integral con aceite y jamón serrano, 1 pieza de fruta y 1 vaso de queso fresco batido (250 g)",59,81,22],
+    ["11:00","En pistas","1 plátano o 1 barrita, y agua",2,25,4],
+    ["13:30","Comida en pistas","Plato con proteína (200 g de carne o pescado) y arroz o pasta, o bocadillo de pavo o atún",57,119,17],
+    ["17:30","Merienda","Queso fresco batido o yogur (250 g), 1 pieza de fruta y 20 g de frutos secos",32,31,14],
+    ["21:00","Cena","Carne o pescado (220 g) con arroz, pasta o patata, y verdura",55,67,27],
+    ["22:30","Antes de dormir","Queso fresco batido (250 g) con canela",28,10,0]];
   if(kind==='partido'){
     const k=ko||'16:00';
     if(k<'14:00') return [
-      [addMin(k,-210),'Desayuno completo','100 g de avena, 1 plátano, miel, 3 huevos y 1 yogur',45,100,15],
-      [addMin(k,-75),'Snack','1 plátano y 1 barrita de cereales',3,40,4],
-      [addMin(k,-45),'Cafeína','Café (unos 300 mg de cafeína) con 300 ml de bebida isotónica',0,15,0],
-      [k,'Durante el partido','150-250 ml cada 15-20 min; en el descanso, 30-45 g de carbohidrato líquido',0,35,0],
-      [addMin(k,105),'Post-partido, primera hora','Batido con 40 g de proteína y 2 plátanos, o bocadillo de pavo y un zumo',40,110,5],
-      [addMin(k,210),'Comida','250 g de carne o pescado, arroz o pasta, verdura y aceite',55,65,25],
-      ['18:30','Merienda','300 g de skyr y 1 pieza de fruta',30,20,8],
-      ['21:00','Cena','Pescado o huevos, patata y verdura',50,40,18]];
+    [addMin(k,-210),"Desayuno completo","Café con leche, 100 g de pan integral con pavo y aceite, 1 plátano y 1 vaso de queso fresco batido (250 g). Hoy desayunas sí o sí",58,88,18],
+    [addMin(k,-75),"Snack","1 plátano y 1 barrita de cereales",3,52,4],
+    [addMin(k,-45),"Cafeína","Café (unos 300 mg de cafeína) con 300 ml de bebida isotónica",0,18,0],
+    [k,"Durante el partido","150-250 ml cada 15-20 min; en el descanso, 30-45 g de carbohidrato líquido",0,36,0],
+    [addMin(k,105),"Post-partido, primera hora","Batido con 40 g de proteína y 2 plátanos, o bocadillo de pavo y un zumo",41,68,1],
+    [addMin(k,210),"Comida","Carne blanca (220 g), 100 g de arroz en crudo, verduras y 1 cucharada de AOVE",60,86,17],
+    ["18:30","Merienda","1 vaso de queso fresco batido (250 g) y 1 pieza de fruta",28,30,1],
+    ["21:00","Cena","Pescado o huevos (200 g), 300 g de patata y verdura",42,58,13]];
     return [
-      [addMin(k,-420),'Desayuno','80 g de avena, 1 plátano, miel, 3 huevos y 1 yogur',45,85,20],
-      [addMin(k,-210),'Comida pre-partido','110 g de arroz o pasta en crudo, 150 g de pollo o pescado blanco, poca verdura y poca grasa',45,90,8],
-      [addMin(k,-75),'Snack','1 plátano y 1 barrita de cereales',3,40,4],
-      [addMin(k,-45),'Cafeína','Café (unos 300 mg de cafeína) con 300 ml de bebida isotónica',0,15,0],
-      [k,'Durante el partido','150-250 ml cada 15-20 min; en el descanso, 30-45 g de carbohidrato líquido',0,35,0],
-      [addMin(k,105),'Post-partido, primera hora','Batido con 40 g de proteína y 2 plátanos, o bocadillo de pavo y un zumo',40,110,5],
-      [addMin(k,240),'Cena','Comida completa: 250 g de carne o pescado, arroz, pasta o patata, verdura y aceite',60,70,25],
-      ['23:00','Antes de dormir','250 g de queso batido 0 %',25,5,3]];
+    [addMin(k,-420),"Desayuno","Café con leche semidesnatada, 80 g de pan integral con aceite y pavo, 1 plátano y 1 vaso de queso fresco batido (250 g)",56,79,18],
+    [addMin(k,-150),"Comida pre-partido","110 g de pasta o arroz blanco en crudo con tomate, 180 g de pollo o pescado blanco, poca verdura y 1 cucharada de AOVE. Come 2 h 30 min antes",56,82,16],
+    [addMin(k,-75),"Snack","1 plátano y 1 barrita de cereales",3,52,4],
+    [addMin(k,-45),"Cafeína","Café (unos 300 mg de cafeína) con 300 ml de bebida isotónica",0,18,0],
+    [k,"Durante el partido","150-250 ml cada 15-20 min; en el descanso, 30-45 g de carbohidrato líquido",0,36,0],
+    [addMin(k,105),"Post-partido, primera hora","Batido con 40 g de proteína y 2 plátanos, o bocadillo de pavo con pan integral y un zumo",41,68,1],
+    [addMin(k,240),"Cena","Carne o pescado (250 g), 400 g de patata o arroz, verduras y 1 cucharada de AOVE",63,76,23],
+    ["23:00","Antes de dormir","1 vaso de queso fresco batido (250 g) con canela",28,10,0]];
   }
-  if(kind==='esqui') return [
-    ['08:00','Desayuno','4 huevos, pan con aceite, 1 pieza de fruta y 250 g de queso batido o yogur',50,70,30],
-    ['11:00','En pistas','1 plátano o 1 barrita y agua',3,35,4],
-    ['13:30','Comida en pistas','Plato con proteína y arroz o pasta, o bocadillo de pavo o atún',45,90,20],
-    ['17:30','Merienda','Yogur o skyr, fruta y frutos secos',30,35,15],
-    ['21:00','Cena','Carne o pescado con arroz, pasta o patata y verdura',55,90,25],
-    ['22:30','Antes de dormir','Queso batido o yogur proteico',25,8,3]];
   return [];
 }
 function dietFor(date, W){
@@ -675,7 +700,10 @@ function dietFor(date, W){
   else { kind='domingo'; name='Zona 2 y recuperación'; }
   const PHN={arranque:'Semana de arranque: déficit en torno a 750 kcal al día. Proteína alta para no perder músculo mientras vuelves a entrenar.', progresion:'Déficit en torno a 750 kcal al día.', debut:'Semana de tu primer partido: déficit en torno a 750 kcal al día, y el viernes y el sábado con el carbohidrato arriba.', liga:'Déficit en torno a 750 kcal al día.', finliga:'Déficit en torno a 750 kcal al día.', descarga:'Descarga: esta semana comes a mantenimiento, con más arroz y patata. Es parte del plan, no una excepción: cortar el déficit una semana de cada seis es lo que hace que las otras cinco funcionen.'};
   if(PHN[ph]) notes.unshift(PHN[ph]);
-  const rows=dietRows(kind, lvl, satFx && satFx.ko);
+  const rows=dietRows(kind, lvl, satFx && satFx.ko, i).slice();
+  if(lvl==='alto' && kind!=='partido' && rows.length){
+    rows.splice(rows.length-1, 0, ['—','Ración extra de descarga','Añade hoy 80 g más de arroz en crudo (o 350 g de patata) repartidos entre la comida y la cena, y 1 pieza de fruta',3,85,1]);
+  }
   return {kind, name, rows, notes};
 }
 function dietTotals(rows){
@@ -844,7 +872,7 @@ function dietHTML(date, W){
       '<span class="mt">'+r[0]+'</span><div class="mb"><div class="mn">'+esc(r[1])+'</div><div class="mf">'+esc(r[2])+'</div>'+
       ((r[3]||r[4]||r[5])?'<div class="mm">'+r[3]+' g proteína, '+r[4]+' g carbohidrato, '+r[5]+' g grasa</div>':'')+'</div></div>';
   });
-  h+='<p class="hint" style="margin:10px 0 0">Si algo te hincha: arroz blanco, patata y verdura cocida antes que legumbres, crucíferas, pan integral o dátiles. Pesos de carne y pescado en crudo.</p>';
+  h+='<p class="hint" style="margin:10px 0 0">Estructura y alimentos de tu planificación de Garenas: proteína + hidrato + verdura en cada comida, 2 piezas de fruta al día, máximo 1 cucharada de aceite por preparación y queso fresco batido con canela de postre. Pesos de carne, pescado y arroz en crudo. Si algún plato no te gusta, cámbialo por otro de su mismo grupo.</p>';
   h+='</div></section>';
   return h;
 }
