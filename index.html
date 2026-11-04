@@ -3,11 +3,11 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Temporada</title>
+<title>Plan</title>
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<meta name="apple-mobile-web-app-title" content="Temporada">
+<meta name="apple-mobile-web-app-title" content="Plan">
 <meta name="theme-color" content="#15432E">
 <link rel="apple-touch-icon" href="icon-180.png">
 <link rel="icon" type="image/png" href="icon-192.png">
@@ -19,8 +19,8 @@
 :root{
   --bg:#EDF0EB; --surface:#FFFFFF; --surface-2:#F5F7F4; --ink:#12201A; --muted:#5B6961; --line:#D3DAD2;
   --brand:#15432E; --brand-2:#1D5A3E; --on-brand:#F1F5F0; --on-brand-muted:#B4C8BA;
-  --c-gym:#2F7A55; --c-z2:#23879B; --c-mob:#7A8270; --c-alert:#B8322A;
-  --c-nado:#1E4F7A; --c-run:#C9621F; --c-eng:#6E4FA6; --c-cera:#9A6810; --c-corr:#2A66C8; --c-check:#5E6A73; --c-trip:#2F8C86;
+  --c-gym:#2F7A55; --c-rugby:#1E4F7A; --c-speed:#C9621F; --c-z2:#23879B; --c-mob:#7A8270;
+  --c-match:#B8322A; --c-eng:#6E4FA6; --c-cera:#9A6810; --c-corr:#2A66C8; --c-check:#5E6A73; --c-trip:#2F8C86;
   --warn-bg:#FBF1DC; --warn-ink:#6B4A06;
   --display:'Barlow Condensed','Arial Narrow','Roboto Condensed',system-ui,sans-serif;
   --body:'Barlow',system-ui,-apple-system,'Segoe UI',Roboto,sans-serif;
@@ -33,8 +33,8 @@
   :root:not([data-theme="light"]){
     --bg:#0E1512; --surface:#16201B; --surface-2:#1B2721; --ink:#E4EBE6; --muted:#98A69E; --line:#27352D;
     --brand:#123826; --brand-2:#1A4A33; --on-brand:#EAF1EC; --on-brand-muted:#97B2A1;
-    --c-gym:#52A67D; --c-z2:#4EB1C5; --c-mob:#A0A893; --c-alert:#E25A50;
-    --c-nado:#5E92C4; --c-run:#E8864A; --c-eng:#A085D8; --c-cera:#D39E3E; --c-corr:#6497EC; --c-check:#8D99A2; --c-trip:#5FB6AF;
+    --c-gym:#52A67D; --c-rugby:#5E92C4; --c-speed:#E8864A; --c-z2:#4EB1C5; --c-mob:#A0A893;
+    --c-match:#E25A50; --c-eng:#A085D8; --c-cera:#D39E3E; --c-corr:#6497EC; --c-check:#8D99A2; --c-trip:#5FB6AF;
     --warn-bg:#3A2F16; --warn-ink:#F0D9A4;
     color-scheme:dark;
   }
@@ -42,8 +42,8 @@
 :root[data-theme="dark"]{
   --bg:#0E1512; --surface:#16201B; --surface-2:#1B2721; --ink:#E4EBE6; --muted:#98A69E; --line:#27352D;
   --brand:#123826; --brand-2:#1A4A33; --on-brand:#EAF1EC; --on-brand-muted:#97B2A1;
-  --c-gym:#52A67D; --c-z2:#4EB1C5; --c-mob:#A0A893; --c-alert:#E25A50;
-  --c-nado:#5E92C4; --c-run:#E8864A; --c-eng:#A085D8; --c-cera:#D39E3E; --c-corr:#6497EC; --c-check:#8D99A2; --c-trip:#5FB6AF;
+  --c-gym:#52A67D; --c-rugby:#5E92C4; --c-speed:#E8864A; --c-z2:#4EB1C5; --c-mob:#A0A893;
+  --c-match:#E25A50; --c-eng:#A085D8; --c-cera:#D39E3E; --c-corr:#6497EC; --c-check:#8D99A2; --c-trip:#5FB6AF;
   --warn-bg:#3A2F16; --warn-ink:#F0D9A4;
   color-scheme:dark;
 }
@@ -187,10 +187,10 @@ textarea{width:100%;min-height:64px;resize:vertical;}
 input[type=text],input[type=date],input[type=time],input[type=number],select,textarea{border:1px solid var(--line);background:var(--surface-2);border-radius:10px;padding:10px 11px;min-height:44px;width:100%;}
 .btn{border:0;border-radius:12px;min-height:46px;padding:0 18px;background:var(--brand-2);color:var(--on-brand);font-weight:600;}
 .btn.ghost{background:transparent;color:var(--ink);box-shadow:inset 0 0 0 1px var(--line);}
-.btn.danger{background:transparent;color:var(--c-alert);box-shadow:inset 0 0 0 1px var(--c-alert);}
+.btn.danger{background:transparent;color:var(--c-match);box-shadow:inset 0 0 0 1px var(--c-match);}
 .btn.small{min-height:38px;padding:0 12px;font-size:14px;}
 .btn.full{width:100%;margin-top:6px;}
-.err{color:var(--c-alert);font-size:14px;margin-top:6px;}
+.err{color:var(--c-match);font-size:14px;margin-top:6px;}
 .tripitem{display:flex;gap:12px;align-items:flex-start;padding:12px 0;border-top:1px solid var(--line);}
 .tripitem:first-of-type{border-top:0;}
 .tripitem .tb{flex:1;min-width:0;}
@@ -200,7 +200,7 @@ input[type=text],input[type=date],input[type=time],input[type=number],select,tex
 .fix{display:grid;grid-template-columns:40px 1fr;gap:10px;padding:12px 0;border-top:1px solid var(--line);}
 .fix:first-of-type{border-top:0;}
 .fix .jn{font-family:var(--display);font-weight:700;font-size:22px;color:var(--muted);}
-.fix.next .jn{color:var(--c-alert);}
+.fix.next .jn{color:var(--c-match);}
 .fix .fr{font-weight:600;}
 .fix .fm{font-size:14px;color:var(--muted);margin-bottom:6px;}
 .fix.bye .fr{color:var(--muted);font-weight:500;}
@@ -209,7 +209,7 @@ input[type=text],input[type=date],input[type=time],input[type=number],select,tex
 .wlist{font-variant-numeric:tabular-nums;}
 .wlist div{display:flex;justify-content:space-between;padding:8px 0;border-top:1px solid var(--line);font-size:15px;}
 .wlist div:first-child{border-top:0;}
-.good{color:var(--c-gym);} .bad{color:var(--c-alert);}
+.good{color:var(--c-gym);} .bad{color:var(--c-match);}
 .hint{font-size:14px;color:var(--muted);}
 .empty{padding:24px 18px;text-align:center;color:var(--muted);}
 
@@ -236,18 +236,10 @@ input[type=text],input[type=date],input[type=time],input[type=number],select,tex
 
 <script>
 /*LOGIC_START*/
-const START = '2026-10-26';
-const LAST_WEEK = '2027-08-30';
-const PESO_INICIAL = 112;
-const PESO_OBJETIVO = 95;
-const DELOAD_WEEKS = ['2026-11-16','2026-12-14','2027-02-08','2027-03-08','2027-04-05','2027-05-03','2027-05-31','2027-06-28','2027-07-26','2027-08-23'];
-/* Curva objetivo de peso: una ancla el día 1 de cada mes, interpolada por días */
-const ANCLAS_PESO = [
-  ['2026-10-26',112.0], ['2026-12-01',109.0], ['2027-01-01',106.5],
-  ['2027-02-01',105.5], ['2027-03-01',103.0], ['2027-04-01',101.0],
-  ['2027-05-01',99.0],  ['2027-06-01',97.0],  ['2027-07-01',95.5],
-  ['2027-08-01',94.5],  ['2027-09-01',93.5]
-];
+const START = '2026-11-09';
+const SKI_FROM = '2027-01-01';
+const SKI_TO   = '2027-01-07';
+const LAST_WEEK = '2027-03-29';
 const DOW_L = ['Lunes','Martes','Miércoles','Jueves','Viernes','Sábado','Domingo'];
 const DOW_S = ['L','M','X','J','V','S','D'];
 const MON = ['enero','febrero','marzo','abril','mayo','junio','julio','agosto','septiembre','octubre','noviembre','diciembre'];
@@ -264,65 +256,56 @@ function longDate(s){ const d=parse(s); return DOW_L[dow(s)]+' '+d.getDate()+' d
 function shortDate(s){ const d=parse(s); return d.getDate()+' '+MON_S[d.getMonth()]; }
 function addMin(t,m){ const [h,mm]=t.split(':').map(Number); let x=h*60+mm+m; x=((x%1440)+1440)%1440; return pad(Math.floor(x/60))+':'+pad(x%60); }
 
-/* Bloque de entrenamiento: no lo altera una semana de descarga */
-function blockOf(date){
-  if(date<'2027-01-01') return 'base';
-  if(date<'2027-02-01') return 'esqui';
-  if(date<'2027-05-01') return 'carrera';
-  return 'objetivo';
-}
-function weekNo(date){ return Math.max(1, Math.floor(diffDays(START, mondayOf(date))/7)+1); }
-function weekInBlock(date){
-  const b=blockOf(date);
-  const ini={base:START, esqui:'2027-01-04', carrera:'2027-02-01', objetivo:'2027-05-03'}[b];
-  return Math.max(1, Math.floor(diffDays(mondayOf(ini), mondayOf(date))/7)+1);
-}
+/* ================= Fases ================= */
 function phaseOf(date){
+  const mon=mondayOf(date);
   if(date<START) return 'antes';
-  if(mondayOf(date)===START) return 'arranque';
-  if(DELOAD_WEEKS.includes(mondayOf(date))) return 'descarga';
-  return blockOf(date);
+  if(date>=SKI_FROM && date<=SKI_TO) return 'esqui';
+  if(mon>='2026-11-09' && mon<='2026-11-30') return 'bloque1';
+  if(mon==='2026-12-07' || mon==='2026-12-14') return 'bloque2';
+  if(mon==='2026-12-21') return 'navidad';
+  if(mon==='2026-12-28') return date<SKI_FROM ? 'afinado' : 'esqui';
+  if(date>SKI_TO) return 'post';
+  return 'bloque1';
 }
 const PHASE_NAME = {
-  antes:'Antes de empezar', arranque:'Semana de arranque', descarga:'Semana de descarga',
-  base:'Fase 0, base sin impacto', esqui:'Fase 1, mes de esquí',
-  carrera:'Fase 2, entra la carrera', objetivo:'Fase 3, objetivo'
+  antes:'Antes de empezar', bloque1:'Bloque 1 · Acumulación', bloque2:'Bloque 2 · Específico de esquí',
+  navidad:'Navidad · Mantener', afinado:'Afinado', esqui:'Semana de esquí', post:'Después del esquí'
 };
-const PHASE_NOTE = {
-  base:'Cero carrera. Se trata de construir motor aeróbico sin impacto y bajar de 105 kg.',
-  esqui:'Mes de mantener, no de bajar. El esquí es la carga de piernas de enero.',
-  carrera:'Entra el caminar-correr dos días. Si algo molesta, repites semana en vez de avanzar.',
-  objetivo:'Carrera continua y salidas largas. Aquí es donde llegan los 10 km.'
-};
+/* Semana del plan (1 = 9 nov). Gobierna la progresión del isométrico. */
+function weekNum(date){ const d=diffDays('2026-11-09', mondayOf(date)); return Math.floor(d/7)+1; }
 
-function objetivoPeso(date){
-  const t=parse(date).getTime();
-  const A=ANCLAS_PESO.map(a=>[parse(a[0]).getTime(), a[1]]);
-  if(t<=A[0][0]) return A[0][1];
-  if(t>=A[A.length-1][0]) return A[A.length-1][1];
-  for(let i=0;i<A.length-1;i++){
-    if(t>=A[i][0] && t<=A[i+1][0]){
-      const p=(t-A[i][0])/(A[i+1][0]-A[i][0]);
-      return Math.round((A[i][1]+p*(A[i+1][1]-A[i][1]))*10)/10;
-    }
-  }
-  return PESO_OBJETIVO;
+const ISO = [
+  [1,'3 × 30 s','60 s de descanso entre series'],
+  [2,'3 × 40 s','60 s'],
+  [3,'3 × 50 s','60 s'],
+  [4,'3 × 60 s','75 s'],
+  [5,'2 × 75 s + 1 × 45 s','90 s'],
+  [6,'2 × 90 s','90 s'],
+  [7,'2 × 60 s','Semana de Navidad: solo mantener'],
+  [8,'1 × 60 s suave','Afinado: nada que deje agujetas']
+];
+function isoFor(date){
+  const w=weekNum(date);
+  const row=ISO.find(r=>r[0]===w);
+  if(row) return {reps:row[1], note:row[2]};
+  return {reps:'2 × 90 s', note:'Mantén el nivel alcanzado. Si va cómodo, añade un disco de 10 kg en el regazo'};
 }
 
+/* ================= Viajes ================= */
 const TRIP_TYPES = {
   trabajo:{name:'Viaje de trabajo', blocks:true, study:['eng','cera'],
-    desc:'El gimnasio pasa a circuito de hotel de 30 min y no hay sesión aeróbica de noche. Inglés y CERA se mantienen; la correduría se reparte en el resto de la semana.'},
+    desc:'El gimnasio pasa a circuito de hotel de 30 min y no hay rugby. Inglés y CERA se mantienen; la correduría se reparte en el resto de la semana.'},
   esqui:{name:'Esquí', blocks:true, study:[],
-    desc:'Esquiar cuenta como aeróbico y trabajo de piernas. Sin gimnasio ni estudio. Al volver, las dos primeras sesiones de gimnasio van con una serie menos.'},
+    desc:'Esquiar cuenta como entrenamiento de piernas y Zona 2. Sin gimnasio ni estudio.'},
   vacaciones:{name:'Vacaciones', blocks:true, study:[],
     desc:'Caminar o monte a diario, sin gimnasio ni estudio. Al volver, las dos primeras sesiones de gimnasio van con una serie menos.'},
-  paron:{name:'Semana tranquila', blocks:false, study:['eng','cera','corr'],
-    desc:'Sin sesiones aeróbicas de noche. El gimnasio y el estudio siguen igual y cada noche libre se sustituye por 30 min de caminar.'},
+  paron:{name:'Parón del club', blocks:false, study:['eng','cera','corr'],
+    desc:'Sin entreno de campo. El gimnasio y el estudio siguen igual y cada entreno de rugby se sustituye por 30 min de Zona 2.'},
   enfermo:{name:'Enfermo o lesionado', blocks:true, study:['eng'],
     desc:'Solo movilidad suave e inglés. Al volver, las dos primeras sesiones de gimnasio al 60-70 %.'}
 };
 const TRIP_PRI = {enfermo:5, esqui:4, vacaciones:3, trabajo:2, paron:1};
-
 function tripOn(date,state){
   let best=null;
   for(const t of (state.trips||[])){
@@ -331,17 +314,16 @@ function tripOn(date,state){
   return best;
 }
 
-/* Estudio de 18:15 a 19:45; la sesión aeróbica va después, a las 20:00,
-   en el hueco que dejaba el rugby. El viernes y el fin de semana hay más sitio. */
+/* ================= Estudio ================= */
 const SLOTS = [
-  {area:'eng', dow:0, t:'18:15', w:1,   cap:90},
-  {area:'eng', dow:3, t:'18:15', w:1,   cap:90},
-  {area:'eng', dow:6, t:'19:45', w:0.8, cap:60},
-  {area:'cera',dow:2, t:'18:15', w:1.2, cap:90},
-  {area:'cera',dow:4, t:'18:30', w:1,   cap:120},
-  {area:'cera',dow:6, t:'17:45', w:1.2, cap:105},
-  {area:'corr',dow:1, t:'18:15', w:1,   cap:90},
-  {area:'corr',dow:5, t:'16:30', w:1.5, cap:150},
+  {area:'eng', dow:0, t:'18:15', w:1,   cap:70},
+  {area:'eng', dow:3, t:'18:15', w:1,   cap:70},
+  {area:'eng', dow:6, t:'19:30', w:0.8, cap:60},
+  {area:'cera',dow:2, t:'18:30', w:1.5, cap:120},
+  {area:'cera',dow:4, t:'19:30', w:1,   cap:90},
+  {area:'cera',dow:6, t:'17:30', w:1.2, cap:105},
+  {area:'corr',dow:1, t:'18:15', w:1,   cap:70},
+  {area:'corr',dow:5, t:'12:00', w:1.2, cap:120},
   {area:'corr',dow:6, t:'15:30', w:1.2, cap:120}
 ];
 const AREA = {
@@ -349,10 +331,8 @@ const AREA = {
   cera:{name:'Estudio CERA', hint:'Un tema concreto del temario y sus ejercicios. Cierra el bloque anotando dónde lo dejas.'},
   corr:{name:'Proyecto correduría', hint:'Una tarea concreta y terminable del proyecto. Si no sabes cuál, la primera tarea es decidirla.'}
 };
-
 function allocate(target, slots){
-  const out=slots.map(()=>0); let rem=target; let open=slots.map((_,i)=>i);
-  let guard=0;
+  const out=slots.map(()=>0); let rem=target; let open=slots.map((_,i)=>i); let guard=0;
   while(rem>0.5 && open.length && guard++<20){
     const W=open.reduce((a,i)=>a+slots[i].w,0);
     const next=[]; let used=0; let capped=false;
@@ -369,89 +349,87 @@ function allocate(target, slots){
   return {mins, left:Math.round(left/5)*5};
 }
 
-const GYM = {
-  A:{name:'Gimnasio A', what:'Inferior, dominante de rodilla', end:'15:13', day:'lunes', rows:[
-    ['14:20','Calentamiento estándar','8 min'],
-    ['14:28','Salto con contramovimiento','4 × 3, 90 s'],
-    ['14:33','Sentadilla, series de aproximación','2 × 5'],
-    ['14:36','Sentadilla trasera','4 × 5 a RPE 7-8, 3 min'],
-    ['14:50','Búlgara con mancuernas + gemelo de pie','3 × 8 por pierna + 3 × 12, 75 s'],
-    ['15:02','Sentadilla isométrica en pared','3 × 45 s, 45 s'],
-    ['15:08','Plancha lateral','3 × 30 s por lado']],
-    foot:'La isométrica en pared es puro esquí: el mismo patrón que una bajada larga.'},
-  B:{name:'Gimnasio B', what:'Superior, empuje y rotación', end:'15:15', day:'martes', rows:[
-    ['14:20','Calentamiento + 20 rotaciones de hombro con banda','8 min'],
-    ['14:28','Press banca o press militar, aproximación','2 × 5'],
-    ['14:32','Press banca o press militar','4 × 5-6 a RPE 7-8, 2 min 30 s'],
-    ['14:43','Press inclinado con mancuernas + face pull','3 × 8-10 + 3 × 15, 75 s'],
-    ['14:55','Fondos en paralelas','3 × 8, 90 s'],
-    ['15:03','Pallof press en polea','3 × 12 por lado, 45 s'],
-    ['15:10','Movilidad torácica tumbado de lado','3 × 8 por lado']],
-    foot:'Alterna banca y militar cada semana. El Pallof y la movilidad torácica son el bloque de golf: el core resiste la rotación, no la genera.'},
-  C:{name:'Gimnasio C', what:'Cadena posterior y cadera', end:'15:14', day:'miércoles', rows:[
-    ['14:20','Calentamiento estándar','8 min'],
-    ['14:28','Peso muerto rumano o hexagonal, aproximación','2 × 5'],
-    ['14:31','Peso muerto rumano o hexagonal','4 × 5 a RPE 7, 2 min 30 s'],
-    ['14:42','Hip thrust + curl femoral','3 × 8-10 + 3 × 10, 75 s'],
-    ['14:54','Step-up alto con mancuernas','3 × 8 por pierna, 60 s'],
-    ['15:03','Paseo del granjero','3 × 40 m, 60 s'],
-    ['15:09','Sóleo sentado','3 × 15, 45 s']],
-    foot:'El step-up es senderismo y monte literal. El sóleo es el músculo que falla primero cuando alguien grande empieza a correr, y casi nadie lo entrena.'},
-  D:{name:'Gimnasio D', what:'Superior, tirón y core', end:'15:12', day:'jueves', rows:[
-    ['14:20','Calentamiento estándar','8 min'],
-    ['14:28','Dominadas lastradas o asistidas','4 × 5-8, 2 min'],
-    ['14:40','Remo con barra + press militar con mancuernas','3 × 8-10 + 3 × 8, 75 s'],
-    ['14:52','Jalón al pecho','3 × 12, 60 s'],
-    ['15:00','Leñador en polea','3 × 12 por lado, 45 s'],
-    ['15:07','Rueda abdominal o dead bug','3 × 10, 45 s']],
-    foot:'RPE 7 como techo. Si llegas fundido, es la primera sesión que se quita.'}
-};
+/* ================= Gimnasio ================= */
 const WARMUP = 'Calentamiento estándar: bici o remo suave 3 min, 90/90 5 por lado, tobillo contra la pared 8 por lado, puente de glúteo con banda 15 y pogo jumps 2 × 15.';
+const GYM = {
+  A:{name:'Gimnasio A', what:'Fuerza general', end:'15:09', day:'lunes', rows:[
+    ['14:20','Calentamiento estándar','8 min'],
+    ['14:28','Sentadilla, series de aproximación','2 × 5 (barra → 60 %)'],
+    ['14:32','Sentadilla trasera','4 × 5 al 78-82 %, 2 min 30 s'],
+    ['14:44','Press banca + remo con mancuerna','3 × 8 + 3 × 10 por lado, 90 s'],
+    ['14:55','Nordic curl (bajada 4 s) + Pallof press','3 × 5 + 3 × 10 por lado, 60 s'],
+    ['15:04','Cuello isométrico, 4 direcciones','2 × 30 s cada una']],
+    foot:'El Nordic no se salta: sigues haciendo contacto en los entrenos y es tu seguro de isquios.'},
+  B:{name:'Gimnasio B', what:'Tren superior y hombro', end:'15:09', day:'martes', rows:[
+    ['14:20','Calentamiento + 20 rotaciones de hombro con banda','8 min'],
+    ['14:28','Lanzamiento de balón medicinal al pecho','4 × 4, 60 s'],
+    ['14:32','Push press','4 × 5 al 75-80 %, 2 min'],
+    ['14:43','Dominadas + press inclinado con mancuernas','4 × 6 + 4 × 8, 90 s'],
+    ['14:55','Remo en T + rotación externa con banda a 90°','3 × 10 + 3 × 12 por lado, 75 s'],
+    ['15:05','Y-T-W en prono','2 × 8 cada letra, 45 s']]},
+  C:{name:'Gimnasio C', what:'Piernas de esquí', end:'15:09', day:'miércoles', rows:[
+    ['14:20','Calentamiento estándar','8 min'],
+    ['14:28','Peso muerto hexagonal, aproximación','2 × 5'],
+    ['14:31','Peso muerto con barra hexagonal','4 × 5 al 78-82 %, 2 min 30 s'],
+    ['14:43','Zancada lateral + Copenhagen plank','3 × 10 por lado + 3 × 25 s por lado, 75 s'],
+    ['14:54','Step-down excéntrico (bajada 4 s, cajón 30-40 cm)','3 × 8 por pierna, 60 s'],
+    ['15:02','Sentadilla isométrica en pared','según la semana, 60-90 s de descanso']],
+    foot:'La sesión clave del plan. El esquí es plano frontal y trabajo excéntrico de cuádriceps: eso es exactamente lo que hay aquí.'},
+  D:{name:'Gimnasio D', what:'Mantenimiento y prevención', end:'15:09', day:'jueves', rows:[
+    ['14:20','Calentamiento estándar','8 min'],
+    ['14:28','Press banca con mancuernas + remo en polea','3 × 10 + 3 × 10, 75 s'],
+    ['14:38','Nordic inverso + gemelo a una pierna','2 × 6 + 3 × 15, 60 s'],
+    ['14:48','Hip thrust + face pull','3 × 10 + 3 × 15, 60 s'],
+    ['14:58','Cuello isométrico','2 × 30 s'],
+    ['15:03','Movilidad de cadera y tobillo','6 min']],
+    foot:'RPE 7 como techo, nada al fallo. Esta noche hay rugby y las piernas vienen del miércoles.'}
+};
 const GYM_MOD = {
-  arranque:'Primera semana: 2-3 series por ejercicio, cargas cómodas y RPE 7 como techo. Esta semana es para calibrar cargas, no para buscar sensaciones.',
-  descarga:'Descarga: mismas cargas, la mitad de series. En déficit la recuperación es peor, y esta semana es la que evita que se acumulen las lesiones.',
-  base:'Sube 2,5 kg en los ejercicios principales mientras la técnica aguante. Nunca falles una repetición: deja una o dos en la recámara.',
-  esqui:'Mes de esquí: mantén las cargas, no busques subirlas. Las piernas tienen trabajo por otro lado.',
-  carrera:'Ha entrado la carrera: una serie menos en el principal de los días A y C, y una serie más de gemelo y sóleo.',
-  objetivo:'Mantener fuerza es el objetivo, no subirla. Si las cargas bajan varias semanas seguidas, el problema es el déficit, no el gimnasio.'
+  bloque1:'',
+  bloque2:'Bloque específico: entran los saltos laterales el miércoles y el isométrico sube a 90 segundos.',
+  navidad:'Navidad: sesión corta, mitad de series. El objetivo es mantener, no construir.',
+  afinado:'Afinado: mitad de series y nada al fallo. Ninguna sesión debe dejarte agujetas antes de Cervinia.',
+  post:''
 };
 const HOTEL = [
   ['1','Sentadilla búlgara con peso corporal','3 × 12 por pierna'],
   ['2','Flexiones','3 × 15'],
   ['3','Puente de glúteo a una pierna','3 × 12 por lado'],
   ['4','Remo invertido en mesa o con banda','3 × 12'],
-  ['5','Plancha frontal + lateral','3 × 40 s + 2 × 30 s por lado'],
-  ['6','Cuello isométrico con la mano','2 × 30 s por dirección']
+  ['5','Sentadilla isométrica contra la pared','3 × 45 s'],
+  ['6','Plancha frontal + lateral','3 × 40 s + 2 × 30 s por lado']
 ];
-const MOBILITY = 'Tobillo contra la pared 10 por lado, sentadilla profunda 60-90 s, 90/90 con rotación 8 por lado, estiramiento de sofá 60 s por lado, open book 8 por lado, círculos de hombro 5 por lado, colgarte de la barra 30-45 s y 5 respiraciones 90/90.';
-
-const SERIES_NATACION = [
-  '8 × 50 m con 20 s de descanso',
-  '6 × 100 m con 30 s de descanso',
-  '400 - 300 - 200 - 100 con 45 s entre bloques',
-  '10 × 100 m con 20 s de descanso'
+const MOBILITY = 'Tobillo contra la pared 10 por lado, estiramiento de sofá 60 s por lado, 90/90 con rotación 8 por lado, sentadilla profunda 60-90 s, rotación torácica 8 por lado, círculos de hombro 5 por lado y colgarte de la barra 30-45 s.';
+const SWIM = [
+  [1,'8 × 100 m','1.400 m'],[2,'8 × 100 m','1.400 m'],
+  [3,'10 × 100 m','1.600 m'],[4,'10 × 100 m','1.600 m'],
+  [5,'12 × 100 m','1.800 m'],[6,'12 × 100 m','1.800 m'],
+  [7,'10 × 150 m','2.000 m'],[8,'10 × 150 m','2.000 m']
 ];
-const PROG_CARRERA = [
-  [2, '1 min de trote / 2 min andando × 8',        '24 min'],
-  [4, '1 min 30 s de trote / 2 min andando × 8',   '28 min'],
-  [6, '2 min de trote / 1 min 30 s andando × 8',   '28 min'],
-  [8, '3 min de trote / 1 min 30 s andando × 7',   '31 min'],
-  [10,'5 min de trote / 2 min andando × 5',        '35 min'],
-  [12,'8 min de trote / 2 min andando × 3',        '30 min'],
-  [99,'Carrera continua suave',                    '25-35 min']
-];
-function runPlan(date){
-  const n = blockOf(date)==='objetivo' ? weekInBlock(date)+13 : weekInBlock(date);
-  const r = PROG_CARRERA.find(p=>n<=p[0]);
-  return {n, pauta:r[1], total:r[2]};
+function swimFor(date){
+  const w=weekNum(date); const r=SWIM.find(x=>x[0]===w);
+  return r ? {main:r[1], total:r[2]} : {main:'10 × 150 m', total:'2.000 m'};
 }
-function swimSet(date){ return SERIES_NATACION[(weekNo(date)-1)%SERIES_NATACION.length]; }
-function longRide(date){ return Math.min(45 + (weekNo(date)-1)*10, 120); }
-/* Qué sesión aeróbica toca el martes, miércoles y jueves según el bloque */
-const AER = { base:['bici','nado','nado'], esqui:['bici','nado','nado'],
-              carrera:['run','nado','run'], objetivo:['run','nado','run'] };
+const RUN = [
+  [1,"1 min de trote / 2 min caminando × 7",'21 min'],[2,"1 min de trote / 2 min caminando × 7",'21 min'],
+  [3,"2 min / 2 min × 6",'24 min'],[4,"2 min / 2 min × 6",'24 min'],
+  [5,"3 min / 1 min 30 s × 6",'27 min'],[6,"3 min / 1 min 30 s × 6",'27 min'],
+  [7,"5 min / 1 min 30 s × 4",'26 min'],[8,"5 min / 1 min 30 s × 4",'26 min']
+];
+function runFor(date){
+  const w=weekNum(date); const r=RUN.find(x=>x[0]===w);
+  return r ? {main:r[1], total:r[2], opt:w<=2} : {main:'Continuo, 25-30 min a ritmo de conversación', total:'30 min', opt:false};
+}
+const SKI_WARM = [
+  ['1','Caminar rápido o subir escaleras','2 min'],
+  ['2','Sentadillas con peso corporal','15'],
+  ['3','Zancadas laterales','8 por lado'],
+  ['4','Balanceos de pierna, adelante y lateral','10 por lado'],
+  ['5','Rotaciones de tronco','10 por lado'],
+  ['6','Sentadilla isométrica','30 s']
+];
 
-/* Sesiones perdidas por viaje o enfermedad justo antes: modifica el gimnasio */
+/* Vuelta de un viaje largo o de una enfermedad: ajusta el gimnasio */
 function returnMod(date,state){
   for(const t of (state.trips||[])){
     if(!['esqui','vacaciones','enfermo'].includes(t.type)) continue;
@@ -468,6 +446,7 @@ function returnMod(date,state){
   return null;
 }
 
+/* ================= La semana ================= */
 function buildWeek(mon,state){
   const dates=[0,1,2,3,4,5,6].map(i=>addDays(mon,i));
   const days={}; dates.forEach(d=>days[d]=[]);
@@ -475,224 +454,252 @@ function buildWeek(mon,state){
   const active=d=>d>=START;
   const blocked=d=>!!(trip[d] && TRIP_TYPES[trip[d].type].blocks);
   const push=(d,t)=>{ t.key=d+'|'+t.id; if(t.count===undefined) t.count=true; days[d].push(t); };
-  const sat=dates[5];
+  const phase=phaseOf(dates[0]);
 
-  /* --- Gimnasio y replanificación --- */
+  const isSki = d => phaseOf(d)==='esqui';
+
+  /* --- Gimnasio --- */
   const DEF={0:'A',1:'B',2:'C',3:'D'};
   const gymPlan={}; const lost=[];
+  const navidadDays=[0,2];   // en Navidad solo lunes y miércoles
+  const afinadoDays=[0,2];   // en afinado lunes y miércoles
   for(let i=0;i<4;i++){
-    const d=dates[i]; if(!active(d)) continue;
+    const d=dates[i]; if(!active(d) || isSki(d)) continue;
+    const ph=phaseOf(d);
+    if(ph==='navidad' && !navidadDays.includes(i)) continue;
+    if(ph==='afinado' && !afinadoDays.includes(i)) continue;
     if(blocked(d)){ if(DEF[i]!=='D') lost.push(DEF[i]); }
     else gymPlan[d]={k:DEF[i]};
   }
-  const PRIO=['A','C','B'];
+  const PRIO=['C','A','B'];
   lost.sort((a,b)=>PRIO.indexOf(a)-PRIO.indexOf(b));
   const thu=dates[3], fri=dates[4];
-  if(gymPlan[thu] && lost.length){
-    const pick=lost[0];
-    if(pick){ gymPlan[thu]={k:pick, rec:'Recuperada del '+GYM[pick].day+'. Sustituye al gimnasio D.'}; lost.splice(0,1); }
+  if(gymPlan[thu] && lost.length && phase!=='navidad' && phase!=='afinado'){
+    const pick=lost.shift();
+    gymPlan[thu]={k:pick, rec:'Recuperada del '+GYM[pick].day+'. Sustituye al gimnasio D.'};
   }
-  if(lost.length && active(fri) && !blocked(fri)){
-    const k=lost.shift(); gymPlan[fri]={k, rec:'Recuperada del '+GYM[k].day+'. Mañana la salida larga sale igual.'};
+  if(lost.length && active(fri) && !blocked(fri) && phase!=='navidad' && phase!=='afinado'){
+    const k=lost.shift(); gymPlan[fri]={k, rec:'Recuperada del '+GYM[k].day+'.'};
   }
   const lostNote = lost.length ? 'Esta semana no se recupera: '+lost.map(k=>GYM[k].name).join(' y ')+'. No se amontonan sesiones.' : '';
 
   for(const d of dates){
     if(!gymPlan[d]) continue;
-    const g=GYM[gymPlan[d].k]; const ph=phaseOf(d);
+    const kk=gymPlan[d].k; const g=GYM[kk]; const ph=phaseOf(d);
     const mods=[]; if(GYM_MOD[ph]) mods.push(GYM_MOD[ph]);
     const rm=returnMod(d,state);
     if(rm==='enfermo') mods.unshift('Vuelta tras estar enfermo: todo al 60-70 %.');
     else if(rm) mods.unshift('Vuelta de viaje: una serie menos por ejercicio.');
     if(gymPlan[d].rec) mods.unshift(gymPlan[d].rec);
-    push(d,{id:'gym', cat:'gym', t:'14:20', title:g.name, sub:g.what+'. Hasta las '+g.end+'.',
-      emph: rm ? (rm==='enfermo'?'Al 60-70 %':'Una serie menos') : (ph==='arranque'?'Calibrando cargas':(ph==='descarga'?'Descarga':'')),
-      detail:{type:'gym', k:gymPlan[d].k, mods}});
+    let emph = rm ? (rm==='enfermo'?'Al 60-70 %':'Una serie menos') : (ph==='navidad'?'Mitad de series':(ph==='afinado'?'Afinado':''));
+    const iso = kk==='C' ? isoFor(d) : null;
+    if(kk==='C' && ph==='bloque2') mods.push('Antes del peso muerto: saltos laterales 3 × 6 por lado, aterrizando y estabilizando 1 s. Si no aterrizas estable, acorta el salto.');
+    push(d,{id:'gym', cat:'gym', t:'14:20', title:g.name, sub:g.what+'. Hasta las '+g.end+'.', emph,
+      detail:{type:'gym', k:kk, mods, iso}});
   }
 
-  /* --- Sesiones aeróbicas de la noche (martes, miércoles y jueves) --- */
-  for(const i of [1,2,3]){
+  /* --- Rugby --- */
+  for(const i of [0,1,3]){
     const d=dates[i]; if(!active(d)) continue;
+    const ph=phaseOf(d);
+    if(ph==='navidad' || ph==='afinado' || ph==='esqui') continue;
     const tr=trip[d];
-    if(tr && tr.type==='paron'){ push(d,{id:'walk', cat:'z2', t:'19:00', title:'Caminar 30 min a ritmo vivo', sub:'Sustituye a la sesión de la noche.', detail:{type:'z2', extra:''}}); continue; }
+    if(tr && tr.type==='paron'){ push(d,{id:'z2', cat:'z2', t:'19:00', title:'Zona 2, 30 min', sub:'Sustituye al entreno de campo (parón del club).', detail:{type:'z2', extra:''}}); continue; }
     if(tr) continue;
-    const kind=AER[blockOf(d)][i-1];
-    if(kind==='bici'){
-      push(d,{id:'bici', cat:'z2', t:'20:00', title:'Bici, 50 min en zona 2', sub:'Hasta las 21:00. Cadencia 85-95 rpm.', detail:{type:'bici', min:50}});
-    } else if(kind==='nado'){
-      push(d,{id:'nado', cat:'nado', t:'20:00', title:'Natación, 45 min', sub:swimSet(d)+'.', detail:{type:'nado', set:swimSet(d)}});
-    } else {
-      const r=runPlan(d);
-      push(d,{id:'run', cat:'run', t:'20:00', title:'Carrera, semana '+r.n+' de la progresión', sub:r.pauta+'. '+r.total+' en total.', emph: r.n<=2?'Primeras semanas':'', detail:{type:'run', plan:r}});
-    }
+    push(d,{id:'rugby', cat:'rugby', t:'20:00', title:'Rugby, entreno de campo', sub:'Hasta las 21:30.', detail:{type:'rugby'}});
   }
 
-  /* --- Viernes: descanso de verdad --- */
-  if(active(fri)){
-    const tr=trip[fri];
-    if(!tr){
-      if(!gymPlan[fri]) push(fri,{id:'walk', cat:'z2', t:'18:30', title:'Caminar 40 min', sub:'Suave. Hoy no se entrena.', count:false,
-        detail:{type:'text', html:'<p>El viernes es descanso de verdad: caminar, estirar y dormir. Es lo que hace que la salida larga de mañana salga bien.</p>'}});
-    } else if(tr.type==='trabajo'){
-      push(fri,{id:'walk', cat:'z2', t:'', title:'Caminar 45 min a ritmo vivo', sub:'Sustituye a la sesión durante el viaje.', detail:{type:'z2', extra:''}});
-    }
+  /* --- Días de la fase de afinado sin gimnasio --- */
+  for(const i of [1,3]){
+    const d=dates[i]; if(!active(d) || isSki(d) || blocked(d)) continue;
+    if(phaseOf(d)!=='afinado') continue;
+    if(i===1) push(d,{id:'z2', cat:'z2', t:'18:00', title:'Zona 2, 30 min + movilidad', sub:'Muy suave. Mover sin cansar.', detail:{type:'z2', extra:''}});
+    else push(d,{id:'rest', cat:'check', t:'', title:'Descanso', sub:'Mañana empieza el esquí.', count:false, detail:{type:'text', html:'<p>Prepara la maleta y duerme. No existe la última sesión que te pone más en forma.</p>'}});
   }
 
-  /* --- Sábado: salida larga en bici --- */
-  if(active(sat)){
-    const tr=trip[sat];
-    if(!tr){
-      const m=longRide(sat);
-      push(sat,{id:'bicilarga', cat:'z2', t:'09:30', title:'Bici larga, '+m+' min', sub:'Zona 2 de principio a fin. Cadencia 85-95 rpm.',
-        emph: m>=100?'Salida larga':'', detail:{type:'bici', min:m, largo:true}});
-    }
+  /* --- Viernes --- */
+  if(active(fri) && !blocked(fri) && !gymPlan[fri] && !isSki(fri)){
+    const ph=phaseOf(fri);
+    if(ph==='afinado') push(fri,{id:'rest', cat:'check', t:'', title:'Descanso', sub:'Mañana empieza el esquí. Hoy no se entrena.', count:false, detail:{type:'text', html:'<p>Prepara la maleta y duerme.</p>'}});
+    else if(ph==='navidad') push(fri,{id:'z2opt', cat:'z2', t:'12:00', title:'Paseo largo, 45 min', sub:'Opcional. Hoy manda la familia.', count:false, detail:{type:'monte'}});
+    else { const sw=swimFor(fri); push(fri,{id:'swim', cat:'z2', t:'18:00', title:'Natación, 45 min', sub:sw.total+'. Tu sesión fija de base aeróbica.', detail:{type:'swim', sw}}); }
   }
 
-  /* --- Domingo --- */
-  const sun=dates[6];
-  if(active(sun)){
-    const tr=trip[sun]; const b=blockOf(sun);
-    if(!tr || tr.type==='paron'){
-      if(b==='carrera'||b==='objetivo') push(sun,{id:'nado', cat:'nado', t:'10:00', title:'Natación suave, 1.500 m', sub:'Sin series. O caminar largo, si lo prefieres.', detail:{type:'nado', set:'Sin series: nada continuo y suelto. Hoy es recuperación.'}});
-      else push(sun,{id:'walk', cat:'z2', t:'10:00', title:'Caminar largo, 60-90 min', sub:'Monte, senderismo o paseo largo.', detail:{type:'z2', extra:''}});
+  /* --- Sábado y domingo --- */
+  const sat=dates[5], sun=dates[6];
+  if(active(sat) && !blocked(sat) && !isSki(sat)){
+    const ph=phaseOf(sat);
+    if(ph!=='afinado'){
+      push(sat,{id:'z2', cat:'z2', t:'10:00', title:'Monte, 60-90 min', sub:'Con desnivel. Si llueve o no hay plan, bici 60 min en el gimnasio.', count: ph!=='navidad', detail:{type:'monte'}});
     }
-    else if(tr.type==='trabajo') push(sun,{id:'walk', cat:'z2', t:'', title:'Caminar 45 min a ritmo vivo', sub:'Sustituye a la sesión durante el viaje.', detail:{type:'z2', extra:''}});
+    if(ph!=='navidad') push(sat,{id:'evento', cat:'trip', t:'', title:'¿Hay evento hoy?', sub:'Si lo hay, pon el número de copas antes de salir.', count:false, detail:{type:'evento'}});
+  }
+  if(active(sun) && !blocked(sun) && !isSki(sun)){
+    const ph=phaseOf(sun);
+    if(ph==='navidad' || ph==='afinado') push(sun,{id:'z2opt', cat:'z2', t:'11:00', title:'Paseo largo, 45 min', sub:'Opcional. Recuperación activa, sin intensidad.', count:false, detail:{type:'monte'}});
+    else { const r=runFor(sun); push(sun,{id:'run', cat:'speed', t:'11:00', title:'Carrera y caminata, '+r.total, sub:(r.opt?'Opcional estas dos primeras semanas. ':'')+r.main+'.', count:!r.opt, detail:{type:'run', r}}); }
   }
 
-  /* --- Tareas propias del viaje --- */
+  /* --- Días de esquí --- */
   for(const d of dates){
-    if(!active(d)) continue; const tr=trip[d]; if(!tr) continue;
-    if(tr.type==='esqui') push(d,{id:'ski', cat:'trip', t:'', title:'Esquí', sub:'Cuenta como aeróbico y piernas.', detail:{type:'text', html:'<p>Proteína igual que en casa y bebe más de lo que crees: en altura se deshidrata uno sin notarlo.</p>'}});
+    if(!active(d) || !isSki(d)) continue;
+    push(d,{id:'skiwarm', cat:'speed', t:'08:30', title:'Calentamiento antes de la primera bajada', sub:'6 min. Donde se evitan la mitad de los sustos.', detail:{type:'skiwarm'}});
+    push(d,{id:'ski', cat:'match', t:'09:30', title:'Esquiar', sub:'Para cuando las piernas dejen de responder, no una bajada después.', detail:{type:'skiday'}});
+    push(d,{id:'skirec', cat:'z2', t:'17:00', title:'Recuperación', sub:'30-40 g de proteína en la primera hora y 10 min de movilidad.', detail:{type:'skirec'}});
+  }
+
+  /* --- Viajes --- */
+  for(const d of dates){
+    if(!active(d) || isSki(d)) continue; const tr=trip[d]; if(!tr) continue;
+    if(tr.type==='esqui') push(d,{id:'ski', cat:'trip', t:'', title:'Esquí', sub:'Cuenta como piernas y Zona 2.', detail:{type:'skiday'}});
     else if(tr.type==='vacaciones') push(d,{id:'activ', cat:'trip', t:'', title:'Caminar o monte, 45-60 min', sub:'Actividad suave diaria.', detail:{type:'text', html:'<p>Sin intensidad. Es para mantener el hábito y la Zona 2.</p>'}});
     else if(tr.type==='trabajo' && dow(d)<=3) push(d,{id:'hotel', cat:'gym', t:'', title:'Circuito de hotel, 30 min', sub:'Sustituye al gimnasio durante el viaje.', detail:{type:'hotel'}});
     else if(tr.type==='enfermo') push(d,{id:'info-sick', cat:'check', t:'', title:'Sin entrenamiento', sub:'Descansa. Si has tenido fiebre, espera a estar sin ella antes de volver.', count:false, detail:{type:'text', html:'<p>Al volver, el gimnasio marcará las dos primeras sesiones al 60-70 %.</p>'}});
   }
 
-  /* --- Movilidad, pesaje, revisión --- */
+  /* --- Movilidad, pesaje y revisión --- */
   const MOB_T=['22:15','22:15','22:00','22:15','21:30','21:30','12:00'];
   for(const d of dates){
     if(!active(d)) continue; const tr=trip[d]; const i=dow(d);
-    const sick=tr&&tr.type==='enfermo';
-    push(d,{id:'mob', cat:'mob', t:tr&&tr.type==='esqui'?'21:00':MOB_T[i], title: sick?'Movilidad suave, 10 min':(i===6?'Movilidad, 20 min':'Movilidad, 10 min'), sub:'Rutina diaria.', detail:{type:'mob'}});
-    const weighDays = phaseOf(d)==='arranque' ? [0,1,2] : [1,3,4];
-    if(weighDays.includes(i) && (!tr || tr.type==='paron')) push(d,{id:'weigh', cat:'check', t:'07:00', title:'Pesaje en ayunas', sub:'Después de orinar y antes de beber.', detail:{type:'weigh', date:d}});
-    if(i===6 && (!tr || tr.type==='paron' || tr.type==='trabajo')) push(d,{id:'review', cat:'check', t:'21:00', title:'Revisión semanal, 15 min', sub:'Viajes de la semana que viene, peso medio y tareas de estudio.', detail:{type:'review'}});
+    const sick=tr&&tr.type==='enfermo'; const ph=phaseOf(d);
+    push(d,{id:'mob', cat:'mob', t: isSki(d)?'21:30':MOB_T[i], title: sick?'Movilidad suave, 10 min':(i===6&&!isSki(d)?'Movilidad, 20 min':'Movilidad, 10 min'), sub: isSki(d)?'Sofá, cuádriceps y tobillo. Es la que más te va a servir.':'Tobillo, sofá y 90/90 son las tres que cuentan.', detail:{type:'mob'}});
+    if([1,3,4].includes(i) && (!tr || tr.type==='paron') && ph!=='navidad' && ph!=='esqui') push(d,{id:'weigh', cat:'check', t:'07:00', title:'Pesaje en ayunas', sub:'Después de orinar y antes de beber.', detail:{type:'weigh', date:d}});
+    if(i===6 && ph!=='esqui' && (!tr || tr.type==='paron' || tr.type==='trabajo')) push(d,{id:'review', cat:'check', t:'21:00', title:'Revisión semanal, 15 min', sub:'Peso medio, eventos de la semana que viene y tareas de estudio.', detail:{type:'review'}});
   }
 
-  /* --- Estudio con reparto automático --- */
-  const left={};
-  const set=state.settings||{};
+  /* --- Estudio --- */
+  const left={}; const set=state.settings||{};
   for(const area of ['eng','cera','corr']){
     const target=Math.max(0,Number(set[area])||0);
     const sl=SLOTS.filter(s=>s.area===area).map(s=>Object.assign({},s,{date:dates[s.dow]})).filter(s=>{
       if(!active(s.date)) return false;
       const tr=trip[s.date];
       if(tr && !TRIP_TYPES[tr.type].study.includes(area)) return false;
+      const ph=phaseOf(s.date);
+      if(ph==='navidad' || ph==='esqui') return false;
       return true;
     });
     if(!target) continue;
-    if(!sl.length){ left[area]=target; continue; }
+    if(!sl.length){ if(phase!=='navidad' && phase!=='esqui' && phase!=='afinado') left[area]=target; continue; }
     const r=allocate(target,sl);
     if(r.left>0) left[area]=r.left;
     sl.forEach((s,i)=>{
       const m=r.mins[i]; if(!m) return;
-      const t=s.t;
-      push(s.date,{id:area, cat:area, t, title:AREA[area].name, sub:m+' min, hasta las '+addMin(t,m)+'.', detail:{type:'study', area}});
+      push(s.date,{id:area, cat:area, t:s.t, title:AREA[area].name, sub:m+' min, hasta las '+addMin(s.t,m)+'.', detail:{type:'study', area}});
     });
   }
 
-  const SORTK={ski:'09:00', activ:'10:00', hotel:'07:30'};
+  const SORTK={ski:'09:00', activ:'10:00', hotel:'07:30', evento:'20:00', rest:'09:00'};
   const sk=t=> t.t || SORTK[t.id] || (t.count?'23:59':'00:00');
   for(const d of dates) days[d].sort((a,b)=>{ const x=sk(a), y=sk(b); return x<y?-1:x>y?1:0; });
-  return {dates, days, trip, left, lostNote};
+  return {dates, days, trip, left, lostNote, phase};
 }
 
 /* ================= Dieta diaria ================= */
-function dietLevel(date){ return phaseOf(date)==='descarga' ? 'alto' : 'bajo'; }
-function dietRows(kind, level, dw){
-  const BATIDO=["1 vaso de queso fresco batido 0 % (250 g) con canela",28,10,0];
-  if(kind==='doble'){
-    const COMIDA={
-      1:["Salmón o atún a la plancha (170 g), 100 g de arroz en crudo o 420 g de patata al microondas, guarnición de verduras (150 g), 1,5 cucharadas de AOVE y 1 pieza de fruta",43,86,37],
-      2:["Día de legumbre: 1 plato hondo de alubias (300 g, de conserva) con tomate, pimiento y cebolla, 200 g de pollo a la plancha, 1 cucharada de AOVE y 1 pieza de fruta",72,76,17],
-      3:["Filete de ternera o lomo de cerdo (200 g) a la plancha, 100 g de arroz en crudo o 420 g de patata al microondas, guarnición de verduras (150 g), 1,5 cucharadas de AOVE y 1 pieza de fruta",51,86,26]
-    };
-    const CENA={
-      1:["Pechuga de pavo a la plancha (200 g), 200 g de patata al microondas, verduras (150 g) y 1 cucharada de AOVE",50,42,15],
-      2:["Merluza al horno (220 g), 200 g de patata al microondas, verduras (150 g) y 1 cucharada de AOVE",44,42,13],
-      3:["Tortilla de 4 huevos con champiñones y jamón york extra (80 g), 200 g de patata al microondas, verduras (150 g) y 1 cucharada de AOVE",47,44,33]
-    };
-    const c=COMIDA[dw]||COMIDA[1], n=CENA[dw]||CENA[1];
+function dietRows(kind, dw){
+  if(kind==='rugby'){
+    if(dw===0) return [
+    ["07:15","Desayuno","Café con leche semidesnatada, tortilla de 3 huevos, 40 g de pan integral, 1 vaso de queso fresco batido 0 % (250 g) con canela y 10 g de nueces",58,38,26],
+    ["13:30","Pre-gimnasio","1 plátano y café",1,27,0],
+    ["15:30","Comida","Pechuga de pollo a la plancha (250 g) con ajo y pimentón, 75 g de arroz en crudo o 320 g de patata, verduras (200 g), 1 cucharada de AOVE y 1 pieza de fruta",67,88,18],
+    ["18:00","Merienda","1 vaso de queso fresco batido 0 % (250 g) con canela y 15 g de nueces",30,11,10],
+    ["19:15","Pre-rugby","1 pieza de fruta o 2 tortitas de arroz",2,26,0],
+    ["21:50","Cena post-rugby","Merluza al horno (220 g), 250 g de patata, verduras (150 g) y 1 cucharada de AOVE",45,50,13],
+    ["22:45","Antes de dormir","1 vaso de queso fresco batido 0 % (250 g) con canela",28,10,0]];
+    if(dw===1) return [
+    ["07:15","Desayuno","Café con leche semidesnatada, tortilla de 3 huevos, 40 g de pan integral, 1 vaso de queso fresco batido 0 % (250 g) con canela y 10 g de nueces",58,38,26],
+    ["13:30","Pre-gimnasio","1 plátano y café",1,27,0],
+    ["15:30","Comida","Salmón o atún a la plancha (170 g), 75 g de arroz en crudo o 320 g de patata, verduras (200 g), 1 cucharada de AOVE y 1 pieza de fruta",43,88,32],
+    ["18:00","Merienda","1 vaso de queso fresco batido 0 % (250 g) con canela y 15 g de nueces",30,11,10],
+    ["19:15","Pre-rugby","1 pieza de fruta o 2 tortitas de arroz",2,26,0],
+    ["21:50","Cena post-rugby","Pechuga de pavo a la plancha (200 g), 250 g de patata, verduras (150 g) y 1 cucharada de AOVE",51,50,15],
+    ["22:45","Antes de dormir","1 vaso de queso fresco batido 0 % (250 g) con canela",28,10,0]];
+    if(dw===3) return [
+    ["07:15","Desayuno","Café con leche semidesnatada, tortilla de 3 huevos, 40 g de pan integral, 1 vaso de queso fresco batido 0 % (250 g) con canela y 10 g de nueces",58,38,26],
+    ["13:30","Pre-gimnasio","1 plátano y café",1,27,0],
+    ["15:30","Comida","Filete de ternera o lomo de cerdo (200 g) a la plancha, 75 g de arroz en crudo o 320 g de patata, verduras (200 g), 1 cucharada de AOVE y 1 pieza de fruta",51,88,22],
+    ["18:00","Merienda","1 vaso de queso fresco batido 0 % (250 g) con canela y 15 g de nueces",30,11,10],
+    ["19:15","Pre-rugby","1 pieza de fruta o 2 tortitas de arroz",2,26,0],
+    ["21:50","Cena post-rugby","Tortilla de 4 huevos con champiñones y jamón york extra (80 g), 250 g de patata, verduras (150 g) y 1 cucharada de AOVE",48,52,33],
+    ["22:45","Antes de dormir","1 vaso de queso fresco batido 0 % (250 g) con canela",28,10,0]];
     return [
     ["07:15","Desayuno","Café con leche semidesnatada, tortilla de 3 huevos, 40 g de pan integral, 1 vaso de queso fresco batido 0 % (250 g) con canela y 10 g de nueces",58,38,26],
-    ["13:30","Pre-gimnasio","1 plátano y café. Sin shaker en la oficina",1,27,0],
-    ["15:30","Comida",c[0],c[1],c[2],c[3]],
-    ["18:00","Merienda","1 vaso de queso fresco batido 0 % (250 g) con canela, 1 pieza de fruta y 15 g de nueces",31,31,11],
-    ["19:15","Pre-sesión","1 pieza de fruta o 2 tortitas de arroz. Entrenas en 45 min",2,26,0],
-    ["21:50","Cena",n[0],n[1],n[2],n[3]],
-    ["22:45","Antes de dormir",BATIDO[0],BATIDO[1],BATIDO[2],BATIDO[3]]];
+    ["13:30","Pre-gimnasio","1 plátano y café",1,27,0],
+    ["15:30","Comida","Pechuga de pollo a la plancha (250 g) con ajo y pimentón, 75 g de arroz en crudo o 320 g de patata, verduras (200 g), 1 cucharada de AOVE y 1 pieza de fruta",67,88,18],
+    ["18:00","Merienda","1 vaso de queso fresco batido 0 % (250 g) con canela y 15 g de nueces",30,11,10],
+    ["19:15","Pre-rugby","1 pieza de fruta o 2 tortitas de arroz",2,26,0],
+    ["21:50","Cena post-rugby","Merluza al horno (220 g), 250 g de patata, verduras (150 g) y 1 cucharada de AOVE",45,50,13],
+    ["22:45","Antes de dormir","1 vaso de queso fresco batido 0 % (250 g) con canela",28,10,0]];
   }
-  if(kind==='lunes') return [
+  if(kind==='miercoles') return [
     ["07:15","Desayuno","Café con leche semidesnatada, tortilla de 4 huevos y 1 vaso de queso fresco batido 0 % (250 g) con canela",59,21,24],
     ["13:30","Pre-gimnasio","1 plátano y café",1,27,0],
-    ["15:30","Comida","Pechuga de pollo a la plancha (220 g) con ajo y pimentón, 100 g de arroz en crudo o 420 g de patata al microondas, guarnición de verduras (150 g), 1,5 cucharadas de AOVE y 1 pieza de fruta",61,106,22],
+    ["15:30","Comida","Día de legumbre: 1 plato hondo de alubias (280 g de conserva) con tomate, pimiento y cebolla, 150 g de pollo a la plancha, 1 cucharada de AOVE y 1 pieza de fruta",59,73,16],
+    ["18:30","Merienda","1 vaso de queso fresco batido 0 % (250 g) con canela y 1 pieza de fruta",28,30,1],
+    ["21:00","Cena","Salmón a la plancha (180 g), ensalada grande con canónigos, cebolla y tomate, 150 g de patata y 1 cucharada de AOVE",42,36,32],
+    ["22:30","Antes de dormir","1 vaso y medio de queso fresco batido 0 % (375 g) con canela",41,15,1]];
+  if(kind==='viernes') return [
+    ["07:15","Desayuno","Café con leche semidesnatada, tortilla de 4 huevos con champiñones y 1 vaso de queso fresco batido 0 % (250 g)",60,25,24],
+    ["14:00","Comida","Pescado blanco: merluza a la plancha (240 g), 350 g de patata, verduras (200 g), 1 cucharada de AOVE y 1 pieza de fruta",52,90,14],
+    ["17:30","Merienda","1 vaso de queso fresco batido 0 % (250 g) con canela y 15 g de nueces",30,11,10],
+    ["21:15","Cena","Pechuga de pollo (220 g) con pisto o verdura cocida (250 g), 200 g de patata y 1,5 cucharadas de AOVE",58,46,21],
+    ["22:30","Antes de dormir","1 vaso de queso fresco batido 0 % (250 g) con canela",28,10,0]];
+  if(kind==='domingo') return [
+    ["09:00","Desayuno","Café con leche semidesnatada, tortilla de 4 huevos, medio aguacate y 1 vaso de queso fresco batido 0 % (250 g)",61,23,35],
+    ["14:00","Comida","Día de moluscos: pulpo a la gallega (300 g) con 150 g de patata, ensalada de canónigos y cebolla, 1,5 cucharadas de AOVE y 1 pieza de fruta",60,59,20],
     ["18:00","Merienda","1 vaso de queso fresco batido 0 % (250 g) con canela y 1 pieza de fruta",28,30,1],
-    ["21:15","Cena","Salmón a la plancha (200 g), ensalada grande con canónigos, cebolla y tomate, 200 g de patata y 1 cucharada de AOVE",47,44,35],
-    ["22:30","Antes de dormir",BATIDO[0],BATIDO[1],BATIDO[2],BATIDO[3]]];
-  if(kind==='larga') return [
-    ["08:00","Desayuno antes de la bici","Café con leche semidesnatada, 80 g de pan integral con aceite y pavo, 1 plátano y 1 vaso de queso fresco batido 0 % (250 g)",56,79,18],
-    ["11:00","Al bajar de la bici","Batido con 30 g de proteína y 1 pieza de fruta, o un bocadillo pequeño de pavo",34,36,3],
-    ["14:00","Comida","Carne blanca: pechuga de pollo (220 g), 100 g de arroz en crudo o 420 g de patata, verduras (150 g), 1,5 cucharadas de AOVE y 1 pieza de fruta",61,106,22],
-    ["18:00","Merienda","1 vaso de queso fresco batido 0 % (250 g) con canela y 1 pieza de fruta",28,30,1],
-    ["21:00","Cena","Pescado azul: salmón (200 g) con ensalada grande, 200 g de patata y 1 cucharada de AOVE",47,44,35],
-    ["22:30","Antes de dormir",BATIDO[0],BATIDO[1],BATIDO[2],BATIDO[3]]];
-  if(kind==='suave') return [
-    ["08:30","Desayuno","Café con leche semidesnatada, tortilla de 4 huevos con champiñones y 1 vaso de queso fresco batido 0 % (250 g) con canela",60,25,24],
-    ["13:30","Comida","Día de moluscos: pulpo a la gallega (300 g) con 150 g de patata, ensalada de canónigos, cebolla y queso fresco de cabra, 1,5 cucharadas de AOVE y 1 pieza de fruta",69,60,28],
-    ["17:00","Merienda","1 vaso de queso fresco batido 0 % (250 g) con canela, 1 pieza de fruta y 20 g de nueces",32,32,17],
-    ["21:00","Cena","Día de verdura: berenjenas rellenas de atún (2 latas al natural) con media bola de mozzarella y 1 cucharada de AOVE. Sin arroz ni patata",61,16,28],
-    ["22:30","Antes de dormir",BATIDO[0],BATIDO[1],BATIDO[2],BATIDO[3]]];
-  if(kind==='libre') return [
-    ["08:30","Desayuno","Café con leche semidesnatada, tortilla de 4 huevos y 1 vaso de queso fresco batido 0 % (250 g) con canela",59,21,24],
-    ["14:00","Comida","Carne blanca: pechuga de pollo (220 g), 100 g de arroz en crudo o 420 g de patata, verduras (150 g), 1,5 cucharadas de AOVE y 1 pieza de fruta",61,106,22],
-    ["18:00","Merienda","1 vaso de queso fresco batido 0 % (250 g) con canela y 1 pieza de fruta",28,30,1],
-    ["21:00","Cena","Pescado azul: salmón (200 g) con ensalada grande, 200 g de patata y 1 cucharada de AOVE",47,44,35],
-    ["22:30","Antes de dormir",BATIDO[0],BATIDO[1],BATIDO[2],BATIDO[3]]];
+    ["21:15","Cena","Día de verdura: berenjenas rellenas de atún (2 latas al natural) con media bola de mozzarella y 1 cucharada de AOVE",57,16,22],
+    ["22:30","Antes de dormir","1 vaso de queso fresco batido 0 % (250 g) con canela",28,10,0]];
+  if(kind==='evento') return [
+    ["09:30","Desayuno","Café con leche semidesnatada, tortilla de 4 huevos y 1 vaso de queso fresco batido 0 % (250 g) con canela",59,21,24],
+    ["14:30","Comida","Carne blanca: pechuga de pollo (250 g) con ensalada grande o verdura cocida (250 g) y 1 cucharada de AOVE. Hoy sin arroz ni patata: el hidrato se reserva para el evento",61,12,17],
+    ["18:00","Antes de salir","1 vaso de queso fresco batido 0 % (250 g) o un yogur proteico. No llegues con hambre al evento",28,10,0],
+    ["20:30","Evento, o cena normal si no lo hay","Presupuesto de unas 1.650 kcal: cabe una cena de restaurante completa. Proteína y verdura primero, el pan de la mesa fuera, un postre compartido y el número de copas decidido antes de salir",70,160,75]];
   if(kind==='esqui') return [
-    ["08:00","Desayuno","Café con leche, 80 g de pan integral con aceite y jamón serrano, 1 pieza de fruta y 1 vaso de queso fresco batido (250 g)",59,81,22],
-    ["11:00","En pistas","1 plátano o 1 barrita, y agua",2,25,4],
-    ["13:30","Comida en pistas","Plato con proteína (200 g de carne o pescado) y arroz o pasta, o bocadillo de pavo o atún",57,119,17],
-    ["17:30","Merienda","Queso fresco batido o yogur (250 g), 1 pieza de fruta y 20 g de frutos secos",32,31,14],
-    ["21:00","Cena","Carne o pescado (220 g) con arroz, pasta o patata, y verdura",55,67,27],
-    ["22:30","Antes de dormir",BATIDO[0],BATIDO[1],BATIDO[2],BATIDO[3]]];
+    ["07:45","Desayuno","Café con leche, 80 g de pan integral con aceite y jamón serrano, 1 pieza de fruta y 1 vaso de queso fresco batido (250 g)",57,72,21],
+    ["11:00","En pistas","1 plátano o 1 barrita, y agua. No lo saltes: las caídas tontas llegan con la glucosa baja",3,52,4],
+    ["13:30","Comida en pistas","Plato con proteína (200 g de carne o pescado) y arroz o pasta, o bocadillo de pavo o atún",62,126,22],
+    ["17:00","Al bajar de pistas","30-40 g de proteína en la primera hora: batido o queso fresco batido (300 g) con 1 pieza de fruta",34,32,1],
+    ["21:00","Cena","Carne o pescado (240 g) con pasta, arroz o patata abundante y verdura",62,84,28]];
+  if(kind==='navidad') return [
+    ["08:30","Desayuno","Café con leche semidesnatada, tortilla de 4 huevos, 80 g de pan integral, 1 pieza de fruta y 1 vaso de queso fresco batido (250 g)",68,74,26],
+    ["14:00","Comida","Lo que haya, con cabeza: proteína primero, verdura, y una ración de hidrato del tamaño de tu puño",73,115,35],
+    ["18:00","Merienda","1 vaso de queso fresco batido 0 % (250 g) y 1 pieza de fruta",28,30,1],
+    ["21:30","Cena","Proteína y verdura. Si hay cena de celebración, esta es la comida que se adapta",53,72,19],
+    ["23:00","Antes de dormir","1 vaso de queso fresco batido 0 % (250 g) con canela",28,10,0]];
   return [];
 }
+
 function dietFor(date, W){
   if(date<START) return null;
-  const tr=W.trip[date]; const i=dow(date); const lvl=dietLevel(date); const ph=phaseOf(date);
+  const tr=W.trip[date]; const i=dow(date); const ph=phaseOf(date);
   const notes=[];
   let kind, name;
+
   if(tr && tr.type==='enfermo') return {kind:'enfermo', name:'Día de recuperación', rows:[], notes:['Hoy no hay déficit ni se cuentan calorías. Come según el hambre, con proteína en cada comida (unos 200 g al día), mucho líquido, caldo, fruta, arroz o patata.']};
-  if(tr && tr.type==='esqui'){ kind='esqui'; name='Día de esquí'; notes.push('Mucho gasto: hoy se come como un día fuerte. Bebe más de lo que crees; en altura te deshidratas sin notarlo.'); }
-  else if(tr && tr.type==='vacaciones'){ kind='suave'; name='Día de vacaciones'; notes.push('Fuera de casa: proteína en cada comida y guarnición de arroz o patata. Los horarios son orientativos.'); }
-  else if(tr && tr.type==='trabajo'){ kind='libre'; name='Día de viaje'; notes.push('En restaurante: proteína a la plancha, arroz o patata y verdura. Los lácteos de la noche, en el hotel si puedes.'); }
-  else if(i===0){ kind='lunes'; name='Solo gimnasio'; }
-  else if(i===1||i===2||i===3){ if(tr && tr.type==='paron'){ kind='lunes'; name='Gimnasio sin sesión de noche'; } else { kind='doble'; name='Día doble'; } }
-  else if(i===4){ kind='suave'; name='Descanso'; notes.push('Día bajo: hoy no entrenas, así que la comida baja con el gasto. La proteína no.'); }
-  else if(i===5){ kind='larga'; name='Salida larga'; }
-  else { kind='suave'; name='Domingo suave'; }
-  const PHN={
-    arranque:'Primera semana: déficit en torno a 700 kcal al día. Proteína alta para no perder músculo mientras el cuerpo se adapta al plan nuevo.',
-    base:'Déficit en torno a 700 kcal al día. Al dejar el rugby gastas unas 400 kcal menos al día: esto ya lo tiene en cuenta.',
-    esqui:'Mes de esquí: se come a mantenimiento la semana de pistas y con déficit suave el resto. Enero es de mantener.',
-    carrera:'Déficit en torno a 700 kcal al día, con el carbohidrato arriba los días de carrera.',
-    objetivo:'Déficit en torno a 600 kcal al día. Cuanto más cerca del objetivo, más despacio y más proteína.',
-    descarga:'Descarga: esta semana comes a mantenimiento, con más arroz y patata. Es parte del plan, no una excepción: cortar el déficit una semana de cada cuatro es lo que hace que las otras tres funcionen.'};
-  if(PHN[ph]) notes.unshift(PHN[ph]);
-  const rows=dietRows(kind, lvl, i).slice();
-  if(lvl==='alto' && rows.length){
-    rows.splice(rows.length-1, 0, ['—','Ración extra de descarga','Añade hoy 80 g más de arroz en crudo (o 350 g de patata) repartidos entre la comida y la cena, y 1 pieza de fruta',3,85,1]);
+  if(ph==='esqui' || (tr && tr.type==='esqui')){ kind='esqui'; name='Día de esquí'; notes.push('Hoy no se pierde peso: se esquía. Comes a mantenimiento o algo por encima. Bebe 2-3 litros aunque no tengas sed: en altura y con frío uno se deshidrata sin enterarse.'); }
+  else if(ph==='navidad'){ kind='navidad'; name='Navidad'; notes.push('Semana de mantenimiento. El déficit se pausa y el objetivo es pesar el día 27 lo mismo que el día 20. Proteína en cada comida y el resto, con cabeza.'); }
+  else if(tr && tr.type==='vacaciones'){ kind='navidad'; name='Día de vacaciones'; notes.push('Fuera de casa: proteína en cada comida y guarnición del tamaño de tu puño. Los horarios son orientativos.'); }
+  else if(tr && tr.type==='trabajo'){ kind='viernes'; name='Día de viaje'; notes.push('En restaurante: proteína a la plancha, arroz o patata y verdura. Los lácteos de la noche, en el hotel si puedes.'); }
+  else if(ph==='afinado'){ kind='miercoles'; name='Afinado'; }
+  else if(i===5){ kind='evento'; name='Sábado'; notes.push('Hasta las 18:00 llevas unas 1.150 kcal. Si hay evento esta noche, te quedan unas 1.650 de presupuesto, que es una cena de restaurante completa. Si no lo hay, añade arroz o patata en la comida y una cena normal.'); }
+  else if(i===4){ kind='viernes'; name='Viernes'; }
+  else if(i===6){ kind='domingo'; name='Domingo'; notes.push('El domingo no se compensa el sábado. Nada de ayunar ni de castigarse con cardio: se vuelve al menú y ya está.'); }
+  else if(i===2){ kind='miercoles'; name='Miércoles'; }
+  else {
+    if(tr && tr.type==='paron'){ kind='miercoles'; name='Día de gimnasio sin campo'; }
+    else { kind='rugby'; name='Día de gimnasio y rugby'; }
   }
+
+  const PHN={
+    bloque1:'Bloque 1: déficit en torno a 900 kcal al día. Proteína alta para que lo que pierdas sea grasa.',
+    bloque2:'Bloque 2: mismo déficit. Quedan pocas semanas para Cervinia.',
+    afinado:'Afinado: mantén el déficit pero no lo aprietes. Llegas a esquiar, no a pesarte.',
+    post:'Déficit en torno a 900 kcal al día.'
+  };
+  if(PHN[ph] && kind!=='esqui' && kind!=='navidad') notes.unshift(PHN[ph]);
+
+  const rows=dietRows(kind, i).slice();
   return {kind, name, rows, notes};
 }
 function dietTotals(rows){
@@ -754,15 +761,17 @@ const ICONS={
   right:'<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg>',
   semana:'<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3.5" y="5" width="17" height="15" rx="2.5"/><path d="M3.5 10h17M8 3v4M16 3v4M8 14l2 2 4-4"/></svg>',
   viajes:'<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 20l7-15 4 8 3-4 4 11z"/></svg>',
-  plan:'<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 19h16M6 19V9M11 19V5M16 19v-7"/></svg>',
+  esqui:'<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 20h20"/><path d="M3 20l7-13 4 7 2-3 5 9"/><path d="M8.5 11.5h3"/></svg>',
   peso:'<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 18l5-6 4 3 7-8"/><path d="M15 7h5v5"/></svg>',
   ajustes:'<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 7h10M18 7h2M4 17h4M12 17h8"/><circle cx="16" cy="7" r="2"/><circle cx="10" cy="17" r="2"/></svg>'
 };
-const CATC={gym:'var(--c-gym)',z2:'var(--c-z2)',nado:'var(--c-nado)',run:'var(--c-run)',mob:'var(--c-mob)',eng:'var(--c-eng)',cera:'var(--c-cera)',corr:'var(--c-corr)',check:'var(--c-check)',trip:'var(--c-trip)'};
+const CATC={gym:'var(--c-gym)',rugby:'var(--c-rugby)',speed:'var(--c-speed)',z2:'var(--c-z2)',mob:'var(--c-mob)',match:'var(--c-match)',eng:'var(--c-eng)',cera:'var(--c-cera)',corr:'var(--c-corr)',check:'var(--c-check)',trip:'var(--c-trip)'};
 
-function pesoActual(){
-  const ks=Object.keys(state.weights).sort();
-  return ks.length? state.weights[ks[ks.length-1]] : null;
+function skiCountdown(){
+  const d=diffDays(TODAY, SKI_FROM);
+  if(TODAY>SKI_TO) return null;
+  if(d<=0) return {inside:true, day: diffDays(SKI_FROM,TODAY)+1};
+  return {inside:false, days:d};
 }
 
 function detailHTML(t){
@@ -771,39 +780,66 @@ function detailHTML(t){
     const g=GYM[d.k];
     let h=d.mods.map(m=>'<div class="note">'+esc(m)+'</div>').join('');
     h+='<table class="clock">'+g.rows.map(r=>'<tr><td>'+r[0]+'</td><td>'+esc(r[1])+'</td><td>'+esc(r[2])+'</td></tr>').join('')+'</table>';
+    if(d.iso) h+='<div class="note"><b>Sentadilla isométrica de esta semana: '+esc(d.iso.reps)+'.</b> '+esc(d.iso.note)+'. Espalda plana contra la pared, rodillas a 90°, peso en los talones.</div>';
     if(g.foot) h+='<p>'+esc(g.foot)+'</p>';
     h+='<p class="hint">'+esc(WARMUP)+'</p>';
     return h;
   }
-  if(d.type==='bici'){
-    return '<p>'+(d.largo?'La salida larga de la semana. ':'')+'Zona 2 de principio a fin: pulso entre 113 y 132, o test de conversación.</p>'+
-      '<p><b>Cadencia 85-95 rpm, siempre.</b> Si no puedes mantener 85, el desarrollo es demasiado duro. A tu peso, machacar un desarrollo largo a 60 rpm es destrozarte las rodillas en cómodos plazos.</p>'+
-      (d.largo?'<p class="hint">Come antes de salir y lleva algo para el camino a partir de los 75 min. Al bajar, proteína en la primera hora.</p>'
-              :'<p class="hint">Si llueve o no te da la vida: rodillo, bici estática o remo en el gimnasio. En Bilbao, esperar a que no llueva es no entrenar.</p>')+
-      '<p class="hint">Desde la semana 8, una sola sesión con intensidad a la semana: 4 × 4 min fuerte con 4 min suave en medio. Una, no dos.</p>';
-  }
-  if(d.type==='nado'){
+  if(d.type==='swim'){
     return '<table class="clock">'+
-      '<tr><td>1</td><td>Calentamiento</td><td>300 m suaves</td></tr>'+
-      '<tr><td>2</td><td>Serie principal</td><td>'+esc(d.set)+'</td></tr>'+
-      '<tr><td>3</td><td>Soltar</td><td>200 m muy suaves</td></tr></table>'+
-      '<p>Una serie por sesión con pull buoy: los nadadores grandes se hunden de piernas, y eso es resistencia pura. Respira a ambos lados.</p>'+
-      '<p class="hint">En natación la técnica vale diez veces más que la forma física. Cuatro sesiones con un entrenador rinden más que cualquier material.</p>';
+      '<tr><td>300 m</td><td>Calentamiento</td><td>Suave, alternando estilos si quieres</td></tr>'+
+      '<tr><td>4 × 50</td><td>Técnica</td><td>Con tabla o pull-boy, 20 s de descanso</td></tr>'+
+      '<tr><td>'+esc(d.sw.main)+'</td><td>Bloque principal</td><td>Ritmo cómodo, 20 s de descanso</td></tr>'+
+      '<tr><td>200 m</td><td>Vuelta a la calma</td><td>Muy suave</td></tr></table>'+
+      '<p>Total de hoy: <b>'+esc(d.sw.total)+'</b>.</p>'+
+      '<p><b>Caderas altas.</b> A tu tamaño lo que más te frena no es la fuerza, es que las caderas se hundan. Cabeza neutra mirando al fondo.</p>'+
+      '<p><b>No patees de más.</b> Las piernas grandes consumen mucho oxígeno para lo poco que propulsan. Patada suave y continua.</p>'+
+      '<p><b>Respira a ambos lados.</b> Te costará al principio y te arreglará la simetría de la brazada.</p>'+
+      '<p class="hint">En el agua el pulso sale 10-15 más bajo que en tierra para el mismo esfuerzo: guíate por la sensación. Y nadar da hambre: si sales voraz, una pieza de fruta y no toques el resto del día.</p>';
   }
   if(d.type==='run'){
-    return '<table class="clock">'+
-      '<tr><td>1</td><td>Calentamiento</td><td>5 min andando rápido</td></tr>'+
-      '<tr><td>2</td><td>Serie principal</td><td>'+esc(d.plan.pauta)+'</td></tr>'+
-      '<tr><td>3</td><td>Vuelta a la calma</td><td>5 min andando</td></tr></table>'+
-      '<p>En cinta, al 1 % de inclinación y sin agarrarte al pasamanos. Zapatillas de amortiguación máxima: a tu peso se quedan muertas sobre los 600-700 km.</p>'+
-      '<p class="hint">Si esta semana molesta algo (espinillas, Aquiles, rodilla), repites la semana anterior en vez de avanzar. La tabla es un orden, no un calendario.</p>';
+    return '<div class="note"><b>'+esc(d.r.main)+'</b>, '+esc(d.r.total)+' en total.</div>'+
+      '<p>Calienta 5 minutos caminando rápido antes de empezar y termina igual.</p>'+
+      '<p>El trote va a ritmo de conversación: si no puedes hablar, vas demasiado rápido. Lo que construye fondo es el tiempo, no la velocidad.</p>'+
+      '<p><b>Por qué se empieza tan despacio:</b> a 112 kg cada zancada son unas tres veces tu peso pasando por rodilla y Aquiles. Correr 30 minutos seguidos ahora no te daría fondo, te daría una tendinopatía. Según baje el peso, sube el tiempo continuo.</p>'+
+      '<p class="hint">Cualquier molestia en Aquiles, rodilla o tibia que dure más de dos días: fuera carrera, dentro bici o piscina. Con tu peso eso no se negocia.</p>';
+  }
+  if(d.type==='monte'){
+    return '<p>60-90 minutos en Zona 2. <b>Busca desnivel</b>: bajar cuesta abajo durante una hora es trabajo excéntrico de cuádriceps a coste bajo, y es lo más parecido a esquiar que hay sin nieve.</p>'+
+      '<p>Si llueve o no tienes plan, cámbialo por <b>60 minutos de bici en el gimnasio</b>, resistencia cómoda y cadencia alta.</p>'+
+      '<p class="hint">Pulso entre 113 y 132, o el test de conversación: podrías hablar frases completas, pero preferirías no hacerlo.</p>';
+  }
+  if(d.type==='skiwarm'){
+    return '<table class="clock">'+SKI_WARM.map(r=>'<tr><td>'+r[0]+'</td><td>'+esc(r[1])+'</td><td>'+esc(r[2])+'</td></tr>').join('')+'</table>'+
+      '<p>Seis minutos en el apartamento o al pie de la pista. Es donde se evitan la mitad de los sustos del primer día.</p>';
+  }
+  if(d.type==='skiday'){
+    return '<p><b>Come a media mañana.</b> Las caídas tontas llegan a última hora de la mañana con la glucosa baja: un plátano o una barrita sobre las 11:00.</p>'+
+      '<p><b>Bebe 2-3 litros.</b> En altura y con frío no aparece la sed, pero te deshidratas igual.</p>'+
+      '<p><b>La última bajada es la de las lesiones.</b> Cuando notes que las piernas no responden, esa es la señal de parar, no la de hacer una más.</p>';
+  }
+  if(d.type==='skirec'){
+    return '<p>30-40 g de proteína en la primera hora: un batido o queso fresco batido en el apartamento.</p>'+
+      '<p>Cena completa con hidrato (pasta, arroz o patata): seis días seguidos agotan el glucógeno y es lo que hay que reponer.</p>'+
+      '<p>10 minutos de movilidad: estiramiento de sofá, cuádriceps y tobillo. Y dormir, que es lo que decide cómo esquías mañana.</p>'+
+      '<p class="hint">Lo que te bebas la noche del día 3 lo pagan las piernas el día 4.</p>';
+  }
+  if(d.type==='evento'){
+    return '<p><b>La regla del presupuesto:</b> hasta las 18:00 llevas unas 1.150 kcal, así que te quedan unas 1.650 para el evento. Una cena de restaurante completa cabe ahí.</p>'+
+      '<p><b>En la mesa:</b> proteína y verdura primero, el pan de la mesa son 200 kcal sin enterarte, y un postre compartido.</p>'+
+      '<p><b>El alcohol es el coste real.</b> Una copa son unas 180 kcal, una caña 150, un vino 120. Tres consumiciones es un sábado normal y no descarrila nada; pon el número antes de salir y alterna cada una con un vaso de agua.</p>'+
+      '<p class="hint">Mañana no se compensa: nada de ayunar ni de castigarse con cardio. Se vuelve al menú y ya está.</p>';
+  }
+  if(d.type==='rugby'){
+    return '<p>19:15: una pieza de fruta o dos tortitas de arroz. Durante la sesión, 750 ml-1 L con electrolitos. 21:50: cena post-entreno con proteína y patata o arroz.</p>'+
+      '<p class="hint">Sin partidos, el entreno de campo es ahora tu sesión de intensidad de la semana. Sigue siendo contacto: el Nordic del lunes no se salta.</p>';
   }
   if(d.type==='z2'){
-    return (d.extra?'<div class="note">'+esc(d.extra)+'</div>':'')+'<p>Pulso entre 113 y 132 o test de conversación: podrías hablar, pero preferirías no hacerlo.</p><p class="hint">Vale cualquier cosa que mantenga ese pulso: caminar en cuesta, monte, bici estática o remo.</p>';
+    return (d.extra?'<div class="note">'+esc(d.extra)+'</div>':'')+'<p>Pulso entre 113 y 132 o test de conversación: podrías hablar, pero preferirías no hacerlo.</p><p class="hint">Opciones: bici estática, remo o cinta en cuesta en el gimnasio, piscina (en el agua el pulso sale 10-15 más bajo, guíate por la sensación) o monte.</p>';
   }
   if(d.type==='mob') return '<p>'+esc(MOBILITY)+'</p>';
   if(d.type==='hotel') return '<table class="clock">'+HOTEL.map(r=>'<tr><td>'+r[0]+'</td><td>'+esc(r[1])+'</td><td>'+esc(r[2])+'</td></tr>').join('')+'</table><p class="hint">Dos vueltas en formato circuito, 60 s entre ejercicios.</p>';
-  if(d.type==='review') return '<table class="clock"><tr><td>1</td><td>Añade viajes, esquí o semanas tranquilas de la semana que viene en Viajes.</td><td></td></tr><tr><td>2</td><td>Mira el peso medio de la semana en Peso.</td><td></td></tr><tr><td>3</td><td>Decide la tarea concreta de cada bloque de estudio.</td><td></td></tr></table>';
+  if(d.type==='review') return '<table class="clock"><tr><td>1</td><td>Mira el peso medio de la semana en Peso y compáralo con el de la anterior.</td><td></td></tr><tr><td>2</td><td>¿Hay evento el sábado que viene? Decide ya el número de copas.</td><td></td></tr><tr><td>3</td><td>Añade viajes o parones de la semana que viene en Viajes.</td><td></td></tr><tr><td>4</td><td>Decide la tarea concreta de cada bloque de estudio.</td><td></td></tr></table>';
   if(d.type==='study'){
     const k=t.key; const v=state.notes[k]||'';
     return '<p class="hint">'+esc(AREA[d.area].hint)+'</p><textarea data-note="'+esc(k)+'" placeholder="Qué vas a hacer en este bloque">'+esc(v)+'</textarea>';
@@ -872,18 +908,16 @@ function viewSemana(){
   const doneN=countable.filter(t=>state.done[t.key]).length;
   const pct=countable.length?doneN/countable.length:0;
   const ph=phaseOf(ui.sel);
-  const pa=pesoActual(); const obj=objetivoPeso(TODAY<START?START:TODAY);
+  const sk=skiCountdown();
   let board='<header class="board"><div class="board-top"><span class="phase">'+esc(PHASE_NAME[ph])+'</span>'+syncHTML()+'</div>';
-  if(pa!=null){
-    const dlt=pa-obj;
-    const estado = dlt<=-0.5 ? 'Por delante de la curva.' : (dlt<=0.5 ? 'En la curva.' : 'Por encima de la curva.');
-    board+='<div class="next"><div class="next-l">Peso actual, semana '+weekNo(TODAY<START?START:TODAY)+'</div>'+
-      '<div class="next-teams">'+fmtKg(pa)+' <span class="vs">de</span> '+fmtKg(PESO_OBJETIVO)+'</div>'+
-      '<div class="next-meta">Objetivo de hoy '+fmtKg(obj)+' kg. <b>'+estado+'</b></div></div>';
-  } else {
-    board+='<div class="next"><div class="next-l">Punto de partida</div><div class="next-teams">'+fmtKg(PESO_INICIAL)+' <span class="vs">de</span> '+fmtKg(PESO_OBJETIVO)+'</div>'+
-      '<div class="next-meta">Apunta tu primer peso en la pestaña Peso y la curva empieza a contar.</div></div>';
-  }
+  if(sk && sk.inside){
+    board+='<div class="next"><div class="next-l">Cervinia</div><div class="next-teams">Día '+sk.day+' de 7</div>'+
+      '<div class="next-meta">Calienta antes de la primera bajada y para cuando las piernas dejen de responder.</div></div>';
+  } else if(sk){
+    const wn=weekNum(TODAY);
+    board+='<div class="next"><div class="next-l">Cervinia, del 1 al 7 de enero</div><div class="next-teams">'+sk.days+' <span class="vs">días</span></div>'+
+      '<div class="next-meta">'+(wn>=1&&wn<=8?('Semana '+wn+' de 8. '):'')+'<b>Isométrico: '+esc(isoFor(TODAY<START?START:TODAY).reps)+'</b></div></div>';
+  } else board+='<div class="next"><div class="next-teams">Esquí terminado</div><div class="next-meta">Se reanuda el déficit con la base ya construida.</div></div>';
   if(state.settings.ceraDate && state.settings.ceraDate>=TODAY){ board+='<div class="cera-line">Examen CERA: '+esc(longDate(state.settings.ceraDate))+', faltan '+diffDays(TODAY,state.settings.ceraDate)+' días.</div>'; }
   board+='<div class="prog"><div class="bar"><i style="width:'+(pct*100).toFixed(1)+'%"></i></div><div class="prog-l"><span><b>'+doneN+'</b> de '+countable.length+' tareas esta semana</span><span>'+Math.round(pct*100)+' %</span></div></div></header>';
 
@@ -896,10 +930,10 @@ function viewSemana(){
   W.dates.forEach((d,i)=>{
     const ts=W.days[d].filter(t=>t.count); const dn=ts.filter(t=>state.done[t.key]).length;
     const p=ts.length?dn/ts.length:0;
-    const hasLong=W.days[d].some(t=>t.id==='bicilarga'); const hasTrip=!!W.trip[d];
+    const hasMatch=W.days[d].some(t=>t.id==='ski'); const hasTrip=!!W.trip[d];
     h+='<button class="day'+(d===ui.sel?' sel':'')+(d===TODAY?' today':'')+'" role="tab" aria-selected="'+(d===ui.sel)+'" data-action="sel" data-date="'+d+'" aria-label="'+esc(longDate(d))+'">'+
       '<span class="dl">'+DOW_S[i]+'</span><span class="ring">'+ring(p, p===1?'var(--c-gym)':'var(--brand-2)')+'<span>'+parse(d).getDate()+'</span></span>'+
-      '<span class="mk">'+(hasLong?'<b style="background:var(--c-z2)"></b>':'')+(hasTrip?'<b style="background:var(--c-trip)"></b>':'')+'</span></button>';
+      '<span class="mk">'+(hasMatch?'<b style="background:var(--c-match)"></b>':'')+(hasTrip?'<b style="background:var(--c-trip)"></b>':'')+'</span></button>';
   });
   h+='</div>';
 
@@ -908,17 +942,20 @@ function viewSemana(){
   h+='<div class="dayhead"><h3>'+esc(longDate(ui.sel))+'</h3><span class="cnt">'+(dc.length?dd+' de '+dc.length:'')+'</span></div>';
   const tr=W.trip[ui.sel];
   if(tr) h+='<div class="banner"><b>'+esc(TRIP_TYPES[tr.type].name)+(tr.note?', '+esc(tr.note):'')+'.</b> '+esc(TRIP_TYPES[tr.type].desc)+'</div>';
-  if(ui.sel<START) h+='<div class="banner">El plan empieza el lunes 26 de octubre.</div>';
-  if(phaseOf(ui.sel)==='arranque') h+='<div class="banner warn"><b>Primera semana sin rugby.</b> El trabajo de esta semana es calibrar: cargas cómodas en el gimnasio y las sesiones de noche a ritmo de conversación. Vas a tener la tentación de ir fuerte en la bici porque el pulmón te lo permite; no la sigas. Lo que falla primero al cambiar de deporte son los tendones, no el motor.</div>';
-  else if(PHASE_NOTE[phaseOf(ui.sel)]) h+='<div class="banner">'+esc(PHASE_NOTE[phaseOf(ui.sel)])+'</div>';
-  if(phaseOf(ui.sel)==='descarga') h+='<div class="banner warn"><b>Semana de descarga.</b> Mismas cargas, la mitad de series, y comes a mantenimiento. No es una excepción al plan: es la parte que evita que las otras tres semanas te pasen factura.</div>';
+  if(ui.sel<START) h+='<div class="banner">El plan empieza el lunes 9 de noviembre.</div>';
+  const _ph=phaseOf(ui.sel);
+  if(_ph==='bloque1' && weekNum(ui.sel)===1) h+='<div class="banner warn"><b>Semana 1 de 8.</b> El objetivo de esta semana es empezar, no impresionar. Cargas conservadoras y foco en la técnica del step-down y del isométrico. Las agujetas de los primeros días son normales.</div>';
+  if(_ph==='bloque2') h+='<div class="banner warn"><b>Bloque específico.</b> Entran los saltos laterales el miércoles: 3 × 6 por lado, aterrizando y estabilizando. Volumen bajo a propósito. Si no aterrizas estable y silencioso, acorta el salto.</div>';
+  if(_ph==='navidad') h+='<div class="banner warn"><b>Semana de Navidad.</b> Dos sesiones cortas y calorías a mantenimiento. El déficit se pausa: intentar adelgazar entre la cena de empresa y Nochevieja acaba en frustración. El objetivo es pesar el día 27 lo mismo que el 20.</div>';
+  if(_ph==='afinado') h+='<div class="banner warn"><b>Afinado.</b> Mitad de series y nada que deje agujetas. Si llegas a Cervinia con los cuádriceps cargados, has entrenado de más.</div>';
+  if(_ph==='esqui') h+='<div class="banner"><b>Cervinia.</b> Calienta antes de la primera bajada, come a media mañana y bebe 2-3 litros. La última bajada es la de las lesiones.</div>';
   if(W.lostNote && (tr || dow(ui.sel)===6)) h+='<div class="banner warn">'+esc(W.lostNote)+'</div>';
   const lf=Object.keys(W.left);
   if(dow(ui.sel)===6 && lf.length) h+='<div class="banner warn">Esta semana no caben '+lf.map(a=>W.left[a]+' min de '+AREA[a].name.toLowerCase()).join(', ')+'. No se arrastran a la siguiente.</div>';
   h+='<div class="list">'+(tasks.length?tasks.map(taskHTML).join(''):'<div class="empty">Nada programado este día.</div>')+'</div>';
   h+=dietHTML(ui.sel, W);
 
-  const groups=[['Fuerza',['gym'],'var(--c-gym)'],['Aeróbico',['z2','nado','run','trip'],'var(--c-z2)'],['Estudio',['eng','cera','corr'],'var(--c-corr)'],['Hábitos',['mob','check'],'var(--c-mob)']];
+  const groups=[['Entreno',['gym','rugby','speed','z2','match','trip'],'var(--c-gym)'],['Estudio',['eng','cera','corr'],'var(--c-corr)'],['Hábitos',['mob','check'],'var(--c-mob)']];
   h+='<section class="summary"><h4>Cómo va la semana</h4>';
   for(const g of groups){
     const ts=countable.filter(t=>g[1].includes(t.cat)); if(!ts.length) continue;
@@ -935,7 +972,7 @@ function viewSemana(){
 function pageHead(title,sub){ return '<header class="pagehead"><h1>'+title+'</h1>'+(sub?'<p>'+sub+'</p>':'')+'</header>'; }
 
 function viewViajes(){
-  let h=pageHead('Viajes y parones','Añade cualquier periodo que te saque de la rutina: viajes, esquí, vacaciones o semanas tranquilas. La agenda se replanifica sola.');
+  let h=pageHead('Viajes y parones','Añade cualquier periodo que te saque de la rutina. La agenda se replanifica sola.');
   h+='<section class="section"><h3>Añadir periodo</h3>'+
     '<div class="field"><label for="tt">Tipo</label><select id="tt">'+Object.keys(TRIP_TYPES).map(k=>'<option value="'+k+'">'+TRIP_TYPES[k].name+'</option>').join('')+'</select></div>'+
     '<p id="tdesc">'+esc(TRIP_TYPES.trabajo.desc)+'</p>'+
@@ -953,66 +990,61 @@ function viewViajes(){
       '<button class="btn danger small" data-action="deltrip" data-id="'+esc(t.id)+'">Quitar</button></div>';
   }
   h+='</section><section class="section"><h3>Cómo se replanifica</h3>'+
-    '<p>Si pierdes el gimnasio A, B o C, se recupera el jueves en lugar del D, y si hace falta también el viernes. Nunca se amontonan dos sesiones en un día.</p>'+
-    '<p>Las sesiones aeróbicas perdidas no se recuperan: la salida larga del sábado es la que sostiene la semana.</p>'+
+    '<p>Si pierdes una sesión de gimnasio, se recupera el jueves en lugar del D, y si hace falta también el viernes. La prioridad al recuperar es siempre el <b>gimnasio C</b>, el de piernas de esquí: es la sesión que de verdad prepara Cervinia.</p>'+
     '<p>Los bloques de estudio que caen en el viaje se reparten entre los días que quedan, sin pasar de lo que cabe en cada hueco. Lo que no cabe, se avisa y no se arrastra.</p></section>';
   return h;
 }
 
-function viewPlan(){
-  const b=blockOf(TODAY<START?START:TODAY);
-  let h=pageHead('El plan','De octubre a agosto, en cuatro fases. Lo que toca cada día sale de aquí.');
+const PHASES_LIST = [
+  ['Bloque 1 · Acumulación','9 nov – 6 dic','2026-11-09','2026-12-06','Las cuatro sesiones completas. El isométrico sube de 30 a 60 segundos. Déficit a pleno rendimiento.','108,5 kg'],
+  ['Bloque 2 · Específico','7 – 20 dic','2026-12-07','2026-12-20','Entran los saltos laterales. El isométrico llega a 90 segundos y el step-down a 5 segundos de bajada.','107 kg'],
+  ['Navidad · Mantener','21 – 27 dic','2026-12-21','2026-12-27','Dos sesiones cortas en toda la semana. Calorías a mantenimiento: el déficit se pausa.','Pesar lo mismo'],
+  ['Afinado','28 – 31 dic','2026-12-28','2026-12-31','Mitad de series. Ninguna sesión debe dejarte agujetas.','106-107 kg'],
+  ['Cervinia','1 – 7 ene','2027-01-01','2027-01-07','Seis días de esquí. Calentar antes de la primera bajada y proteína en la primera hora al bajar.','—']
+];
+function viewEsqui(){
+  const sk=skiCountdown();
+  let h=pageHead('Cervinia','Del 1 al 7 de enero. Todo el plan apunta aquí.');
+  h+='<section class="section">';
+  if(sk && sk.inside) h+='<h3>Estás en el día '+sk.day+' de 7</h3><p>Calentamiento antes de la primera bajada, proteína en la primera hora al bajar y movilidad por la noche.</p>';
+  else if(sk) h+='<h3>Faltan '+sk.days+' días</h3><p>Son '+Math.max(0,Math.ceil(sk.days/7))+' semanas de trabajo. Lo que hagas los miércoles es lo que vas a notar el cuarto día en pistas.</p>';
+  else h+='<h3>Esquí terminado</h3><p>Se reanuda el déficit con la base ya construida.</p>';
+  h+='</section>';
+
+  h+='<section class="section"><h3>La sentadilla isométrica</h3>'+
+     '<p>Es el ejercicio más específico del plan y tu medidor. Espalda plana contra la pared, rodillas a 90°, muslos paralelos al suelo y peso en los talones.</p>'+
+     '<p><b>El objetivo antes de salir: 2 minutos seguidos.</b></p><div class="wlist">';
+  const wnow=weekNum(TODAY);
+  for(const [w,reps,note] of ISO){
+    const ini=addDays('2026-11-09',(w-1)*7);
+    const cur = wnow===w;
+    h+='<div'+(cur?' style="font-weight:600"':'')+'><span>Semana '+w+' <span class="hint">('+esc(shortDate(ini))+')</span></span><span>'+esc(reps)+'</span></div>';
+  }
+  h+='</div><p class="hint">Cuando los 90 s vayan cómodos, añade un disco de 10 kg en el regazo antes que alargar más el tiempo.</p></section>';
 
   h+='<section class="section"><h3>Las fases</h3>';
-  const FASES=[
-    ['base','Fase 0, base sin impacto','26 oct — 31 dic','Fuerza 4 días, bici y natación. Cero carrera: primero hay que bajar peso.'],
-    ['esqui','Fase 1, mes de esquí','1 — 31 ene','Mantener. El esquí es la carga de piernas y enero no da para todo.'],
-    ['carrera','Fase 2, entra la carrera','1 feb — 30 abr','Caminar-correr martes y jueves, con progresión semanal. Aquí se lesiona todo el mundo: por eso va despacio.'],
-    ['objetivo','Fase 3, objetivo','1 may — 30 ago','Carrera continua y salidas largas. Los 10 km llegan hacia agosto, sobre los 93-95 kg.']
-  ];
-  for(const f of FASES){
-    h+='<div class="fix'+(f[0]===b?' next':'')+'"><div class="jn">'+(FASES.indexOf(f))+'</div><div>'+
-      '<div class="fr">'+esc(f[1])+'</div><div class="fm">'+esc(f[2])+'. '+esc(f[3])+'</div></div></div>';
+  for(const [nm,fechas,ini,fin,desc,obj] of PHASES_LIST){
+    const past=TODAY>fin; const cur=TODAY>=ini&&TODAY<=fin;
+    h+='<div class="fix'+(past?' past':'')+(cur?' next':'')+'"><div class="jn">'+(cur?'▶':(past?'✓':'·'))+'</div><div>'+
+      '<div class="fr">'+esc(nm)+'</div><div class="fm">'+esc(fechas)+' · objetivo '+esc(obj)+'</div>'+
+      '<div class="fm">'+esc(desc)+'</div></div></div>';
   }
   h+='</section>';
 
-  h+='<section class="section"><h3>La semana tipo</h3><table class="clock">'+
-    '<tr><td>L</td><td>Gimnasio A, inferior</td><td>Inglés 18:15</td></tr>'+
-    '<tr><td>M</td><td>Gimnasio B, superior</td><td>Correduría 18:15 · '+(b==='carrera'||b==='objetivo'?'carrera':'bici')+' 20:00</td></tr>'+
-    '<tr><td>X</td><td>Gimnasio C, posterior</td><td>CERA 18:15 · natación 20:00</td></tr>'+
-    '<tr><td>J</td><td>Gimnasio D, tirón</td><td>Inglés 18:15 · '+(b==='carrera'||b==='objetivo'?'carrera':'natación')+' 20:00</td></tr>'+
-    '<tr><td>V</td><td>Descanso</td><td>CERA 18:30 · caminar</td></tr>'+
-    '<tr><td>S</td><td>Bici larga 09:30</td><td>Correduría 16:30</td></tr>'+
-    '<tr><td>D</td><td>Suave</td><td>Correduría 15:30 · CERA 17:45 · inglés 19:45</td></tr>'+
-    '</table><p class="hint">El aeróbico de piernas nunca cae el mismo día que la pierna pesada: lunes y miércoles son sentadilla y peso muerto, así que la carrera va martes y jueves.</p></section>';
-
-  h+='<section class="section"><h3>Progresión de carrera</h3><table class="clock">';
-  let prev=0;
-  for(const p of PROG_CARRERA){
-    const n = b==='objetivo' ? weekInBlock(TODAY)+13 : (b==='carrera'?weekInBlock(TODAY):0);
-    const act = n>prev && n<=p[0];
-    h+='<tr'+(act?' style="color:var(--c-run);font-weight:600"':'')+'><td>'+(p[0]===99?'13+':(prev+1)+'-'+p[0])+'</td><td>'+esc(p[1])+'</td><td>'+esc(p[2])+'</td></tr>';
-    prev=p[0];
-  }
-  h+='</table><p class="hint">Semanas contadas desde el 1 de febrero. Si una semana molesta algo, repites la anterior.</p></section>';
-
-  h+='<section class="section"><h3>Series de natación</h3><table class="clock">'+
-    SERIES_NATACION.map((s,i)=>'<tr><td>'+(i+1)+'</td><td>'+esc(s)+'</td><td>'+((weekNo(TODAY)-1)%SERIES_NATACION.length===i?'esta semana':'')+'</td></tr>').join('')+
-    '</table><p class="hint">Siempre con 300 m de calentamiento y 200 m soltando.</p></section>';
-
-  h+='<section class="section"><h3>La bici que comprar</h3>'+
-    '<p>Cuadro de aluminio, no carbono: muchas bicis de carretera tienen un límite de peso del sistema de 110-120 kg y ahora mismo estás justo en el límite.</p>'+
-    '<p>Ruedas de 28-32 radios, nada de perfil alto con pocos radios. Cubiertas de 30-32 mm y frenos de disco.</p>'+
-    '<p>Desarrollos cortos: platos 50/34 o 48/32 con casete 11-34 o más. En Bizkaia esto no es opcional.</p>'+
-    '<p class="hint">Un estudio biomecánico al comprarla. A tu altura, la talla de catálogo casi nunca acierta.</p></section>';
+  h+='<section class="section"><h3>En pistas</h3>'+
+     '<p><b>Calienta 6 minutos antes de la primera bajada.</b> Nadie lo hace y es donde se evitan la mitad de los sustos del primer día.</p>'+
+     '<p><b>Come a media mañana.</b> Las caídas tontas llegan a última hora de la mañana con la glucosa baja.</p>'+
+     '<p><b>Bebe 2-3 litros al día.</b> En altura y con frío no aparece la sed, pero te deshidratas igual.</p>'+
+     '<p><b>La última bajada es la de las lesiones.</b> Cuando notes que las piernas no responden, esa es la señal de parar, no la de hacer una más.</p>'+
+     '<p><b>30-40 g de proteína en la primera hora al bajar</b>, y cena con hidrato abundante. Seis días seguidos agotan el glucógeno.</p></section>';
   return h;
 }
 
 function viewPeso(){
-  let h=pageHead('Peso','Lo que cuenta es la media semanal, no el dato de un día. Objetivo: 95 kg.');
+  let h=pageHead('Peso','Martes, jueves y viernes. Lo que cuenta es la media, no el dato de un día.');
   h+='<section class="section"><h3>Anotar peso</h3><div class="row2"><div class="field"><label for="pd">Día</label><input type="date" id="pd" value="'+TODAY+'"></div><div class="field"><label for="pk">Kilos</label><input type="number" id="pk" inputmode="decimal" step="0.1" min="60" max="160" placeholder="108,4"></div></div><button class="btn full" data-action="addweight">Guardar peso</button></section>';
   const entries=Object.keys(state.weights).sort().map(d=>[d,state.weights[d]]);
-  if(!entries.length){ return h+'<section class="section"><p>Todavía no hay pesos. Pésate lunes, martes y miércoles de la primera semana: la media será tu punto de partida real.</p></section>'; }
+  if(!entries.length){ return h+'<section class="section"><p>Todavía no hay pesos. Pésate martes, jueves y viernes de esta primera semana: la media de los tres es tu punto de partida real.</p></section>'; }
   const byWeek={}; for(const [d,w] of entries){ const m=mondayOf(d); (byWeek[m]=byWeek[m]||[]).push(w); }
   const weeks=Object.keys(byWeek).sort().map(m=>({m, avg:byWeek[m].reduce((a,b)=>a+b,0)/byWeek[m].length, n:byWeek[m].length}));
   // gráfico
@@ -1020,30 +1052,22 @@ function viewPeso(){
   const t0=parse(entries[0][0]).getTime(), t1=Math.max(parse(entries[entries.length-1][0]).getTime(), t0+86400000*7);
   const X=d=>P+(parse(d).getTime()-t0)/(t1-t0)*(W-2*P); const Y=w=>P+(mx-w)/(mx-mn)*(H-2*P);
   const wline=weeks.map(w=>[X(addDays(w.m,3)),Y(w.avg)]);
-  // curva objetivo sobre el mismo rango de fechas que los pesajes
-  const span=Math.max(7, diffDays(entries[0][0], entries[entries.length-1][0]));
-  let obj='';
-  for(let k=0;k<=24;k++){
-    const d=addDays(entries[0][0], Math.round(k*span/24));
-    const v=objetivoPeso(d);
-    if(v>=mn && v<=mx) obj+=(obj?'L':'M')+X(d).toFixed(1)+','+Y(v).toFixed(1);
-  }
-  h+='<section class="section"><h3>Tendencia</h3><svg class="chart" viewBox="0 0 '+W+' '+H+'" role="img" aria-label="Evolución del peso frente a la curva objetivo">'+
+  h+='<section class="section"><h3>Tendencia</h3><svg class="chart" viewBox="0 0 '+W+' '+H+'" role="img" aria-label="Evolución del peso">'+
     '<line x1="'+P+'" y1="'+(H-P)+'" x2="'+(W-P)+'" y2="'+(H-P)+'" stroke="var(--line)"/>'+
-    (obj?'<path d="'+obj+'" fill="none" stroke="var(--muted)" stroke-width="1.5" stroke-dasharray="4 4"/>':'')+
     entries.map(e=>'<circle cx="'+X(e[0]).toFixed(1)+'" cy="'+Y(e[1]).toFixed(1)+'" r="3" fill="var(--muted)" opacity=".55"/>').join('')+
     (wline.length>1?'<polyline fill="none" stroke="var(--c-gym)" stroke-width="2.5" stroke-linejoin="round" points="'+wline.map(p=>p[0].toFixed(1)+','+p[1].toFixed(1)).join(' ')+'"/>':'')+
     wline.map(p=>'<circle cx="'+p[0].toFixed(1)+'" cy="'+p[1].toFixed(1)+'" r="4" fill="var(--c-gym)"/>').join('')+
     '<text x="'+P+'" y="12" font-size="11" fill="var(--muted)">'+fmtKg(mx-0.8)+' kg</text><text x="'+P+'" y="'+(H-3)+'" font-size="11" fill="var(--muted)">'+fmtKg(mn+0.8)+' kg</text>'+
-    '</svg><p class="hint">Puntos grises: cada pesaje. Línea verde: media de cada semana. Discontinua: la curva objetivo.</p>';
+    '</svg><p class="hint">Puntos grises: cada pesaje. Línea verde: media de cada semana.</p>';
   // consejo
   if(weeks.length>=2){
     const a=weeks[weeks.length-1], b=weeks[weeks.length-2]; const dlt=a.avg-b.avg;
-    const lo=0.5, hi=0.7;
+    const nav = a.m>='2026-12-21' && a.m<='2026-12-28';
     let msg;
-    if(-dlt>1.0) msg='Has bajado '+fmtKg(-dlt)+' kg de media. Es más rápido de lo que interesa: a ese ritmo lo que se va también es músculo. Suma 200-250 kcal al día.';
-    else if(-dlt<0.3) msg='Has bajado '+fmtKg(Math.max(0,-dlt))+' kg de media. Antes de recortar comida, mira las grasas que no pesas y el alcohol. Si la semana que viene vuelve a quedarse corta, resta 150-200 kcal a los días suaves (viernes y domingo).';
-    else msg='Has bajado '+fmtKg(-dlt)+' kg de media. Dentro del ritmo del plan ('+String(lo).replace('.',',')+'-'+String(hi).replace('.',',')+' kg). No toques nada.';
+    if(nav) msg='Semana de mantenimiento. Si el peso se ha quedado donde estaba, es exactamente lo que buscábamos.';
+    else if(-dlt>1.2) msg='Has bajado '+fmtKg(-dlt)+' kg de media. Es más rápido de lo previsto: si se repite la semana que viene, suma 250 kcal al día. Por encima de 1,2 kg se pierde músculo.';
+    else if(-dlt<0.4) msg='Has bajado '+fmtKg(Math.max(0,-dlt))+' kg de media. Si vuelve a quedarse ahí la semana que viene, resta 150-200 kcal del viernes y el domingo. Y revisa los sábados con honestidad.';
+    else msg='Has bajado '+fmtKg(-dlt)+' kg de media. Dentro del ritmo del plan (0,7-1,0 kg). No toques nada.';
     h+='<div class="note" style="margin-top:8px;padding:10px 12px;border-radius:10px;background:var(--surface-2);font-size:14.5px">'+esc(msg)+'</div>';
   }
   h+='</section><section class="section"><h3>Medias semanales</h3><div class="wlist">';
@@ -1065,8 +1089,8 @@ function viewAjustes(){
     h+='<div class="field"><label for="s-'+a+'">'+AREA[a].name+', horas por semana</label><input type="number" id="s-'+a+'" data-setting="'+a+'" step="0.5" min="0" max="15" inputmode="decimal" value="'+String(Number(s[a])/60)+'"></div>';
   }
   h+='<p>Total: '+tot.toFixed(1).replace('.',',')+' h a la semana.</p>';
-  if(tot>15) h+='<div class="banner warn" style="margin:8px 0 0">Con 8 sesiones de entreno a la semana y en déficit, más de 15 h de estudio te va a quitar sueño. Y el sueño es lo que hace que pierdas grasa y no músculo.</div>';
-  h+='<p class="hint">Huecos: lunes y jueves a las 18:15 (inglés), martes a las 18:15 (correduría), miércoles a las 18:15 y viernes a las 18:30 (CERA), sábado a las 16:30 y domingo desde las 15:30. El domingo es el gran día de estudio, y el viernes el mejor para CERA porque no entrenas.</p></section>';
+  if(tot>15) h+='<div class="banner warn" style="margin:8px 0 0">Con 10 sesiones de entreno a la semana y en déficit, más de 15 h de estudio te va a quitar sueño. Y el sueño es lo que hace que pierdas grasa y no músculo.</div>';
+  h+='<p class="hint">Huecos: lunes y jueves a las 18:15 (inglés), martes a las 18:15 (correduría), miércoles a las 18:30 y viernes a las 19:30 (CERA), sábado a las 12:00 y domingo desde las 15:30. En Navidad y en la semana de esquí no se programa estudio.</p></section>';
   h+='<section class="section"><h3>Examen CERA</h3><div class="field"><label for="cd">Fecha del examen</label><input type="date" id="cd" data-setting="ceraDate" value="'+esc(s.ceraDate||'')+'"></div><p class="hint">Aparece la cuenta atrás en la pantalla de la semana.</p></section>';
   h+='<section class="section"><h3>Copia de seguridad</h3><p>Tus marcas, pesos y viajes se guardan en este móvil. Descarga una copia de vez en cuando, y siempre antes de cambiar de teléfono.</p>'+
     '<button class="btn full" data-action="export">Descargar copia</button>'+
@@ -1078,9 +1102,9 @@ function viewAjustes(){
 
 function render(){
   const v=document.getElementById('view');
-  const map={semana:viewSemana, viajes:viewViajes, plan:viewPlan, peso:viewPeso, ajustes:viewAjustes};
+  const map={semana:viewSemana, viajes:viewViajes, esqui:viewEsqui, peso:viewPeso, ajustes:viewAjustes};
   v.innerHTML=(map[ui.tab]||viewSemana)();
-  const tabs=[['semana','Semana'],['viajes','Viajes'],['plan','Plan'],['peso','Peso'],['ajustes','Ajustes']];
+  const tabs=[['semana','Semana'],['viajes','Viajes'],['esqui','Esquí'],['peso','Peso'],['ajustes','Ajustes']];
   document.getElementById('tabsin').innerHTML=tabs.map(t=>'<button class="tab'+(ui.tab===t[0]?' on':'')+'" data-action="tab" data-tab="'+t[0]+'" aria-current="'+(ui.tab===t[0]?'page':'false')+'">'+ICONS[t[0]]+'<span>'+t[1]+'</span></button>').join('');
 }
 
