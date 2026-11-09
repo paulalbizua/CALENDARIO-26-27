@@ -1123,6 +1123,60 @@ function dietRows(kind, dw){
   return [];
 }
 
+/* ===== Dieta del médico: un mes por fases, del 9 de noviembre al 10 de diciembre ===== */
+const DIETA_FROM='2026-11-09', DIETA_TO='2026-12-10', DIETA_ALT='2026-11-14';
+const DIETA_FASES=[
+  {n:1, from:'2026-11-09', to:'2026-11-13', name:'Fase 1 · Ataque',
+   note:'Fase de ataque, 5 días de proteína pura. Come tantas veces como quieras y antes de que aparezca el hambre: no hay límite de cantidad, solo de lista.'},
+  {n:2, from:'2026-11-14', to:'2026-11-20', name:'Fase 2 · Verduras',
+   note:'Entran las verduras, alternando: un día proteína sola y al siguiente verdura con proteína, en comida y en cena.'},
+  {n:3, from:'2026-11-21', to:'2026-11-30', name:'Fase 3 · Pan en el desayuno',
+   note:'Sigue la alternancia. Los días de verdura, 2 tostadas en el desayuno con mantequilla, mermelada, aceite o pavo.'},
+  {n:4, from:'2026-12-01', to:'2026-12-10', name:'Fase 4 · Fruta',
+   note:'Último tramo. Los días de verdura, 2 piezas de fruta al día, nunca por la noche.'}
+];
+function dietaFase(date){
+  if(date<DIETA_FROM || date>DIETA_TO) return null;
+  const f=DIETA_FASES.find(x=>date>=x.from && date<=x.to);
+  if(!f) return null;
+  const verdura = f.n>1 && diffDays(DIETA_ALT,date)%2===0;
+  return {n:f.n, fase:f.name, note:f.note, verdura, pan:f.n>=3&&verdura, fruta:f.n>=4&&verdura};
+}
+function dietaMenu(date, df, i){
+  const rugby=(i===0||i===1||i===3);
+  const cena=rugby?'21:50':'21:15';
+  const rows=[];
+  rows.push(["07:15","Desayuno",
+    "Café solo, tortilla de 3 huevos, 1 vaso de queso fresco batido 0 % (250 g) con canela y 1,5 cucharadas de salvado de avena"+
+    (df.pan?", y 2 tostadas de pan con aceite o pavo":""),
+    df.pan?57:49, df.pan?42:18, df.pan?22:16]);
+  rows.push(["13:30","Antes del gimnasio",
+    "Café solo o 1 yogur desnatado. El plátano no entra en esta dieta",10,6,0]);
+  if(df.verdura) rows.push(["15:25","Comida",
+    "Pollo, ternera o pescado a la plancha (250 g) con verdura a voluntad: ensalada grande, judías verdes, pimientos, calabacín o champiñones"+
+    (df.fruta?", y 1 pieza de fruta":""), 66, df.fruta?30:15, 11]);
+  else rows.push(["15:25","Comida",
+    "Pollo, ternera o pescado a la plancha (250 g) con limón, mostaza y hierbas. Hoy sin verdura",65,1,10]);
+  rows.push(["18:00","Merienda",
+    "1 vaso de queso fresco batido 0 % (250 g) con canela"+(df.fruta?" y 1 pieza de fruta":"")+", o 3 lonchas de pavo",
+    28, df.fruta?30:10, 0]);
+  if(rugby) rows.push(["19:15","Antes del rugby","Unas lonchas de cecina o 1 yogur desnatado",12,5,2]);
+  if(df.verdura) rows.push([cena,"Cena",
+    "Merluza, salmón o tortilla (220 g) con verdura: espinacas, brócoli, berenjena o ensalada. Fruta no, que es de noche",45,12,9]);
+  else rows.push([cena,"Cena","Merluza, salmón o tortilla de 3 huevos (220 g). Hoy sin verdura",45,1,8]);
+  rows.push(["22:45","Antes de dormir","1 vaso de queso fresco batido 0 % (250 g) con canela",28,10,0]);
+
+  const dia = df.n===1 ? 'Proteína pura' : (df.verdura?'Verdura con proteína':'Proteína sola');
+  const notes=[df.fase+'. '+df.note];
+  if(df.n===1 && diffDays(DIETA_FROM,date)===0)
+    notes.push('Hoy empieza el mes. Lo que no está en la lista del médico no entra, aunque sea sano.');
+  notes.push('Bebe 1,5 L al día como mínimo entre agua, té, café e infusiones, y bebe cada vez que comas.');
+  notes.push('Cocina con 2-3 cucharadas de aceite para todo el día, no por plato.');
+  if(rugby) notes.push('Hoy hay gimnasio y campo con muy poco hidrato. Si te vienen mareos o se te va la fuerza, díselo a tu médico antes de cambiar nada por tu cuenta.');
+  return {kind:'dieta', name:dia, rows, notes,
+    foot:'Pauta de tu médico: carnes, todos los pescados, marisco, jamón de york, pavo, serrano y cecina, huevos, tofu, seitán y tempeh, lácteos desnatados, txaka o gulas, y 1,5 cucharadas de lino o salvado de avena. Vinagre, hierbas, pepinillos, cebolletas, limón, sal y mostaza con moderación. Sin azúcar. Todo lo que no está en esa lista queda fuera hasta el 10 de diciembre.'};
+}
+
 function dietFor(date, W){
   if(date<START) return null;
   const tr=W.trip[date]; const i=dow(date); const ph=phaseOf(date);
@@ -1130,6 +1184,8 @@ function dietFor(date, W){
   let kind, name;
 
   if(tr && tr.type==='enfermo') return {kind:'enfermo', name:'Día de recuperación', rows:[], notes:['Hoy no hay déficit ni se cuentan calorías. Come según el hambre, con proteína en cada comida (unos 200 g al día), mucho líquido, caldo, fruta, arroz o patata.']};
+  const df=dietaFase(date);
+  if(df) return dietaMenu(date, df, i);
   if(ph==='esqui' || (tr && tr.type==='esqui')){ kind='esqui'; name='Día de esquí'; notes.push('Hoy no se pierde peso: se esquía. Comes a mantenimiento o algo por encima. Bebe 2-3 litros aunque no tengas sed: en altura y con frío uno se deshidrata sin enterarse.'); }
   else if(ph==='navidad'){ kind='navidad'; name='Navidad'; notes.push('Semana de mantenimiento. El déficit se pausa y el objetivo es pesar el día 27 lo mismo que el día 20. Proteína en cada comida y el resto, con cabeza.'); }
   else if(tr && tr.type==='vacaciones'){ kind='navidad'; name='Día de vacaciones'; notes.push('Fuera de casa: proteína en cada comida y guarnición del tamaño de tu puño. Los horarios son orientativos.'); }
@@ -1412,7 +1468,7 @@ function dietHTML(date, W){
       '<span class="mt">'+r[0]+'</span><div class="mb"><div class="mn">'+esc(r[1])+'</div><div class="mf">'+esc(r[2])+'</div>'+
       ((r[3]||r[4]||r[5])?'<div class="mm">'+r[3]+' g proteína, '+r[4]+' g carbohidrato, '+r[5]+' g grasa</div>':'')+'</div></div>';
   });
-  h+='<p class="hint" style="margin:10px 0 0">Estructura y alimentos de tu planificación de Garenas: proteína + hidrato + verdura en cada comida, 2 piezas de fruta al día, máximo 1 cucharada de aceite por preparación y queso fresco batido con canela de postre. Pesos de carne, pescado y arroz en crudo. Si algún plato no te gusta, cámbialo por otro de su mismo grupo.</p>';
+  h+='<p class="hint" style="margin:10px 0 0">'+esc(D.foot || 'Estructura y alimentos de tu planificación de Garenas: proteína + hidrato + verdura en cada comida, 2 piezas de fruta al día, máximo 1 cucharada de aceite por preparación y queso fresco batido con canela de postre. Pesos de carne, pescado y arroz en crudo. Si algún plato no te gusta, cámbialo por otro de su mismo grupo.')+'</p>';
   h+='</div></section>';
   return h;
 }
@@ -1466,6 +1522,13 @@ function viewSemana(){
   const tr=W.trip[ui.sel];
   if(tr) h+='<div class="banner"><b>'+esc(TRIP_TYPES[tr.type].name)+(tr.note?', '+esc(tr.note):'')+'.</b> '+esc(TRIP_TYPES[tr.type].desc)+'</div>';
   if(ui.sel<START) h+='<div class="banner">El plan empieza el lunes 9 de noviembre.</div>';
+  const _df=dietaFase(ui.sel);
+  if(_df){
+    const dd=diffDays(DIETA_FROM,ui.sel)+1, tot=diffDays(DIETA_FROM,DIETA_TO)+1;
+    h+='<div class="banner"><b>'+esc(_df.fase)+'.</b> Día '+dd+' de '+tot+' de la dieta del médico. Hoy toca <b>'+
+       (_df.n===1?'proteína pura':(_df.verdura?'verdura con proteína':'proteína sola'))+'</b>'+
+       (_df.pan?', con pan en el desayuno':'')+(_df.fruta?' y 2 piezas de fruta':'')+'.</div>';
+  }
   const _ph=phaseOf(ui.sel);
   if(_ph==='bloque1' && weekNum(ui.sel)===1) h+='<div class="banner warn"><b>Semana 1 de 8.</b> El objetivo de esta semana es empezar, no impresionar. Cargas conservadoras y foco en la técnica del step-down y del isométrico. Las agujetas de los primeros días son normales.</div>';
   if(_ph==='bloque2') h+='<div class="banner warn"><b>Bloque específico.</b> Entran los saltos laterales el miércoles: 3 × 6 por lado, aterrizando y estabilizando. Volumen bajo a propósito. Si no aterrizas estable y silencioso, acorta el salto.</div>';
