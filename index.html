@@ -820,11 +820,55 @@ function runFor(date){
   const w=weekNum(date); const r=RUN.find(x=>x[0]===w);
   if(!r) return {main:'Continuo, 45 min a ritmo de conversación', total:'45 min', opt:false, label:'Carrera, '};
   const label = w===9 ? 'Caminata rápida, ' : (w<=14 ? 'Carrera y caminata, ' : 'Carrera, ');
-  return {main:r[1], total:r[2], opt:w<=2, label};
+  let main=r[1];
+  if(sinIntensidad()) main=main.replace(/ con \d+ × \d+ min rápido/,' continuos').replace(/, el mejor del año/,', a ritmo cómodo');
+  return {main, total:r[2], opt:w<=2, label};
 }
 
 /* ================= Cardio de interior ================= */
 /* Todo en el gimnasio: cinta y bici estática. La bici de carretera llega cuando él quiera. */
+
+/* ===== Hyrox =====
+   Clases en box los martes y jueves a las 19:00, desde el 1 de diciembre.
+   Objetivo: HYROX Bilbao, BEC de Barakaldo, 6-7 de febrero de 2027, en relevos. */
+const HYROX_FROM='2026-12-01', HYROX_RACE='2027-02-06';
+const HYROX_DIAS=[1,3];   // martes y jueves
+function hyroxOn(date){
+  if(date<HYROX_FROM) return false;
+  const ph=phaseOf(date);
+  if(ph==='esqui'||ph==='afinado'||ph==='navidad') return false;
+  return HYROX_DIAS.includes(dow(date));
+}
+function hyroxFor(date){
+  const d=diffDays(date,HYROX_RACE);          // días que faltan para la carrera
+  if(date<='2026-12-17') return {fase:'Toma de contacto',
+    main:'Ve a la mitad del ritmo de la sala. Con la dieta en marcha no vas a poder seguirles, y no es el objetivo.',
+    foco:'Aprender las ocho estaciones y la técnica del trineo. Nada de buscar marcas.'};
+  if(d>35) return {fase:'Construcción',
+    main:'Ya a tu ritmo. Empieza a fijarte en los parciales de carrera, no solo en acabar.',
+    foco:'Carrera comprometida: correr cansado es el 80 % de esta prueba.'};
+  if(d>14) return {fase:'Específico',
+    main:'Aprieta. Es el bloque donde se gana la carrera.',
+    foco:'Zancadas con saco y wall balls: las estaciones 7 y 8 son donde se hunde la gente.'};
+  if(d>=0) return {fase:'Afinado',
+    main:'Baja el volumen y mantén la intensidad. Nada nuevo a dos semanas.',
+    foco:'Repasa transiciones y ritmo de carrera. Llegar fresco vale más que una sesión más.'};
+  return {fase:'Mantenimiento',
+    main:'Carrera hecha. Una o dos clases por semana para no perder lo ganado.',
+    foco:'Ahora manda la base de cara al triatlón.'};
+}
+
+/* Golpe en la costilla del 19/11/2026: dos semanas sin remo, ski erg, crol ni barra pesada. */
+const COSTILLA_HASTA='2026-11-30';
+function costilla(date){ return date<=COSTILLA_HASTA; }
+
+/* Freno de intensidad.
+   El reconocimiento del 9/11/2026 encontró un bloqueo incompleto de rama derecha en el ECG
+   y una capacidad vital disminuida en la espirometría, y el informe manda ir al médico.
+   Hasta que haya visto bueno, todo el cardio se queda en Zona 2: nada de series ni tempo.
+   Se desactiva en Ajustes cuando el médico lo autorice. */
+function sinIntensidad(){ return !(state.settings && state.settings.altaIntensidad); }
+function z2only(txt, alt){ return sinIntensidad() ? alt : txt; }
 
 /* Paseo diario. Es el único que empieza hoy mismo: andar no es volumen de entreno. */
 function paseoFor(date, tareas){
@@ -846,7 +890,7 @@ function runCortaFor(date){
   if(w<=14) return {main:'Caminar-correr: 6 min / 1 min 30 s × 3', total:'23 min'};
   if(w<=20) return {main:'Continuo suave en cinta, al 1 % de inclinación', total:'25 min'};
   if(w<=28) return {main:'Continuo suave en cinta, al 1 % de inclinación', total:'30 min'};
-  return {main:'Continuo, o 5 × 3 min algo más fuerte con 2 min suaves', total:'35 min'};
+  return {main:z2only('Continuo, o 5 × 3 min algo más fuerte con 2 min suaves','Continuo suave, todo en Zona 2'), total:'35 min'};
 }
 /* Bici estática del martes por la tarde */
 function spinFor(date){
@@ -854,8 +898,8 @@ function spinFor(date){
   if(isDeload(date)) return {dur:'30 min', main:'Zona 2 suave. Semana de descarga: mover las piernas y poco más.'};
   if(w<=11) return {dur:'40 min', main:'Zona 2, cadencia 85-95. Resistencia que te deje hablar.'};
   if(w<=20) return {dur:'45 min', main:'Zona 2 continua, cadencia 85-95.'};
-  if(w<=28) return {dur:'50 min', main:'Zona 2 con 3 × 6 min algo más duros, 3 min suaves entre bloques.'};
-  return {dur:'55 min', main:'Zona 2 con 4 × 8 min en tempo.'};
+  if(w<=28) return {dur:'50 min', main:z2only('Zona 2 con 3 × 6 min algo más duros, 3 min suaves entre bloques.','Zona 2 continua, cadencia 85-95.')};
+  return {dur:'55 min', main:z2only('Zona 2 con 4 × 8 min en tempo.','Zona 2 continua, cadencia 85-95.')};
 }
 /* Monte del sábado por la mañana. La bici estática queda como plan B de lluvia. */
 function monteFor(date){
@@ -876,9 +920,9 @@ function satBikeFor(date){
   if(isDeload(date)) return {dur:'45 min', main:'Suave. Semana de descarga, y eso incluye el cardio.'};
   if(w<=11) return {dur:'60 min', main:'Zona 2 continua. Si hace bueno, cámbialo por monte con desnivel.'};
   if(w<=15) return {dur:'65 min', main:'Zona 2 continua, cadencia alta.'};
-  if(w<=20) return {dur:'75 min', main:'Zona 2 con 3 × 8 min en tempo.'};
+  if(w<=20) return {dur:'75 min', main:z2only('Zona 2 con 3 × 8 min en tempo.','Zona 2 continua.')};
   if(w<=24) return {dur:'80 min', main:'Zona 2. Lleva bidón y toalla: en interior se suda el doble que fuera.'};
-  if(w<=32) return {dur:'90 min', main:'Zona 2 con 4 × 10 min en tempo.'};
+  if(w<=32) return {dur:'90 min', main:z2only('Zona 2 con 4 × 10 min en tempo.','Zona 2 continua.')};
   return {dur:'90 min', main:'Zona 2 larga. A estas alturas la calle ya te va a saber a poco.'};
 }
 
@@ -991,15 +1035,21 @@ function buildWeek(mon,state){
       detail:{type:'gym', k:kk, mods, iso}});
   }
 
-  /* --- Cardio de tarde: lunes cinta, martes bici estática --- */
-  for(const i of [0,1]){
+  /* --- Tardes: clases de Hyrox los martes y jueves; cinta y bici antes del 1 de diciembre --- */
+  for(const i of [0,1,3]){
     const d=dates[i]; if(!active(d)) continue;
     const ph=phaseOf(d);
     if(ph==='navidad' || ph==='afinado' || ph==='esqui') continue;
     const tr=trip[d];
     if(tr) continue;
-    /* Mientras dure la dieta del médico no se sube volumen: solo mover las piernas */
-    if(d<=DIETA_TO) continue;   /* hasta que acabe la dieta, la tarde es solo el paseo diario */
+    if(hyroxOn(d)){
+      const hx=hyroxFor(d);
+      push(d,{id:'hyrox', cat:'speed', t:'19:00', title:'Hyrox, clase en el box', sub:hx.main, detail:{type:'hyrox', hx, d}});
+      continue;
+    }
+    if(i===3) continue;                 /* el jueves solo lleva clase */
+    if(d>=HYROX_FROM) continue;         /* con Hyrox en marcha, el lunes no lleva cinta: dos dobles por semana y basta */
+    if(d<=DIETA_TO) continue;           /* mientras dure la dieta, la tarde es el paseo diario */
     if(ph==='agosto'){
       if(i===1) push(d,{id:'spin', cat:'z2', t:'19:30', title:'Bici estática, 45 min', sub:'Opcional. En agosto manda el examen.', count:false, detail:{type:'spin', b:{dur:'45 min', main:'Zona 2 suave.'}}});
       continue;
@@ -1026,6 +1076,7 @@ function buildWeek(mon,state){
     const ph=phaseOf(fri);
     if(ph==='afinado') push(fri,{id:'rest', cat:'check', t:'', title:'Descanso', sub:'Mañana empieza el esquí. Hoy no se entrena.', count:false, detail:{type:'text', html:'<p>Prepara la maleta y duerme.</p>'}});
     else if(ph==='navidad') push(fri,{id:'z2opt', cat:'z2', t:'12:00', title:'Paseo largo, 45 min', sub:'Opcional. Hoy manda la familia.', count:false, detail:{type:'monte'}});
+    else if(costilla(fri)) push(fri,{id:'spin', cat:'z2', t:'18:00', title:'Bici estática, 40 min', sub:'Sustituye a la natación mientras la costilla esté tocada: el crol rota el tronco.', detail:{type:'spin', b:{dur:'40 min', main:'Zona 2 suave, sentado y sin forzar la respiración.'}}});
     else { const sw=swimFor(fri); push(fri,{id:'swim', cat:'z2', t:'18:00', title:'Natación, 45 min', sub:sw.total+'. Tu sesión fija de base aeróbica.', detail:{type:'swim', sw}}); }
   }
 
@@ -1035,7 +1086,16 @@ function buildWeek(mon,state){
     const ph=phaseOf(sat);
     const bk=(ph==='afinado'||ph==='navidad')?null:satBikeFor(sat);
     const exd=(state.settings&&state.settings.caeDate)||CAE_EXAM;
-    if(exd===sat){
+    if(sat===HYROX_RACE){
+      push(sat,{id:'race', cat:'speed', t:'', title:'HYROX Bilbao', sub:'BEC de Barakaldo. Hoy no se entrena: hoy se compite.', detail:{type:'text', html:
+        '<p><b>Desayuna como un día de entreno normal</b>, dos o tres horas antes de tu salida. Nada nuevo hoy.</p>'+
+        '<p><b>Las ocho estaciones</b>, en orden: ski erg 1.000 m, empuje de trineo 50 m, arrastre de trineo 50 m, burpees con salto 80 m, remo 1.000 m, paseo del granjero 200 m, zancadas con saco 100 m y 100 wall balls. Entre cada una, 1 km corriendo.</p>'+
+        '<p><b>El error de todo novato es salir rápido.</b> El primer kilómetro vas fresco y te vas con la gente; el kilómetro 6 lo pagas. Sal más lento de lo que te pide el cuerpo.</p>'+
+        '<p><b>Donde ganas tiempo:</b> trineo y paseo del granjero. <b>Donde se hunde la gente:</b> zancadas con saco y wall balls, estaciones 7 y 8, con los cuádriceps ya fundidos. Parte las wall balls en series desde la primera, no cuando ya no puedas.</p>'+
+        '<p class="hint">Mañana domingo, paseo y nada más.</p>'}});
+      if(ph!=='navidad') push(sat,{id:'evento', cat:'trip', t:'', title:'¿Hay evento hoy?', sub:'Si lo hay, pon el número de copas antes de salir.', count:false, detail:{type:'evento'}});
+    }
+    else if(exd===sat){
       push(sat,{id:'exam', cat:'eng', t:'', title:'Examen C1 Advanced', sub:'Hoy no se entrena nada.', count:false,
         detail:{type:'text', html:'<p>Desayuna como un día normal de entreno, nada raro. Llega con tiempo y con el DNI.</p><p>Son cuatro horas y media: lleva agua y una pieza de fruta para el descanso.</p><p class="hint">Mañana vuelve la rutina. Hoy no.</p>'}});
     }
@@ -1050,6 +1110,7 @@ function buildWeek(mon,state){
   if(active(sun) && !blocked(sun) && !isSki(sun)){
     const ph=phaseOf(sun);
     if(ph==='navidad' || ph==='afinado') push(sun,{id:'z2opt', cat:'z2', t:'11:00', title:'Paseo largo, 45 min', sub:'Opcional. Recuperación activa, sin intensidad.', count:false, detail:{type:'monte'}});
+    else if(sun===addDays(HYROX_RACE,1)) push(sun,{id:'z2opt', cat:'mob', t:'12:00', title:'Paseo largo, 45 min', sub:'Ayer corriste Hyrox. Hoy solo andar.', count:false, detail:{type:'paseo', p:{dur:'45 min', sub:'Suave. Recuperación activa del día después.'}}});
     else { const r=runFor(sun); push(sun,{id:'run', cat:'speed', t:'11:00', title:r.label+r.total, sub:(r.opt?'Opcional estas dos primeras semanas. ':'')+r.main+'.', count:!r.opt, detail:{type:'run', r}}); }
   }
 
@@ -1249,7 +1310,7 @@ function dietaMenu(date, df, i){
   notes.push('Cocina con 2-3 cucharadas de aceite para todo el día, no por plato.');
   if(i<4) notes.push('Hoy entrenas fuerza con muy poco hidrato. Si te vienen mareos o se te va la fuerza en la barra, díselo a tu médico antes de cambiar nada por tu cuenta.');
   return {kind:'dieta', name:dia, rows, notes,
-    foot:'Pauta de tu médico: carnes, todos los pescados, marisco, jamón de york, pavo, serrano y cecina, huevos, tofu, seitán y tempeh, lácteos desnatados, txaka o gulas, y 1,5 cucharadas de lino o salvado de avena. Vinagre, hierbas, pepinillos, cebolletas, limón, sal y mostaza con moderación. Sin azúcar. Todo lo que no está en esa lista queda fuera hasta el 10 de diciembre.'};
+    foot:'Pauta de tu médico: carnes, todos los pescados, marisco, jamón de york, pavo, serrano y cecina, huevos, tofu, seitán y tempeh, lácteos desnatados, txaka o gulas, y 1,5 cucharadas de lino o salvado de avena. Vinagre, hierbas, pepinillos, cebolletas, limón, sal y mostaza con moderación. Sin azúcar. Todo lo que no está en esa lista queda fuera hasta el 17 de diciembre.'};
 }
 
 function dietFor(date, W){
@@ -1305,7 +1366,7 @@ const KEY='ub-temporada-v1';
 function defaultState(){
   return {v:1, done:{}, notes:{}, weights:{}, fixtures:{}, cae:{ans:{},graded:{}},
     trips:[{id:'t-cervinia', type:'esqui', from:'2027-01-02', to:'2027-01-07', note:'Cervinia'}],
-    settings:{eng:150, cera:270, corr:180, ceraDate:'', caeDate:CAE_EXAM}};
+    settings:{eng:150, cera:270, corr:180, ceraDate:'', caeDate:CAE_EXAM, altaIntensidad:false}};
 }
 function normalize(s){
   const d=defaultState(); s=s&&typeof s==='object'?s:{};
@@ -1397,7 +1458,7 @@ function detailHTML(t){
       '<p>Calienta 5 minutos caminando rápido antes de empezar y termina igual.</p>'+
       '<p><b>En cinta, pon el 1 % de inclinación.</b> En llano la cinta te empuja el pie hacia atrás y corres más fácil que en la calle; ese 1 % compensa la falta de aire y lo iguala. Y no mires el ritmo: mira el tiempo y la respiración.</p>'+
       '<p>El trote va a ritmo de conversación: si no puedes hablar, vas demasiado rápido. Lo que construye fondo es el tiempo, no la velocidad.</p>'+
-      '<p><b>Por qué se empieza tan despacio:</b> a 112 kg cada zancada son unas tres veces tu peso pasando por rodilla y Aquiles. Correr 30 minutos seguidos ahora no te daría fondo, te daría una tendinopatía. Según baje el peso, sube el tiempo continuo.</p>'+
+      '<p><b>Por qué se empieza tan despacio:</b> a 114 kg cada zancada son unas tres veces tu peso pasando por rodilla y Aquiles. Correr 30 minutos seguidos ahora no te daría fondo, te daría una tendinopatía. Según baje el peso, sube el tiempo continuo.</p>'+
       '<p class="hint">Cualquier molestia en Aquiles, rodilla o tibia que dure más de dos días: fuera carrera, dentro bici o piscina. Con tu peso eso no se negocia.</p>';
   }
   if(d.type==='bike'){
@@ -1436,6 +1497,16 @@ function detailHTML(t){
       '<p><b>En la mesa:</b> proteína y verdura primero, el pan de la mesa son 200 kcal sin enterarte, y un postre compartido.</p>'+
       '<p><b>El alcohol es el coste real.</b> Una copa son unas 180 kcal, una caña 150, un vino 120. Tres consumiciones es un sábado normal y no descarrila nada; pon el número antes de salir y alterna cada una con un vaso de agua.</p>'+
       '<p class="hint">Mañana no se compensa: nada de ayunar ni de castigarse con cardio. Se vuelve al menú y ya está.</p>';
+  }
+  if(d.type==='hyrox'){
+    const left=diffDays(d.d,HYROX_RACE);
+    return '<div class="note"><b>'+esc(d.hx.fase)+'.</b> '+esc(d.hx.main)+'</div>'+
+      (left>=0?'<p><b>Faltan '+left+' días para Hyrox Bilbao</b>, el 6 de febrero en el BEC de Barakaldo.</p>':'')+
+      '<p><b>El foco de este bloque:</b> '+esc(d.hx.foco)+'</p>'+
+      '<p><b>Las ocho estaciones</b>, en orden: ski erg 1.000 m, empuje de trineo 50 m, arrastre de trineo 50 m, burpees con salto 80 m, remo 1.000 m, paseo del granjero 200 m, zancadas con saco 100 m y 100 wall balls. Entre cada una, 1 km corriendo.</p>'+
+      '<p><b>Dónde juegas con ventaja:</b> trineo y paseo del granjero premian el peso y la fuerza, y en esas vas a ir de los primeros de la sala. Donde te penaliza el peso es corriendo, y eso lo arregla la báscula.</p>'+
+      (costilla(d.d)?'<div class="note">La costilla manda: hoy nada de remo ni ski erg, y las wall balls y los burpees los dejas pasar. Trineo y carries sí.</div>':'')+
+      '<p class="hint">El día de clase, el gimnasio del mediodía nunca es de pierna. Por eso el martes es torso y el jueves prevención.</p>';
   }
   if(d.type==='spin'){
     return '<div class="note"><b>'+esc(d.b.dur)+'.</b> '+esc(d.b.main)+'</div>'+
@@ -1613,6 +1684,13 @@ function viewSemana(){
   const tr=W.trip[ui.sel];
   if(tr) h+='<div class="banner"><b>'+esc(TRIP_TYPES[tr.type].name)+(tr.note?', '+esc(tr.note):'')+'.</b> '+esc(TRIP_TYPES[tr.type].desc)+'</div>';
   if(ui.sel<START) h+='<div class="banner">El plan empieza el lunes 9 de noviembre.</div>';
+  if(costilla(ui.sel)) h+='<div class="banner warn"><b>Costilla.</b> Hasta final de mes, fuera remo, ski erg, crol, peso muerto y sentadilla pesada, wall balls y burpees. Sí puedes: bici, caminar, prensa, unilateral de pierna, poleas ligeras y paseo del granjero. La prueba para saber si ya puedes cargar: coge aire a tope, tose y aprieta el abdomen. Si las tres salen sin dolor, adelante.</div>';
+  if(ui.sel>=HYROX_FROM && ui.sel<=HYROX_RACE){
+    const _hl=diffDays(ui.sel,HYROX_RACE);
+    if(_hl>=0) h+='<div class="banner"><b>Hyrox Bilbao en '+_hl+' días.</b> 6 y 7 de febrero, BEC de Barakaldo. Bloque: '+esc(hyroxFor(ui.sel).fase)+'.</div>';
+  }
+  if(mondayOf(ui.sel)===mondayOf(HYROX_FROM)) h+='<div class="banner warn"><b>Esta semana empiezan las clases de Hyrox.</b> Martes y jueves a las 19:00. La cinta del lunes y la bici del martes se van: las sustituyen las clases. Mantienes los cuatro días de fuerza, y en los días de clase el mediodía no es de pierna.</div>';
+  if(sinIntensidad()) h+='<div class="banner warn"><b>Todo el cardio está en Zona 2 hasta que te vea tu médico.</b> El reconocimiento del 9 de noviembre encontró un bloqueo incompleto de rama derecha en el ECG y la capacidad vital disminuida en la espirometría, y el informe dice expresamente que acudas a tu médico. Hasta entonces: nada de series, tempo ni ritmos fuertes. Cuando te dé el visto bueno, lo quitas en Ajustes y vuelven las intensidades.</div>';
   const _df=dietaFase(ui.sel);
   if(!_df && ui.sel>=START && ui.sel<DIETA_FROM)
     h+='<div class="banner warn"><b>Esta semana estás acabando otra dieta.</b> El entrenamiento va tal cual, pero el menú de abajo es solo orientativo: sigue la pauta que tengas ahora. La de tu médico arranca el lunes 16 y la verás aquí ese día.</div>';
@@ -1685,16 +1763,16 @@ function viewViajes(){
 }
 
 const PHASES_LIST = [
-  ['Bloque 1 · Acumulación','9 nov – 6 dic','2026-11-09','2026-12-06','Las cuatro sesiones completas. El isométrico sube de 30 a 60 segundos. Déficit a pleno rendimiento.','108,5 kg'],
-  ['Bloque 2 · Específico','7 – 20 dic','2026-12-07','2026-12-20','Entran los saltos laterales. El isométrico llega a 90 segundos y el step-down a 5 segundos de bajada.','107 kg'],
+  ['Bloque 1 · Acumulación','9 nov – 6 dic','2026-11-09','2026-12-06','Las cuatro sesiones completas. El isométrico sube de 30 a 60 segundos. La dieta del médico arranca el 16.','109 kg'],
+  ['Bloque 2 · Específico','7 – 20 dic','2026-12-07','2026-12-20','Entran los saltos laterales, y el 1 de diciembre arrancan las clases de Hyrox. La dieta acaba el 17.','106 kg'],
   ['Navidad · Mantener','21 – 27 dic','2026-12-21','2026-12-27','Dos sesiones cortas en toda la semana. Calorías a mantenimiento: el déficit se pausa.','Pesar lo mismo'],
-  ['Afinado','28 – 31 dic','2026-12-28','2026-12-31','Mitad de series. Ninguna sesión debe dejarte agujetas.','106-107 kg'],
+  ['Afinado','28 – 31 dic','2026-12-28','2026-12-31','Mitad de series. Ninguna sesión debe dejarte agujetas.','105-106 kg'],
   ['Cervinia','1 – 7 ene','2027-01-01','2027-01-07','Seis días de esquí. Calentar antes de la primera bajada y proteína en la primera hora al bajar.','—'],
-  ['Vuelta y reinicio','8 – 24 ene','2027-01-08','2027-01-24','Dos semanas y media al 70 %: tres series por ejercicio, vuelve la natación y arranca el cardio de las tardes.','105,5 kg'],
-  ['Bloque 3 · Fuerza base','25 ene – 21 mar','2027-01-25','2027-03-21','Cuatro sesiones de fuerza, dos de cinta, dos de bici y una de piscina. La carrera llega a 35 min continuos.','101 kg'],
+  ['Vuelta y reinicio','8 – 24 ene','2027-01-08','2027-01-24','Vuelven las clases de Hyrox y la natación. Cuatro semanas hasta la carrera: es el bloque específico.','104 kg'],
+  ['Bloque 3 · Fuerza base','25 ene – 21 mar','2027-01-25','2027-03-21','Hyrox hecho. Vuelve la estructura de fondo: fuerza, cinta, bici, piscina y monte. La carrera llega a 35 min continuos.','100 kg'],
   ['Semana Santa','22 – 28 mar','2027-03-22','2027-03-28','Descarga completa y calorías a mantenimiento. Monte corto, paseo y poco más.','Pesar lo mismo'],
-  ['Bloque 4 · Volumen','29 mar – 23 may','2027-03-29','2027-05-23','Series de 8-10, circuito los jueves y monte de 90 min los sábados. La carrera llega a 50 min.','96 kg'],
-  ['Bloque 5 · Verano híbrido','24 may – 1 ago','2027-05-24','2027-08-01','Menos hierro y más aeróbico: 10 km corriendo, 2.800 m nadando y salidas de hasta 2 h al monte.','92 kg'],
+  ['Bloque 4 · Volumen','29 mar – 23 may','2027-03-29','2027-05-23','Series de 8-10, Hyrox de mantenimiento y monte de 90 min los sábados. La carrera llega a 50 min.','95,5 kg'],
+  ['Bloque 5 · Verano híbrido','24 may – 1 ago','2027-05-24','2027-08-01','Menos hierro y más aeróbico: 10 km corriendo, 2.800 m nadando y salidas de hasta 2 h al monte.','91 kg'],
   ['Agosto · Mantener','2 – 30 ago','2027-08-02','2027-08-30','Dos sesiones de cuerpo entero, nadar y bici libre. La carga de estas semanas se la lleva el examen de inglés.','Pesar lo mismo']
 ];
 /* Resumen de cada bloque para la vista de temporada */
@@ -1747,22 +1825,29 @@ function viewEsqui(){
   }
   h+='<p class="hint">Los microciclos son de cuatro semanas: tres de carga y una de descarga. La descarga no se salta; es lo que permite que la carga de la semana siguiente suba otra vez.</p></section>';
 
-  h+='<section class="section"><h3>La semana, a partir del 11 de diciembre</h3>'+
+  h+='<section class="section"><h3>La semana, a partir del 1 de diciembre</h3>'+
      '<div class="wlist">'+
-     '<div><span>Lunes</span><span>Fuerza A + cinta</span></div>'+
-     '<div><span>Martes</span><span>Fuerza B + bici estática</span></div>'+
-     '<div><span>Miércoles</span><span>Fuerza C</span></div>'+
-     '<div><span>Jueves</span><span>Fuerza D</span></div>'+
+     '<div><span>Lunes</span><span>Fuerza A — pierna</span></div>'+
+     '<div><span>Martes</span><span>Fuerza B — torso · <b>Hyrox 19:00</b></span></div>'+
+     '<div><span>Miércoles</span><span>Fuerza C — bisagra y unilateral</span></div>'+
+     '<div><span>Jueves</span><span>Fuerza D — prevención · <b>Hyrox 19:00</b></span></div>'+
      '<div><span>Viernes</span><span>Natación</span></div>'+
      '<div><span>Sábado</span><span>Monte por la mañana</span></div>'+
      '<div><span>Domingo</span><span>Cinta, la tirada larga</span></div>'+
      '</div>'+
-     '<p>Cuatro de fuerza, dos de cinta, una de bici, una de piscina y el monte del sábado: entre 6 y 8 horas por semana. El miércoles y el jueves no llevan cardio a propósito, que es lo que hace que el resto se sostenga.</p>'+
+     '<p>Cuatro de fuerza, dos clases de Hyrox, una de piscina, el monte del sábado y la tirada larga del domingo: unas 8 horas. Dos dobles a la semana, martes y jueves, y en esos días el mediodía nunca es de pierna. El miércoles y el jueves no llevan cardio a propósito, que es lo que hace que el resto se sostenga.</p>'+
      '<p class="hint">Si el sábado llueve o no hay plan de monte, se cambia por bici estática en el gimnasio sin tocar nada más.</p></section>';
+
+  h+='<section class="section"><h3>Hyrox Bilbao, 6 de febrero</h3>'+
+     '<p>BEC de Barakaldo. Ocho kilómetros partidos en ocho tramos de uno, y entre cada uno una estación: ski erg, empuje de trineo, arrastre de trineo, burpees con salto, remo, paseo del granjero, zancadas con saco y 100 wall balls.</p>'+
+     '<p><b>Vas en relevos, no en solo.</b> De las once semanas que hay desde que empiezas, cuatro las pasas con la dieta sin poder meter intensidad, una es Cervinia y otra es Navidad. En solo llegarías andando buena parte de los 8 km. En relevos haces dos tandas de 1 km más estación, vives el ambiente y sales sabiendo exactamente a qué te enfrentas.</p>'+
+     '<p><b>El solo es para febrero de 2028</b>, con un año de preparación y veinte kilos menos.</p>'+
+     '<p><b>Las clases son martes y jueves a las 19:00</b>, desde el 1 de diciembre. Dos para empezar; en enero, con la dieta acabada, se puede subir a tres y la tercera sustituye la cinta del domingo.</p>'+
+     '<p class="hint">Dos estaciones te van a salir bien desde el primer día: el trineo y el paseo del granjero premian el peso y la fuerza. Donde te penaliza el peso es corriendo, y eso lo arregla la báscula: los once kilos que bajas hasta febrero valen dos o tres minutos en la prueba.</p></section>';
 
   h+='<section class="section"><h3>Cuándo comprar la bici</h3>'+
      '<p>Tu criterio de esperar a bajar de peso es bueno, y yo le pondría dos condiciones concretas: <b>estar por debajo de 100 kg</b> y <b>aguantar los 55 minutos de bici del martes sin que se te haga eterno</b>. Las dos caen alrededor de abril, que además es cuando el tiempo acompaña.</p>'+
-     '<p>No es solo comodidad. A 112 kg y a 95 kg no se compra la misma bici: cambian las ruedas, la anchura del neumático y hasta la presión que llevas. Comprarla ahora es comprarla dos veces.</p>'+
+     '<p>No es solo comodidad. A 114 kg y a 95 kg no se compra la misma bici: cambian las ruedas, la anchura del neumático y hasta la presión que llevas. Comprarla ahora es comprarla dos veces.</p>'+
      '<p class="hint">Hasta entonces la bici estática del martes y el monte del sábado te dan el mismo trabajo aeróbico. Lo único que no entrenan es manejar la bici, y eso se aprende en dos salidas.</p></section>';
 
   h+='<section class="section"><h3>Cómo encaja con el inglés</h3>'+
@@ -1883,6 +1968,10 @@ function viewAjustes(){
   h+='<p>Total: '+tot.toFixed(1).replace('.',',')+' h a la semana.</p>';
   if(tot>15) h+='<div class="banner warn" style="margin:8px 0 0">Con 10 sesiones de entreno a la semana y en déficit, más de 15 h de estudio te va a quitar sueño. Y el sueño es lo que hace que pierdas grasa y no músculo.</div>';
   h+='<p class="hint">Huecos: lunes y jueves a las 18:15 (inglés), martes a las 18:15 (correduría), miércoles a las 18:30 y viernes a las 19:30 (CERA), sábado a las 12:00 y domingo desde las 15:30. En Navidad y en la semana de esquí no se programa estudio.</p></section>';
+  h+='<section class="section"><h3>Intensidad</h3>'+
+     '<label class="field" style="cursor:pointer"><span>Mi médico me ha dado el visto bueno</span>'+
+     '<input type="checkbox" id="alta-int" data-setting="altaIntensidad"'+(s.altaIntensidad?' checked':'')+'></label>'+
+     '<p class="hint">Mientras esté sin marcar, el plan mantiene todo el cardio en Zona 2: sin series, sin tempo y sin ritmos fuertes. Es por el bloqueo incompleto de rama derecha del ECG y la capacidad vital disminuida de la espirometría del 9 de noviembre de 2026. Márcalo solo cuando tu médico te haya revisado y te autorice a entrenar a intensidad. La fuerza del gimnasio no está afectada.</p></section>';
   h+='<section class="section"><h3>Exámenes</h3>'+
      '<div class="field"><label for="cd">CERA</label><input type="date" id="cd" data-setting="ceraDate" value="'+esc(s.ceraDate||'')+'"></div>'+
      '<div class="field"><label for="cae-d">C1 Advanced</label><input type="date" id="cae-d" data-setting="caeDate" value="'+esc(s.caeDate||CAE_EXAM)+'"></div>'+
@@ -1958,7 +2047,8 @@ document.addEventListener('change',e=>{
   if(t.id==='tt'){ const p=document.getElementById('tdesc'); if(p) p.textContent=TRIP_TYPES[t.value].desc; return; }
   if(t.dataset.setting){
     const k=t.dataset.setting;
-    if(k==='ceraDate'||k==='caeDate') state.settings[k]=t.value;
+    if(k==='altaIntensidad') state.settings[k]=!!t.checked;
+    else if(k==='ceraDate'||k==='caeDate') state.settings[k]=t.value;
     else { let h=parseFloat(String(t.value).replace(',','.')); if(!(h>=0)) h=0; if(h>15) h=15; state.settings[k]=Math.round(h*60); }
     commit(); return;
   }
